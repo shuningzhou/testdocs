@@ -128,6 +128,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1706341962362521628, guid: 174d4204bcce71441b8447431208a627,
+        type: 3}
+      propertyPath: autoUpdate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8288772684901661526, guid: 174d4204bcce71441b8447431208a627,
         type: 3}
       propertyPath: m_Name
@@ -171,7 +176,7 @@ PrefabInstance:
     - target: {fileID: 8288772684901661527, guid: 174d4204bcce71441b8447431208a627,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8288772684901661527, guid: 174d4204bcce71441b8447431208a627,
         type: 3}
@@ -235,7 +240,7 @@ PrefabInstance:
     - target: {fileID: 2343549284455928212, guid: b58cac3dec47eeb4a8895e925cb460b0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2343549284455928212, guid: b58cac3dec47eeb4a8895e925cb460b0,
         type: 3}
@@ -465,7 +470,7 @@ PrefabInstance:
     - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
@@ -491,6 +496,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312638363782049662, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3175535036113917119, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
@@ -554,7 +564,7 @@ PrefabInstance:
     - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
@@ -575,6 +585,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312638363782049662, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3175535036113917119, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: isTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7a8e57687c4fd94694608c37d973ced, type: 3}

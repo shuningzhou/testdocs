@@ -198,6 +198,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box
       objectReference: {fileID: 0}
+    - target: {fileID: 3366342509803627896, guid: 0354911a048b2c44d9969c48414bdf2c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 3366342509803627897, guid: 0354911a048b2c44d9969c48414bdf2c,
         type: 3}
       propertyPath: _bodyType
@@ -302,7 +307,7 @@ GameObject:
   - component: {fileID: 1845400100}
   - component: {fileID: 1845400096}
   - component: {fileID: 1845400097}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: New Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,7 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  Interpolation: 1
   _localPosition:
     RawX: 0
     RawY: 2097152
@@ -442,7 +447,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2089dceb7d110084693064876852b17c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTrigger: 0
+  isTrigger: 1
+  _friction:
+    Raw: 419430
   _bounciness:
     Raw: 209715
   _spriteRendererSize:
