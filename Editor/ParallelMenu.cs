@@ -149,7 +149,7 @@ namespace Parallel.EditorTools
                     Debug.Log($"Copying src={fi.Name}");
                     Debug.Log($"Copying dst={path}");
                     //only copy png files
-                    if(fi.Name.Contains(".png"))
+                    if(fi.Name.Contains(".png") && !fi.Name.Contains(".meta"))
                     {
                         fi.CopyTo(path, true);
                     }
