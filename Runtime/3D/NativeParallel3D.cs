@@ -136,6 +136,12 @@ namespace Parallel
         internal static extern void SetAwake(IntPtr bodyHandle, bool awake);
 
         [DllImport(PLUGIN_NAME)]
+        internal static extern bool IsEnabled(IntPtr bodyHandle);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void SetEnabled(IntPtr bodyHandle, bool enabled);
+
+        [DllImport(PLUGIN_NAME)]
         internal static extern void GetSleepTime(IntPtr bodyHandle, ref Fix64 sleepTime);
 
         [DllImport(PLUGIN_NAME)]
@@ -152,7 +158,7 @@ namespace Parallel
 
         //3D fixture
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr AddFixtureToBody(IntPtr bodyHandle, IntPtr shapeHandle, Fix64 density);
+        internal static extern IntPtr AddFixtureToBody(IntPtr bodyHandle, IntPtr shapeHandle, Fix64 density, ref byte shapeID);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void SetLayer(IntPtr fixtureHandle, int layer, int layerMask, bool refilter);

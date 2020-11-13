@@ -105,7 +105,7 @@ namespace Parallel
     [StructLayout(LayoutKind.Sequential)]
     public struct PContactExport3D
     {
-        public UInt32 id;
+        public UInt64 id;
         public Fix64Vec3 relativeVelocity;
         public bool isTrigger;
     }
@@ -186,8 +186,8 @@ namespace Parallel
         }
     }
 
-    internal delegate void ContactEnterCallBack3D(IntPtr contactPtr, UInt32 contactID);
-    internal delegate void ContactExitCallBack3D(IntPtr contactPtr, UInt32 contactID);
+    internal delegate void ContactEnterCallBack3D(IntPtr contactPtr, UInt64 contactID);
+    internal delegate void ContactExitCallBack3D(IntPtr contactPtr, UInt64 contactID);
 
     public class Parallel3D
     {
@@ -200,7 +200,7 @@ namespace Parallel
         static PConvexCacheExport3D[] convexExports = new PConvexCacheExport3D[ParallelConstants.MAX_CONTACT_COUNT_3D];
         static PManifoldExport3D[] manifoldExports = new PManifoldExport3D[ParallelConstants.MAX_CONTACT_COUNT_3D * 3];
 
-        static Dictionary<UInt32, PContact3D> contactDictionary = new Dictionary<uint, PContact3D>();
+        static Dictionary<UInt64, PContact3D> contactDictionary = new Dictionary<UInt64, PContact3D>();
         static PCollision3D _tempCollision = new PCollision3D();
 
         //enter contacts
@@ -308,13 +308,13 @@ namespace Parallel
         
         public static void AddExternalConvexCache(PInternalState3D state)
         {
-            for (int i = 0; i < state.contactCount; i++)
-            {
-                PContactExport3D export = state.contactExports[i];
-                PConvexCacheExport3D convexExport = state.convexExports[i];
+            //for (int i = 0; i < state.contactCount; i++)
+            //{
+            //    PContactExport3D export = state.contactExports[i];
+            //    PConvexCacheExport3D convexExport = state.convexExports[i];
 
-                NativeParallel3D.AddExternalConvexCacheData(export.id, convexExport);
-            }
+            //    NativeParallel3D.AddExternalConvexCacheData(export.id, convexExport);
+            //}
         }
 
         public static void ReadCollisionLayerMatrix()
@@ -373,8 +373,8 @@ namespace Parallel
 
                 if (contact.IsTrigger)
                 {
-                    body1.RigidBody.OnParallelTriggerExit(body2.RigidBody);
-                    body2.RigidBody.OnParallelTriggerExit(body1.RigidBody);
+                    body1.RigidBody.OnParallelTriggerExit(body2.RigidBody, contact.Shape1ID, contact.Shape2ID);
+                    body2.RigidBody.OnParallelTriggerExit(body1.RigidBody, contact.Shape2ID, contact.Shape1ID);
                 }
                 else
                 {
@@ -403,8 +403,8 @@ namespace Parallel
 
                     if (contact.IsTrigger)
                     {
-                        body1.RigidBody.OnParallelTriggerStay(body2.RigidBody);
-                        body2.RigidBody.OnParallelTriggerStay(body1.RigidBody);
+                        body1.RigidBody.OnParallelTriggerStay(body2.RigidBody, contact.Shape1ID, contact.Shape2ID);
+                        body2.RigidBody.OnParallelTriggerStay(body1.RigidBody, contact.Shape2ID, contact.Shape1ID);
                     }
                     else
                     {
@@ -430,8 +430,8 @@ namespace Parallel
 
                 if (contact.IsTrigger)
                 {
-                    body1.RigidBody.OnParallelTriggerEnter(body2.RigidBody);
-                    body2.RigidBody.OnParallelTriggerEnter(body1.RigidBody);
+                    body1.RigidBody.OnParallelTriggerEnter(body2.RigidBody, contact.Shape1ID, contact.Shape2ID);
+                    body2.RigidBody.OnParallelTriggerEnter(body1.RigidBody, contact.Shape2ID, contact.Shape1ID);
                 }
                 else
                 {
@@ -534,8 +534,9 @@ namespace Parallel
                 Initialize();
             }
 
-            IntPtr m_NativeObject = NativeParallel3D.AddFixtureToBody(body.IntPointer, shape.IntPointer, density);
-            return new PFixture3D(m_NativeObject);
+            byte shapeID = 0;
+            IntPtr m_NativeObject = NativeParallel3D.AddFixtureToBody(body.IntPointer, shape.IntPointer, density, ref shapeID);
+            return new PFixture3D(shapeID, m_NativeObject);
         }
 
         public static PShape3D GetShapeOfFixture(PFixture3D fixture)
@@ -928,6 +929,26 @@ namespace Parallel
             return NativeParallel3D.IsAwake(body.IntPointer);
         }
 
+        public static void SetEnabled(PBody3D body, bool enabled)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            NativeParallel3D.SetEnabled(body.IntPointer, enabled);
+        }
+
+        public static bool IsEnabled(PBody3D body)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            return NativeParallel3D.IsEnabled(body.IntPointer);
+        }
+
         public static ParallelQHullData ConvextHull3D(Fix64Vec3[] verts, UInt32 count, bool simplify, Fix64 rad)
         {
             if (!initialized)
@@ -1167,7 +1188,7 @@ namespace Parallel
 
         //contact
         [MonoPInvokeCallback(typeof(ContactEnterCallBack3D))]
-        public static void OnContactEnterCallback(IntPtr contactPtr, UInt32 contactID)
+        public static void OnContactEnterCallback(IntPtr contactPtr, UInt64 contactID)
         {
             PContact3D c;
 
@@ -1207,7 +1228,7 @@ namespace Parallel
         }
 
         [MonoPInvokeCallback(typeof(ContactExitCallBack3D))]
-        public static void OnContactExitCallBack(IntPtr contactPtr, UInt32 contactID)
+        public static void OnContactExitCallBack(IntPtr contactPtr, UInt64 contactID)
         {
             PContact3D c;
 

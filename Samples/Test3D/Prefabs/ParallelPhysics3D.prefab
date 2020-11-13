@@ -44,12 +44,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LoggingLevel: 0
-  Debugging: 0
+  autoUpdate: 1
   fixedUpdateTime:
     Raw: 20971
-  speed: 1
   velocityIteration: 4
-  positionIteration: 1
   allowSleep: 1
   warmStart: 1
   gravity:

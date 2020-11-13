@@ -40,8 +40,8 @@ namespace Parallel
 
     public interface IParallelTrigger3D
     {
-        void OnParallelTriggerEnter3D(ParallelRigidbody3D other);
-        void OnParallelTriggerStay3D(ParallelRigidbody3D other);
-        void OnParallelTriggerExit3D(ParallelRigidbody3D other);
+        void OnParallelTriggerEnter3D(ParallelRigidbody3D other, ParallelCollider3D collider);
+        void OnParallelTriggerStay3D(ParallelRigidbody3D other, ParallelCollider3D collider);
+        void OnParallelTriggerExit3D(ParallelRigidbody3D other, ParallelCollider3D collider);
     }
 }

@@ -299,6 +299,19 @@ namespace Parallel
         }
 
         //============================== IParallelRigidBody ==============================
+        public ParallelCollider3D FindCollider(byte shapeID)
+        {
+            foreach (ParallelCollider3D collider in colliders)
+            {
+                if (collider._shapeID == shapeID)
+                {
+                    return collider;
+                }
+            }
+
+            return null;
+        }
+
         public void OnParallelCollisionEnter(PCollision3D collision)
         {
             foreach (IParallelCollision3D parallelCollision in parallelCollisions)
@@ -323,27 +336,69 @@ namespace Parallel
             }
         }
 
-        public void OnParallelTriggerEnter(IParallelRigidbody3D other)
+        public void OnParallelTriggerEnter(IParallelRigidbody3D other, byte selfShapeID, byte otherShapeID)
         {
+            ParallelCollider3D selfCollider = FindCollider(selfShapeID);
+
+            if(selfCollider == null)
+            {
+                return;
+            }
+
+            if(!selfCollider.isTrigger)
+            {
+                return;
+            }
+
+            ParallelCollider3D otherCollider = FindCollider(otherShapeID);
+
             foreach (IParallelTrigger3D trigger in parallelTriggers)
             {
-                trigger.OnParallelTriggerEnter3D(other as ParallelRigidbody3D);
+                trigger.OnParallelTriggerEnter3D(other as ParallelRigidbody3D, otherCollider);
             }
         }
 
-        public void OnParallelTriggerStay(IParallelRigidbody3D other)
+        public void OnParallelTriggerStay(IParallelRigidbody3D other, byte selfShapeID, byte otherShapeID)
         {
+            ParallelCollider3D selfCollider = FindCollider(selfShapeID);
+
+            if (selfCollider == null)
+            {
+                return;
+            }
+
+            if (!selfCollider.isTrigger)
+            {
+                return;
+            }
+
+            ParallelCollider3D otherCollider = FindCollider(otherShapeID);
+
             foreach (IParallelTrigger3D trigger in parallelTriggers)
             {
-                trigger.OnParallelTriggerStay3D(other as ParallelRigidbody3D);
+                trigger.OnParallelTriggerStay3D(other as ParallelRigidbody3D, otherCollider);
             }
         }
 
-        public void OnParallelTriggerExit(IParallelRigidbody3D other)
+        public void OnParallelTriggerExit(IParallelRigidbody3D other, byte selfShapeID, byte otherShapeID)
         {
+            ParallelCollider3D selfCollider = FindCollider(selfShapeID);
+
+            if (selfCollider == null)
+            {
+                return;
+            }
+
+            if (!selfCollider.isTrigger)
+            {
+                return;
+            }
+
+            ParallelCollider3D otherCollider = FindCollider(otherShapeID);
+
             foreach (IParallelTrigger3D trigger in parallelTriggers)
             {
-                trigger.OnParallelTriggerExit3D(other as ParallelRigidbody3D);
+                trigger.OnParallelTriggerExit3D(other as ParallelRigidbody3D, otherCollider);
             }
         }
 
@@ -428,6 +483,22 @@ namespace Parallel
             }
         }
 
+        void OnEnable()
+        {
+            Parallel3D.SetEnabled(_body3D, true);
+        }
+
+        void OnDisable()
+        {
+            Parallel3D.SetEnabled(_body3D, false);
+        }
+
+        void OnDestroy()
+        {
+            Parallel3D.DestoryBody(_body3D, this);
+        }
+
+        // Path finding
         public void AddToWorldForPathFinding()
         {
             if(_bodyType != BodyType.Static)

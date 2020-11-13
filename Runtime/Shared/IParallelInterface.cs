@@ -30,11 +30,13 @@ namespace Parallel
         void OnParallelCollisionStay(PCollision3D collision);
         void OnParallelCollisionExit(PCollision3D collision);
 
-        void OnParallelTriggerEnter(IParallelRigidbody3D other);
-        void OnParallelTriggerStay(IParallelRigidbody3D other);
-        void OnParallelTriggerExit(IParallelRigidbody3D other);
+        void OnParallelTriggerEnter(IParallelRigidbody3D other, byte selfShapeID, byte otherShapeID);
+        void OnParallelTriggerStay(IParallelRigidbody3D other, byte selfShapeID, byte otherShapeID);
+        void OnParallelTriggerExit(IParallelRigidbody3D other, byte selfShapeID, byte otherShapeID);
         void OnTransformUpdated();
         void Step(Fix64 timeStep);
+
+        ParallelCollider3D FindCollider(byte ShapeID);
     }
 
     //public interface IParallelCollision2D

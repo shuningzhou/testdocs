@@ -9,6 +9,9 @@ namespace Parallel
         protected PFixture3D _fixture;
         protected ParallelTransform _pTransform;
 
+        [SerializeField]
+        internal int _shapeID;
+
         public bool isTrigger = false;
         public bool createUnityPhysicsCollider = false;
         
@@ -63,6 +66,7 @@ namespace Parallel
         public void ReceiveFixture(PFixture3D fixture)
         {
             _fixture = fixture;
+            _shapeID = fixture.shapeID;
             _shape = Parallel3D.GetShapeOfFixture(fixture);
             Parallel3D.SetLayer(fixture, gameObject.layer, false);
             Parallel3D.SetFixtureProperties(fixture, isTrigger, _friction, _bounciness);
