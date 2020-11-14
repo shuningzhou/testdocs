@@ -318,7 +318,7 @@ namespace Parallel
                     Parallel2D.UpdateBodyTransForm(_rigidbody2D._body2D, (Fix64Vec2)_localPosition, Fix64.DegToRad(_internalLocalEularAngles.z));
                 }
 
-                if(_rigidbody3D != null)
+                if(_rigidbody3D != null && _rigidbody3D.enabled)
                 {
                     Parallel3D.UpdateBodyTransForm(_rigidbody3D._body3D, _localPosition, _internalLocalRotation);
                 }
