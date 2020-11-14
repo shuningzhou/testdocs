@@ -228,9 +228,10 @@ namespace Parallel.EditorTools
 
                 var dstTime = Directory.GetCreationTime(dstFile);
                 var srcTime = Directory.GetCreationTime(path);
-                //Debug.Log($"dstTime={dstTime}");
-                //Debug.Log($"srcTime={srcTime}");
-                if(srcTime > dstTime || mustUpdate)
+                Debug.Log($"dstTime={dstTime}");
+                Debug.Log($"srcTime={srcTime}");
+                Debug.Log($"mustUpdate={mustUpdate}");
+                if (srcTime > dstTime || mustUpdate)
                 {
                     Copy(path, dstFile);
                 }
