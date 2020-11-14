@@ -875,7 +875,7 @@ namespace Parallel
         {
             if (!initialized)
             {
-                Initialize();
+                return;
             }
 
             if(bodySortedList.ContainsKey(body.BodyID))
@@ -933,7 +933,7 @@ namespace Parallel
         {
             if (!initialized)
             {
-                Initialize();
+                return;
             }
 
             NativeParallel3D.SetEnabled(body.IntPointer, enabled);
@@ -943,7 +943,7 @@ namespace Parallel
         {
             if (!initialized)
             {
-                Initialize();
+                return false;
             }
 
             return NativeParallel3D.IsEnabled(body.IntPointer);
