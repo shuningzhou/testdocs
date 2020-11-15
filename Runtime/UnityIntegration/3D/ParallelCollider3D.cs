@@ -60,7 +60,7 @@ namespace Parallel
             }
         }
 
-        protected abstract void UpdateShape(GameObject root);
+        public abstract void UpdateShape(GameObject root);
         public abstract PShape3D CreateShape(GameObject root);
 
         public void ReceiveFixture(PFixture3D fixture)

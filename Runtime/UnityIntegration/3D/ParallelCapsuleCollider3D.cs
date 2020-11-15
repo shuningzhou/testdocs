@@ -126,7 +126,7 @@ namespace Parallel
             return maxScale * _height;
         }
 
-        protected override void UpdateShape(GameObject root)
+        public override void UpdateShape(GameObject root)
         {
             Fix64 h = CalculateHeight();
             Fix64 r = CalculateRadius();

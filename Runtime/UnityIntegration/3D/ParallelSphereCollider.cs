@@ -47,7 +47,7 @@ namespace Parallel
             return result;
         }
 
-        protected override void UpdateShape(GameObject root)
+        public override void UpdateShape(GameObject root)
         {
             Fix64 r = CalculateRadius();
 

@@ -173,7 +173,7 @@ namespace Parallel
             BuildConvexData();
         }
 
-        protected override void UpdateShape(GameObject root)
+        public override void UpdateShape(GameObject root)
         {
             Fix64Vec3 s = CalculateSize();
             if (s == Fix64Vec3.zero)
