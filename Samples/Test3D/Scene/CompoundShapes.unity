@@ -259,7 +259,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158f2159df412754c8c79e61eaafcfc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -280,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  Interpolation: 1
   _localPosition:
     RawX: -975175
     RawY: 734003
@@ -378,7 +380,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158f2159df412754c8c79e61eaafcfc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -436,7 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  Interpolation: 1
   _localPosition:
     RawX: 0
     RawY: 3145728
@@ -649,7 +653,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca4c02e8998dc140a949659bb517cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -679,7 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  Interpolation: 1
   _localPosition:
     RawX: -660602
     RawY: 6889144
@@ -824,7 +830,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -1259,7 +1267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  Interpolation: 1
   _localPosition:
     RawX: 4928307
     RawY: 2527068
@@ -1422,7 +1430,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81caa2a3210dfdf4fac9a331b662873b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -1441,7 +1451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  Interpolation: 1
   _localPosition:
     RawX: 1782579
     RawY: 716177
@@ -1641,7 +1651,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -2438,7 +2450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  Interpolation: 1
   _localPosition:
     RawX: 0
     RawY: 492830
@@ -2502,7 +2514,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -2747,7 +2761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  Interpolation: 1
   _localPosition:
     RawX: 1218445
     RawY: 0
@@ -2845,7 +2859,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158f2159df412754c8c79e61eaafcfc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -2903,7 +2919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  Interpolation: 1
   _localPosition:
     RawX: -9898557
     RawY: 2097152
@@ -3130,7 +3146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca4c02e8998dc140a949659bb517cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -3160,7 +3178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  Interpolation: 1
   _localPosition:
     RawX: -660602
     RawY: 4141875

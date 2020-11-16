@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using ParallelUnity;
+﻿using UnityEngine;
 using Parallel;
 
 public class Spawner : MonoBehaviour

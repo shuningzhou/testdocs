@@ -6,12 +6,45 @@ namespace Parallel
 {
     public static class Fix64Math
     {
+        public static Fix64 pi { get { return Fix64.FromRaw(FixedConstants64.PI); } }
+        public static Fix64 halfPi { get { return Fix64.FromRaw(FixedConstants64.PI_HALF); } }
+
+        public static Fix64 RadToDegree { get { return Fix64.FromRaw(FixedConstants64.RAD_TO_DEGREE); } }
+        public static Fix64 DegreeToRad { get { return Fix64.FromRaw(FixedConstants64.DEGREE_TO_RAD); } }
+
+        //rounding
+        public static int Ceiling(Fix64 value)
+        {
+            return (int)((value.Raw + (FixedConstants64.ONE - 1)) >> FixedConstants64.SHIFT);
+        }
+
+        public static int Floor(Fix64 value)
+        {
+            return (int)(value.Raw >> FixedConstants64.SHIFT);
+        }
+
         //Fix64
         public static Fix64 Sqrt(Fix64 value)
         {
             long sqrtValue = NativeFixedMath.Sqrt64(value.Raw);
             return Fix64.FromRaw(sqrtValue);
         }
+
+        public static Fix64 Div2(Fix64 a) { return Fix64.FromRaw(a.Raw >> 1); }
+        public static Fix64 Abs(Fix64 a) { return Fix64.FromRaw(NativeFixedMath.Abs64(a.Raw)); }
+        public static Fix64 Sign(Fix64 a) { return Fix64.FromRaw(NativeFixedMath.Sign64(a.Raw)); }
+
+        public static Fix64 Sin(Fix64 a) { return Fix64.FromRaw(NativeFixedMath.Sin64(a.Raw)); }
+        public static Fix64 Asin(Fix64 a) { return Fix64.FromRaw(NativeFixedMath.Asin64(a.Raw)); }
+
+        public static Fix64 Cos(Fix64 a) { return Fix64.FromRaw(NativeFixedMath.Cos64(a.Raw)); }
+        public static Fix64 ACos(Fix64 a) { return Fix64.FromRaw(NativeFixedMath.Acos64(a.Raw)); }
+
+        public static Fix64 Tan(Fix64 a) { return Fix64.FromRaw(NativeFixedMath.Tan64(a.Raw)); }
+        public static Fix64 Atan(Fix64 a) { return Fix64.FromRaw(NativeFixedMath.Atan64(a.Raw)); }
+        public static Fix64 Atan2(Fix64 a, Fix64 b) { return Fix64.FromRaw(NativeFixedMath.Atan264(a.Raw, b.Raw)); }
+
+        public static Fix64 Pow(Fix64 a, Fix64 b) { return Fix64.FromRaw(NativeFixedMath.Pow64(a.Raw, b.Raw)); }
 
         public static Fix64 Max(Fix64 a, Fix64 b)
         {
@@ -58,7 +91,7 @@ namespace Parallel
             {
                 angle = Fix64.FromDivision(90, 1);
             }
-            d = d * Fix64.Cos(angle * Fix64.DegreeToRad);
+            d = d * Cos(angle * DegreeToRad);
 
             return a + ba.normalized * d;
         }

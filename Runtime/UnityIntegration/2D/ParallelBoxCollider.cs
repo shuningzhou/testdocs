@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using ParallelUnity.DebugTools;
 
 namespace Parallel
 {
@@ -27,7 +26,7 @@ namespace Parallel
         void OnDrawGizmosSelected()
         {
             Fix64Vec2 s = CalculateSize();
-            Gizmos.color = DebugSettings.ColliderOutlineColor;
+            Gizmos.color = ParallelUtil.ColliderOutlineColor;
             Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
             Gizmos.DrawWireCube(Vector3.zero, (Vector2)s);
             Gizmos.matrix = Matrix4x4.identity;

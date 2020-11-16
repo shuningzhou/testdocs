@@ -91,7 +91,7 @@ namespace Parallel
 
             Fix64 sinr_cosp = (Fix64)2 * (w * x + y * z);
             Fix64 cosr_cosp = (Fix64)1 - (Fix64)2 * (x * x + y * y);
-            return Fix64.Atan2(sinr_cosp, cosr_cosp);
+            return Fix64Math.Atan2(sinr_cosp, cosr_cosp);
         }
 
         public Fix64 GetYAngle()
@@ -107,7 +107,7 @@ namespace Parallel
             //    return sign * Fix64.halfPi;
             //}
 
-            return Fix64.Asin(sinp);
+            return Fix64Math.Asin(sinp);
         }
 
         public Fix64 GetZAngle()
@@ -117,7 +117,7 @@ namespace Parallel
             //return Fix64.Atan2(r11, r12);
             Fix64 siny_cosp = (Fix64)2 * (w * z + x * y);
             Fix64 cosy_cosp = (Fix64)1 - (Fix64)2 * (y * y + z * z);
-            return Fix64.Atan2(siny_cosp, cosy_cosp);
+            return Fix64Math.Atan2(siny_cosp, cosy_cosp);
         }
 
         public Fix64Vec3 EulerAngles()
@@ -145,9 +145,9 @@ namespace Parallel
 
             Fix64 cutoff = Fix64.FromDivision(499, 1000) * unit;
 
-            _z = Fix64.Atan2((Fix64)2 * y * w - (Fix64)2 * x * z, sqx - sqy - sqz + sqw);
-            _y = Fix64.Asin((Fix64)2 * test / unit);
-            _x = Fix64.Atan2((Fix64)2 * x * w - (Fix64)2 * y * z, -sqx + sqy - sqz + sqw);
+            _z = Fix64Math.Atan2((Fix64)2 * y * w - (Fix64)2 * x * z, sqx - sqy - sqz + sqw);
+            _y = Fix64Math.Asin((Fix64)2 * test / unit);
+            _x = Fix64Math.Atan2((Fix64)2 * x * w - (Fix64)2 * y * z, -sqx + sqy - sqz + sqw);
 
             //if (test >= cutoff)
             //{ // singularity at north pole
@@ -205,17 +205,17 @@ namespace Parallel
 
             //return new Fix64Quat(x, y, z, w);
 
-            Fix64 half_roll = Fix64.Div2(roll_z);
-            Fix64 sr = Fix64.Sin(half_roll);
-            Fix64 cr = Fix64.Cos(half_roll);
+            Fix64 half_roll = Fix64Math.Div2(roll_z);
+            Fix64 sr = Fix64Math.Sin(half_roll);
+            Fix64 cr = Fix64Math.Cos(half_roll);
 
-            Fix64 half_pitch = Fix64.Div2(pitch_x);
-            Fix64 sp = Fix64.Sin(half_pitch);
-            Fix64 cp = Fix64.Cos(half_pitch);
+            Fix64 half_pitch = Fix64Math.Div2(pitch_x);
+            Fix64 sp = Fix64Math.Sin(half_pitch);
+            Fix64 cp = Fix64Math.Cos(half_pitch);
 
-            Fix64 half_yaw = Fix64.Div2(yaw_y);
-            Fix64 sy = Fix64.Sin(half_yaw);
-            Fix64 cy = Fix64.Cos(half_yaw);
+            Fix64 half_yaw = Fix64Math.Div2(yaw_y);
+            Fix64 sy = Fix64Math.Sin(half_yaw);
+            Fix64 cy = Fix64Math.Cos(half_yaw);
 
             return new Fix64Quat(
                 cy * sp * cr + sy * cp * sr,

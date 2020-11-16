@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using ParallelUnity.DebugTools;
 using System;
 
 namespace Parallel
@@ -63,14 +62,13 @@ namespace Parallel
 
         void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.cyan;
+            Gizmos.color = ParallelUtil.ColliderOutlineColor;
 
             foreach (Vector3 v in verts)
             {
                 Gizmos.DrawWireSphere(transform.TransformPoint(v.x, v.y, v.z), 0.01f);
             }
 
-            Gizmos.color = Color.red;
             foreach (Fix64Vec3 fv in meshData.vertices)
             {
                 Vector3 v = (Vector3)fv;

@@ -156,7 +156,7 @@ namespace Parallel
             Fix64 dot = Fix64Vec2.Dot(a.normalized, b.normalized);
             Fix64 clamped = Fix64Math.Clamp(dot, -Fix64.one, Fix64.one);
             Fix64 rad = Fix64.FromRaw(NativeFixedMath.Acos64(clamped.Raw));
-            return rad * Fix64.RadToDegree;
+            return rad * Fix64Math.RadToDegree;
         }
 
         public static Fix64Vec2 Intersection(Fix64Vec2 a1, Fix64Vec2 a2, Fix64Vec2 b1, Fix64Vec2 b2, out bool found)

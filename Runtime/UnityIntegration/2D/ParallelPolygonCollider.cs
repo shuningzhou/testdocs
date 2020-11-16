@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using ParallelUnity.DebugTools;
 
 namespace Parallel
 {
@@ -68,7 +67,7 @@ namespace Parallel
 
         void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = ParallelUtil.ColliderOutlineColor;
             foreach (Fix64Vec2 v in convexVerts)
             {
                 Vector2 vert = (Vector2)v;

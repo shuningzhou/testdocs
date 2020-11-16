@@ -33,11 +33,6 @@ namespace Parallel
         public static Fix64 NegOne  { get { return FromRaw(-1L << FixedConstants64.SHIFT); } }
         public static Fix64 half { get { return FromRaw(FixedConstants64.HALF); } }
         public static Fix64 quarter { get { return FromRaw(FixedConstants64.QUARTER); } }
-        public static Fix64 pi { get { return FromRaw(FixedConstants64.PI); } }
-        public static Fix64 halfPi { get { return FromRaw(FixedConstants64.PI_HALF); } }
-
-        public static Fix64 RadToDegree { get { return FromRaw(FixedConstants64.RAD_TO_DEGREE); } }
-        public static Fix64 DegreeToRad { get { return FromRaw(FixedConstants64.DEGREE_TO_RAD); } }
 
         public long Raw;
 
@@ -74,17 +69,6 @@ namespace Parallel
         public bool Equals(Fix64 other)
         {
             return (Raw == other.Raw);
-        }
-
-        //rounding
-        public static int Ceiling(Fix64 value)
-        {
-            return (int)((value.Raw + (FixedConstants64.ONE - 1)) >> FixedConstants64.SHIFT);
-        }
-
-        public static int Floor(Fix64 value)
-        {
-            return (int)(value.Raw >> FixedConstants64.SHIFT);
         }
         
         //casting
@@ -135,20 +119,8 @@ namespace Parallel
         public static Fix64 operator +(Fix64 a, Fix64 b) { return FromRaw(a.Raw + b.Raw); }
         public static Fix64 operator -(Fix64 a, Fix64 b) { return FromRaw(a.Raw - b.Raw); }
         public static Fix64 operator /(Fix64 a, Fix64 b) { return FromRaw(NativeFixedMath.Div64(a.Raw, b.Raw)); }
-
-        public static Fix64 operator *(Fix64 a, Fix64 b)
-        {
-            return FromRaw(NativeFixedMath.Mul64(a.Raw, b.Raw));
-        }
-
-        public static Fix64 Div2(Fix64 a) { return FromRaw(a.Raw >> 1); }
-        public static Fix64 Abs(Fix64 a) { return FromRaw(NativeFixedMath.Abs64(a.Raw)); }
-        public static Fix64 Sign(Fix64 a) { return FromRaw(NativeFixedMath.Sign64(a.Raw)); }
-
-        public static Fix64 Sin(Fix64 a) { return FromRaw(NativeFixedMath.Sin64(a.Raw)); }
-        public static Fix64 Cos(Fix64 a) { return FromRaw(NativeFixedMath.Cos64(a.Raw)); }
-        public static Fix64 Atan2(Fix64 a, Fix64 b) { return FromRaw(NativeFixedMath.Atan264(a.Raw, b.Raw)); }
-        public static Fix64 Asin(Fix64 a) { return FromRaw(NativeFixedMath.Asin64(a.Raw)); }
+        public static Fix64 operator *(Fix64 a, Fix64 b) { return FromRaw(NativeFixedMath.Mul64(a.Raw, b.Raw)); }
+        public static Fix64 operator %(Fix64 a, Fix64 b) { return FromRaw(NativeFixedMath.Mod64(a.Raw, b.Raw)); }
 
         public override string ToString()
         {

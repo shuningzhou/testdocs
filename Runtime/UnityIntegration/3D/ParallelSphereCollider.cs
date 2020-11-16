@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using ParallelUnity.DebugTools;
 
 namespace Parallel
 {
@@ -28,10 +27,10 @@ namespace Parallel
 
             if (r > Fix64.zero)
             {
-                Gizmos.color = DebugSettings.ColliderOutlineColor;
+                Gizmos.color = ParallelUtil.ColliderOutlineColor;
                 Gizmos.matrix = Matrix4x4.TRS(transform.position, Quaternion.identity, new Vector3(1, 1, 1));
-                DebugDraw.DrawHemiSphere(Vector3.zero, (float)r, Vector3.up);
-                DebugDraw.DrawHemiSphere(Vector3.zero, (float)r, Vector3.down);
+                ParallelUtil.DrawHemiSphere(Vector3.zero, (float)r, Vector3.up);
+                ParallelUtil.DrawHemiSphere(Vector3.zero, (float)r, Vector3.down);
                 Gizmos.matrix = Matrix4x4.identity;
             }
             else

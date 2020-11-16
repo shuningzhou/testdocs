@@ -220,7 +220,7 @@ namespace Parallel
             Fix64 dot = Fix64Vec3.Dot(a.normalized, b.normalized);
             Fix64 clamped = Fix64Math.Clamp(dot, -Fix64.one, Fix64.one);
             Fix64 rad = Fix64.FromRaw(NativeFixedMath.Acos64(clamped.Raw));
-            return rad * Fix64.RadToDegree;
+            return rad * Fix64Math.RadToDegree;
         }
 
         public override bool Equals(object obj)

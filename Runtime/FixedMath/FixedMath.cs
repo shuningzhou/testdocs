@@ -33,6 +33,24 @@ namespace Parallel
         internal static extern long Div64(long a, long b);
 
         [DllImport(PLUGIN_NAME)]
+        internal static extern long Pow64(long a, long b);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern long Log264(long a);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern long Log64(long a);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern long Mod64(long a, long b);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern long Tan64(long a);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern long Atan64(long a);
+
+        [DllImport(PLUGIN_NAME)]
         internal static extern long Atan264(long a, long b);
 
         [DllImport(PLUGIN_NAME)]

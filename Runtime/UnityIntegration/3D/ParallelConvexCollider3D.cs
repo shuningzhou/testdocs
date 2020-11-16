@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using ParallelUnity.DebugTools;
 using System;
 
 namespace Parallel
@@ -114,7 +113,7 @@ namespace Parallel
 
         void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = ParallelUtil.ColliderOutlineColor;
 
             for (UInt32 i = 0; i < convexData.edgeCount; i += 2)
             {
@@ -127,8 +126,6 @@ namespace Parallel
                 Gizmos.DrawLine(transform.TransformPoint(v1.x, v1.y, v1.z), transform.TransformPoint(v2.x, v2.y, v2.z));
             }
 
-
-            Gizmos.color = Color.yellow;
             foreach (Fix64Vec3 fv in convexData.vertices)
             {
                 Vector3 v = (Vector3)fv;

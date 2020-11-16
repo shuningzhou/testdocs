@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using ParallelUnity.DebugTools;
 
 namespace Parallel
 {
@@ -32,7 +31,7 @@ namespace Parallel
                 Debug.LogError("Invalid Size");
                 return;
             }
-            Gizmos.color = DebugSettings.ColliderOutlineColor;
+            Gizmos.color = ParallelUtil.ColliderOutlineColor;
             Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
             Gizmos.DrawWireSphere(Vector3.zero, (float)r);
             Gizmos.matrix = Matrix4x4.identity;

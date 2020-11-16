@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using ParallelUnity.DebugTools;
 
 namespace Parallel
 {
@@ -41,15 +40,15 @@ namespace Parallel
                 return;
             }
 
-            Gizmos.color = DebugSettings.ColliderOutlineColor;
-            Vector3 point1 = PMath.TransformPointUnscaled(transform, (Vector3)p1);
-            Vector3 point2 = PMath.TransformPointUnscaled(transform, (Vector3)p2);
+            Gizmos.color = ParallelUtil.ColliderOutlineColor;
+            Vector3 point1 = ParallelUtil.TransformPointUnscaled(transform, (Vector3)p1);
+            Vector3 point2 = ParallelUtil.TransformPointUnscaled(transform, (Vector3)p2);
 
             Vector3 origin = (point1 - point2) / 2 + point1;
             Gizmos.matrix = Matrix4x4.TRS(origin, Quaternion.identity, new Vector3((float)r, (float)r, (float)r));
-            DebugDraw.DrawHemispheresOfCapsule(point1, point2, (float)r);
+            ParallelUtil.DrawHemispheresOfCapsule(point1, point2, (float)r);
             Gizmos.matrix = Matrix4x4.identity;
-            DebugDraw.DrawLineConnectingHS(point1, point2, (float)r);
+            ParallelUtil.DrawLineConnectingHS(point1, point2, (float)r);
             Gizmos.matrix = Matrix4x4.identity;
         }
 
