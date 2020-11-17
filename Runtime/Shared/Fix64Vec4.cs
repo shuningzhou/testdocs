@@ -39,6 +39,13 @@ namespace Parallel
             RawW = w.Raw;
         }
 
+
+        public static explicit operator Vector4(Fix64Vec4 value)
+        {
+            return new Vector4((float)value.x, (float)value.y, (float)value.z, (float)value.w);
+        }
+
+
         public static Fix64Vec4 operator -(Fix64Vec4 a)
         {
             return Make(-a.RawX, -a.RawY, -a.RawZ, -a.RawW);

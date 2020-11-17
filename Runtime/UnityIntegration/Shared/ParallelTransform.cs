@@ -105,25 +105,25 @@ namespace Parallel
             }
         }
 
-        Fix64Mat4x4 matrix
+        Fix64Matrix4X4 matrix
         {
             get
             {
-                Fix64Mat4x4 m = Fix64Mat4x4.FromTRS(_localPosition, _internalLocalRotation, _localScale);
+                Fix64Matrix4X4 m = Fix64Matrix4X4.TRS(_localPosition, _internalLocalRotation, _localScale);
                 return m;
             }
         }
 
-        Fix64Mat4x4 matrixUnscaled
+        Fix64Matrix4X4 matrixUnscaled
         {
             get
             {
-                Fix64Mat4x4 m = Fix64Mat4x4.FromTRS(_localPosition, _internalLocalRotation, Fix64Vec3.one);
+                Fix64Matrix4X4 m = Fix64Matrix4X4.TRS(_localPosition, _internalLocalRotation, Fix64Vec3.one);
                 return m;
             }
         }
 
-        Fix64Mat4x4 inverseMatrix
+        Fix64Matrix4X4 inverseMatrix
         {
             get
             {
@@ -131,7 +131,7 @@ namespace Parallel
                 Fix64Quat inverseRotation = Fix64Quat.Inverse(_internalLocalRotation);
                 Fix64Vec3 inverseScale = Fix64.one / _localScale;
 
-                Fix64Mat4x4 m = Fix64Mat4x4.FromTRS(inverseTranslation, inverseRotation, inverseScale);
+                Fix64Matrix4X4 m = Fix64Matrix4X4.TRS(inverseTranslation, inverseRotation, inverseScale);
                 return m;
             }
         }
@@ -146,7 +146,7 @@ namespace Parallel
         }
 
 
-        public Fix64Mat4x4 localToWorldMatrix
+        public Fix64Matrix4X4 localToWorldMatrix
         {
             get
             {
@@ -155,13 +155,13 @@ namespace Parallel
                     return matrix;
                 }
 
-                Fix64Mat4x4 parentLocalToWorld = parent.localToWorldMatrix;
-                Fix64Mat4x4 r = parentLocalToWorld * matrix;
+                Fix64Matrix4X4 parentLocalToWorld = parent.localToWorldMatrix;
+                Fix64Matrix4X4 r = parentLocalToWorld * matrix;
                 return r;
             }
         }
 
-        public Fix64Mat4x4 localToWorldMatrixUnscaled
+        public Fix64Matrix4X4 localToWorldMatrixUnscaled
         {
             get
             {
@@ -170,13 +170,13 @@ namespace Parallel
                     return matrixUnscaled;
                 }
 
-                Fix64Mat4x4 parentLocalToWorld = parent.localToWorldMatrixUnscaled;
-                Fix64Mat4x4 r = parentLocalToWorld * matrixUnscaled;
+                Fix64Matrix4X4 parentLocalToWorld = parent.localToWorldMatrixUnscaled;
+                Fix64Matrix4X4 r = parentLocalToWorld * matrixUnscaled;
                 return r;
             }
         }
 
-        public Fix64Mat4x4 worldToLocalMatrix
+        public Fix64Matrix4X4 worldToLocalMatrix
         {
             get
             {
@@ -185,8 +185,8 @@ namespace Parallel
                     return inverseMatrix;
                 }
 
-                Fix64Mat4x4 parentWorldToLocal = parent.worldToLocalMatrix;
-                Fix64Mat4x4 r = parentWorldToLocal * inverseMatrix;
+                Fix64Matrix4X4 parentWorldToLocal = parent.worldToLocalMatrix;
+                Fix64Matrix4X4 r = parentWorldToLocal * inverseMatrix;
                 return r;
             }
         }
@@ -254,7 +254,7 @@ namespace Parallel
                     return _localPosition;
                 }
 
-                Fix64Mat4x4 m = parent.localToWorldMatrix;
+                Fix64Matrix4X4 m = parent.localToWorldMatrix;
                 Fix64Vec3 p = m.MultiplyPoint3x4(_localPosition);
                 return p;
             }
@@ -266,7 +266,8 @@ namespace Parallel
                     return;
                 }
 
-                Fix64Mat4x4 m = parent.worldToLocalMatrix;
+                Fix64Matrix4X4 m = parent.worldToLocalMatrix;
+
                 Fix64Vec3 p = m.MultiplyPoint3x4(value);
 
                 localPosition = p;
@@ -473,14 +474,14 @@ namespace Parallel
         //Transforms position from local space to world space.
         public Fix64Vec3 TransformPoint(Fix64Vec3 position)
         {
-            Fix64Mat4x4 m = localToWorldMatrix;
+            Fix64Matrix4X4 m = localToWorldMatrix;
             Fix64Vec3 p = m.MultiplyPoint3x4(position);
             return p;
         }
 
         public Fix64Vec3 TransformPointUnscaled(Fix64Vec3 position)
         {
-            Fix64Mat4x4 m = localToWorldMatrixUnscaled;
+            Fix64Matrix4X4 m = localToWorldMatrixUnscaled;
             Fix64Vec3 p = m.MultiplyPoint3x4(position);
             return p;
         }
@@ -488,7 +489,7 @@ namespace Parallel
         //Transforms position from world space to local space.
         public Fix64Vec3 InverseTransformPoint(Fix64Vec3 position)
         {
-            Fix64Mat4x4 m = worldToLocalMatrix;
+            Fix64Matrix4X4 m = worldToLocalMatrix;
             Fix64Vec3 p = m.MultiplyPoint3x4(position);
             return p;
         }
@@ -496,14 +497,14 @@ namespace Parallel
         //Transforms direction from local space to world space.
         public Fix64Vec3 TransformDirection(Fix64Vec3 direction)
         {
-            Fix64Mat4x4 m = localToWorldMatrix;
+            Fix64Matrix4X4 m = localToWorldMatrix;
             Fix64Vec3 p = m.MultiplyVector(direction);
             return p;
         }
 
         public Fix64Vec3 TransformDirectionUnscaled(Fix64Vec3 direction)
         {
-            Fix64Mat4x4 m = localToWorldMatrixUnscaled;
+            Fix64Matrix4X4 m = localToWorldMatrixUnscaled;
             Fix64Vec3 p = m.MultiplyVector(direction);
             return p;
         }
@@ -511,7 +512,7 @@ namespace Parallel
         //Transforms direction from world space to local space.
         public Fix64Vec3 InverseTransfromDirction(Fix64Vec3 direction)
         {
-            Fix64Mat4x4 m = worldToLocalMatrix;
+            Fix64Matrix4X4 m = worldToLocalMatrix;
             Fix64Vec3 p = m.MultiplyVector(direction);
             return p;
         }

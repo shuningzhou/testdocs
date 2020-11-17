@@ -309,12 +309,14 @@ namespace Parallel
 
         public static Fix64Quat Inverse(Fix64Quat a)
         {
-            long inv_norm = NativeFixedMath.Rcp64(LengthSqr(a).Raw);
-            return Make(
-                -NativeFixedMath.Mul64(a.RawX, inv_norm),
-                -NativeFixedMath.Mul64(a.RawY, inv_norm),
-                -NativeFixedMath.Mul64(a.RawZ, inv_norm),
-                NativeFixedMath.Mul64(a.RawW, inv_norm));
+            Fix64 ls = a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w;
+            Fix64 invNorm = Fix64.one / ls;
+
+            return new Fix64Quat(
+                -a.x * invNorm,
+                -a.y * invNorm,
+                -a.z * invNorm,
+                a.w * invNorm);
         }
 
         public static Fix64Quat FromTwoVectors(Fix64Vec3 a, Fix64Vec3 b)
