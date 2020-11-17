@@ -145,26 +145,31 @@ namespace Parallel
 
         public Fix64Vec3 ViewportToWorldPoint(Fix64Vec3 point3D)
         {
+            if(point3D.z == Fix64.zero)
+            {
+                return _parallelTransform.position; 
+            }
+
             Fix64Matrix4X4 P = _projectionMatrix;
             Fix64Matrix4X4 V = _parallelTransform.worldToLocalMatrix;
             Fix64Matrix4X4 VP = P * V;
-
             // get projection W by Z
             Fix64Vec4 projW = P * new Fix64Vec4(Fix64.zero, Fix64.zero, point3D.z, Fix64.one);
-
             // restore point4
             Fix64Vec4 point4 = new Fix64Vec4(Fix64.one - (point3D.x * Fix64.two), Fix64.one - (point3D.y * Fix64.two), projW.z / projW.w, Fix64.one);
-
             Fix64Vec4 result4 = Fix64Matrix4X4.Inverse(VP) * point4;  // multiply 4 components
-
-            Fix64Vec3 resultInv = new Fix64Vec3(result4.x/result4.w, result4.y/result4.w, result4.z/result4.w);  // store 3 components of the resulting 4 components
+            Fix64Vec3 resultInv = new Fix64Vec3(result4.x / result4.w, result4.y / result4.w, result4.z / result4.w);  // store 3 components of the resulting 4 components
 
             return resultInv;
         }
 
-        public ParallelRay ViewpointToRay(Fix64Vec3 viewPoint)
+        public ParallelRay ViewportToRay(Fix64Vec3 viewportPoint)
         {
-            Fix64Vec3 worldPoint = ViewportToWorldPoint(viewPoint);
+            if(viewportPoint.z == Fix64.zero)
+            {
+                viewportPoint = new Fix64Vec3(viewportPoint.x, viewportPoint.y, nearClipPlane);
+            }
+            Fix64Vec3 worldPoint = ViewportToWorldPoint(viewportPoint);
             ParallelRay ray = new ParallelRay(worldPoint, worldPoint - _parallelTransform.position);
             return ray;
         }

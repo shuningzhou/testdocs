@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 1461325495}
   - component: {fileID: 1461325499}
   - component: {fileID: 1461325498}
+  - component: {fileID: 1461325500}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -264,7 +265,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.029999733
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -310,124 +311,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dda03c060b64cf1438632a9a2e16a07e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aspectRatio:
+  _aspect:
     Raw: 1864135
-  fieldOfView:
+  _fieldOfView:
     Raw: 62914560
-  nearClipPlane:
+  _nearClipPlane:
     Raw: 31457
-  farClipPlane:
+  _farClipPlane:
     Raw: 1048576000
-  projection:
-    e00: 0
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 0
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 0
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 0
-  unityMathProjection:
-    e00: 0
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 0
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 0
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 0
-  ourProjection:
-    e00: 0
-    e01: 0
-    e02: 0
-    e03: 0
-    e10: 0
-    e11: 0
-    e12: 0
-    e13: 0
-    e20: 0
-    e21: 0
-    e22: 0
-    e23: 0
-    e30: 0
-    e31: 0
-    e32: 0
-    e33: 0
-  fixProjection:
-    m00:
-      Raw: 0
-    m10:
-      Raw: 0
-    m20:
-      Raw: 0
-    m30:
-      Raw: 0
-    m01:
-      Raw: 0
-    m11:
-      Raw: 0
-    m21:
-      Raw: 0
-    m31:
-      Raw: 0
-    m02:
-      Raw: 0
-    m12:
-      Raw: 0
-    m22:
-      Raw: 0
-    m32:
-      Raw: 0
-    m03:
-      Raw: 0
-    m13:
-      Raw: 0
-    m23:
-      Raw: 0
-    m33:
-      Raw: 0
-  worldPointToTest:
-    RawX: 0
-    RawY: 0
-    RawZ: 0
-  worldPointToViewPoint: {x: 0, y: 0, z: 0}
-  ourWorldPointToViewPoint: {x: 0, y: 0, z: 0}
-  fixWorldPointToViewPoint:
-    RawX: 0
-    RawY: 0
-    RawZ: 0
-  mouseViewPoint: {x: 0, y: 0, z: 0}
-  mousePointInWorldSpace: {x: 0, y: 0, z: 0}
-  ourMousePointInWorldSpace: {x: 0, y: 0, z: 0}
-  fixMousePointInWorldSpace:
-    RawX: 0
-    RawY: 0
-    RawZ: 0
-  fixRay:
-    direction:
-      RawX: 0
-      RawY: 0
-      RawZ: 0
-    origin:
-      RawX: 0
-      RawY: 0
-      RawZ: 0
 --- !u!114 &1461325499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -458,3 +349,15 @@ MonoBehaviour:
     RawX: 1048576
     RawY: 1048576
     RawZ: 1048576
+--- !u!114 &1461325500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461325494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 447d68bb9d806e8459ae84358fd9c9c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
