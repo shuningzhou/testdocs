@@ -102,18 +102,24 @@ namespace Parallel
 
         Fix64Matrix4X4 CalculateFixedProjectionMatrix()
         {
-            //Fix64 rad = fieldOfView / Fix64.two * Fix64Math.DegreeToRad;
-            //Fix64 e = Fix64.one / Fix64Math.Tan(rad);
-            //Fix64 a = Fix64.one / aspectRatio;
-            //Fix64 n = nearClipPlane;
-            //Fix64 f = farClipPlane;
+            Fix64 rad = fieldOfView / Fix64.two * Fix64Math.DegreeToRad;
+            Fix64 e = Fix64.one / Fix64Math.Tan(rad);
+            Fix64 a = Fix64.one / _aspect;
+            Fix64 n = nearClipPlane;
+            Fix64 f = farClipPlane;
 
-            //Fix64Vec4 column0 = new Fix64Vec4(e * a, Fix64.zero, Fix64.zero, Fix64.zero);
-            //Fix64Vec4 column1 = new Fix64Vec4(Fix64.zero, e, Fix64.zero, Fix64.zero);
-            //Fix64Vec4 column2 = new Fix64Vec4(Fix64.zero, Fix64.zero, -(f + n) / (f - n), Fix64.NegOne);
-            //Fix64Vec4 column3 = new Fix64Vec4(Fix64.zero, Fix64.zero, -(Fix64.two * f * n) / (f - n), Fix64.zero);
+            Fix64Vec4 column0 = new Fix64Vec4(e * a, Fix64.zero, Fix64.zero, Fix64.zero);
+            Fix64Vec4 column1 = new Fix64Vec4(Fix64.zero, e, Fix64.zero, Fix64.zero);
+            Fix64Vec4 column2 = new Fix64Vec4(Fix64.zero, Fix64.zero, -(f + n) / (f - n), Fix64.NegOne);
+            Fix64Vec4 column3 = new Fix64Vec4(Fix64.zero, Fix64.zero, -(Fix64.two * f * n) / (f - n), Fix64.zero);
 
-            //return new Fix64Mat4x4(column0, column1, column2, column3);
+            Fix64Matrix4X4 result = Fix64Matrix4X4.zero;
+            result.SetColumn(0, column0);
+            result.SetColumn(1, column1);
+            result.SetColumn(2, column2);
+            result.SetColumn(3, column3);
+
+            return result;
 
             return Fix64Matrix4X4.Perspective(fieldOfView, aspect, nearClipPlane, farClipPlane);
         }
@@ -150,27 +156,46 @@ namespace Parallel
                 return _parallelTransform.position; 
             }
 
+            //Vector3 upoint3D = (Vector3)point3D;
+
             Fix64Matrix4X4 P = _projectionMatrix;
+            //Matrix4x4 up = _camera.projectionMatrix;
+            //Fix64Matrix4X4 iv = _parallelTransform.localToWorldMatrix;
             Fix64Matrix4X4 V = _parallelTransform.worldToLocalMatrix;
+            //Matrix4x4 uiv = transform.localToWorldMatrix;
+            //Matrix4x4 uv = transform.worldToLocalMatrix;
             Fix64Matrix4X4 VP = P * V;
+            //Matrix4x4 uvp = up * uv;
+
             // get projection W by Z
             Fix64Vec4 projW = P * new Fix64Vec4(Fix64.zero, Fix64.zero, point3D.z, Fix64.one);
+            //Vector4 uprojW = up * new Vector4(0, 0, upoint3D.z, 1);
+
+
             // restore point4
             Fix64Vec4 point4 = new Fix64Vec4(Fix64.one - (point3D.x * Fix64.two), Fix64.one - (point3D.y * Fix64.two), projW.z / projW.w, Fix64.one);
+            //Vector4 upoint4 = new Vector4(1.0f - (upoint3D.x * 2.0f), 1.0f - (upoint3D.y * 2.0f), uprojW.z / uprojW.w, 1);
+
             Fix64Vec4 result4 = Fix64Matrix4X4.Inverse(VP) * point4;  // multiply 4 components
+            //Vector4 uresult4 = uvp.inverse * upoint4;  // multiply 4 components
+
             Fix64Vec3 resultInv = new Fix64Vec3(result4.x / result4.w, result4.y / result4.w, result4.z / result4.w);  // store 3 components of the resulting 4 components
+            //Vector3 uresultInv = uresult4 / uresult4.w;  // store 3 components of the resulting 4 components
 
             return resultInv;
         }
 
-        public ParallelRay ViewportToRay(Fix64Vec3 viewportPoint)
+        public ParallelRay ViewportPointToRay(Fix64Vec3 viewportPoint)
         {
             if(viewportPoint.z == Fix64.zero)
             {
                 viewportPoint = new Fix64Vec3(viewportPoint.x, viewportPoint.y, nearClipPlane);
             }
+            //Vector3 uWorldPoint = _camera.ViewportToWorldPoint((Vector3)viewportPoint);
             Fix64Vec3 worldPoint = ViewportToWorldPoint(viewportPoint);
             ParallelRay ray = new ParallelRay(worldPoint, worldPoint - _parallelTransform.position);
+            //Ray uRay = _camera.ViewportPointToRay((Vector3)viewportPoint);
+            //Debug.Log(uRay);
             return ray;
         }
 

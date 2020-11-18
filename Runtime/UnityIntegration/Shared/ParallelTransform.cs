@@ -127,12 +127,14 @@ namespace Parallel
         {
             get
             {
-                Fix64Vec3 inverseTranslation = -_localPosition;
-                Fix64Quat inverseRotation = Fix64Quat.Inverse(_internalLocalRotation);
-                Fix64Vec3 inverseScale = Fix64.one / _localScale;
+                //Fix64Vec3 inverseTranslation = -_localPosition;
+                //Fix64Quat inverseRotation = Fix64Quat.Inverse(_internalLocalRotation);
+                //Fix64Vec3 inverseScale = Fix64.one / _localScale;
 
-                Fix64Matrix4X4 m = Fix64Matrix4X4.TRS(inverseTranslation, inverseRotation, inverseScale);
-                return m;
+                //Fix64Matrix4X4 m = Fix64Matrix4X4.TRS(inverseTranslation, inverseRotation, inverseScale);
+                //return m;
+
+                return Fix64Matrix4X4.Inverse(matrix);
             }
         }
 

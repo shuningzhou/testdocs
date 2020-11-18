@@ -18,8 +18,10 @@ public class CameraTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 viewportPoint = unityCamera.ScreenToViewportPoint(Input.mousePosition);
-        parallelCamera.ViewportToRay((Fix64Vec3)viewportPoint);
-
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 viewportPoint = unityCamera.ScreenToViewportPoint(Input.mousePosition);
+            parallelCamera.ViewportPointToRay((Fix64Vec3)viewportPoint);
+        }
     }
 }

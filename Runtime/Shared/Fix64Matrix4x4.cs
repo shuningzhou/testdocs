@@ -358,29 +358,29 @@ namespace Parallel
         {
             get
             {
-                return new Fix64Matrix4X4() { m00 = Fix64.one, m01 =Fix64.zero, m02 =Fix64.zero, m03 =Fix64.zero, m10 =Fix64.zero, m11 = Fix64.one, m12 =Fix64.zero, m13 =Fix64.zero, m20 =Fix64.zero, m21 =Fix64.zero, m22 = Fix64.one, m23 =Fix64.zero, m30 =Fix64.zero, m31 =Fix64.zero, m32 =Fix64.zero, m33 = Fix64.one };
+                return new Fix64Matrix4X4() { m00 = Fix64.one, m01 = Fix64.zero, m02 = Fix64.zero, m03 = Fix64.zero, m10 = Fix64.zero, m11 = Fix64.one, m12 = Fix64.zero, m13 = Fix64.zero, m20 = Fix64.zero, m21 = Fix64.zero, m22 = Fix64.one, m23 = Fix64.zero, m30 = Fix64.zero, m31 = Fix64.zero, m32 = Fix64.zero, m33 = Fix64.one };
             }
         }
 
         public static Fix64Matrix4X4 operator *(Fix64Matrix4X4 lhs, Fix64Matrix4X4 rhs)
         {
-            return new Fix64Matrix4X4() { 
-                m00 = (lhs.m00 * rhs.m00 + lhs.m01 * rhs.m10 + lhs.m02 * rhs.m20 + lhs.m03 * rhs.m30), 
-                m01 = (lhs.m00 * rhs.m01 + lhs.m01 * rhs.m11 + lhs.m02 * rhs.m21 + lhs.m03 * rhs.m31), 
-                m02 = (lhs.m00 * rhs.m02 + lhs.m01 * rhs.m12 + lhs.m02 * rhs.m22 + lhs.m03 * rhs.m32), 
-                m03 = (lhs.m00 * rhs.m03 + lhs.m01 * rhs.m13 + lhs.m02 * rhs.m23 + lhs.m03 * rhs.m33), 
-                m10 = (lhs.m10 * rhs.m00 + lhs.m11 * rhs.m10 + lhs.m12 * rhs.m20 + lhs.m13 * rhs.m30), 
-                m11 = (lhs.m10 * rhs.m01 + lhs.m11 * rhs.m11 + lhs.m12 * rhs.m21 + lhs.m13 * rhs.m31), 
-                m12 = (lhs.m10 * rhs.m02 + lhs.m11 * rhs.m12 + lhs.m12 * rhs.m22 + lhs.m13 * rhs.m32), 
-                m13 = (lhs.m10 * rhs.m03 + lhs.m11 * rhs.m13 + lhs.m12 * rhs.m23 + lhs.m13 * rhs.m33), 
-                m20 = (lhs.m20 * rhs.m00 + lhs.m21 * rhs.m10 + lhs.m22 * rhs.m20 + lhs.m23 * rhs.m30), 
-                m21 = (lhs.m20 * rhs.m01 + lhs.m21 * rhs.m11 + lhs.m22 * rhs.m21 + lhs.m23 * rhs.m31), 
-                m22 = (lhs.m20 * rhs.m02 + lhs.m21 * rhs.m12 + lhs.m22 * rhs.m22 + lhs.m23 * rhs.m32), 
-                m23 = (lhs.m20 * rhs.m03 + lhs.m21 * rhs.m13 + lhs.m22 * rhs.m23 + lhs.m23 * rhs.m33), 
-                m30 = (lhs.m30 * rhs.m00 + lhs.m31 * rhs.m10 + lhs.m32 * rhs.m20 + lhs.m33 * rhs.m30), 
-                m31 = (lhs.m30 * rhs.m01 + lhs.m31 * rhs.m11 + lhs.m32 * rhs.m21 + lhs.m33 * rhs.m31), 
-                m32 = (lhs.m30 * rhs.m02 + lhs.m31 * rhs.m12 + lhs.m32 * rhs.m22 + lhs.m33 * rhs.m32), 
-                m33 = (lhs.m30 * rhs.m03 + lhs.m31 * rhs.m13 + lhs.m32 * rhs.m23 + lhs.m33 * rhs.m33) 
+            return new Fix64Matrix4X4() {
+                m00 = (lhs.m00 * rhs.m00 + lhs.m01 * rhs.m10 + lhs.m02 * rhs.m20 + lhs.m03 * rhs.m30),
+                m01 = (lhs.m00 * rhs.m01 + lhs.m01 * rhs.m11 + lhs.m02 * rhs.m21 + lhs.m03 * rhs.m31),
+                m02 = (lhs.m00 * rhs.m02 + lhs.m01 * rhs.m12 + lhs.m02 * rhs.m22 + lhs.m03 * rhs.m32),
+                m03 = (lhs.m00 * rhs.m03 + lhs.m01 * rhs.m13 + lhs.m02 * rhs.m23 + lhs.m03 * rhs.m33),
+                m10 = (lhs.m10 * rhs.m00 + lhs.m11 * rhs.m10 + lhs.m12 * rhs.m20 + lhs.m13 * rhs.m30),
+                m11 = (lhs.m10 * rhs.m01 + lhs.m11 * rhs.m11 + lhs.m12 * rhs.m21 + lhs.m13 * rhs.m31),
+                m12 = (lhs.m10 * rhs.m02 + lhs.m11 * rhs.m12 + lhs.m12 * rhs.m22 + lhs.m13 * rhs.m32),
+                m13 = (lhs.m10 * rhs.m03 + lhs.m11 * rhs.m13 + lhs.m12 * rhs.m23 + lhs.m13 * rhs.m33),
+                m20 = (lhs.m20 * rhs.m00 + lhs.m21 * rhs.m10 + lhs.m22 * rhs.m20 + lhs.m23 * rhs.m30),
+                m21 = (lhs.m20 * rhs.m01 + lhs.m21 * rhs.m11 + lhs.m22 * rhs.m21 + lhs.m23 * rhs.m31),
+                m22 = (lhs.m20 * rhs.m02 + lhs.m21 * rhs.m12 + lhs.m22 * rhs.m22 + lhs.m23 * rhs.m32),
+                m23 = (lhs.m20 * rhs.m03 + lhs.m21 * rhs.m13 + lhs.m22 * rhs.m23 + lhs.m23 * rhs.m33),
+                m30 = (lhs.m30 * rhs.m00 + lhs.m31 * rhs.m10 + lhs.m32 * rhs.m20 + lhs.m33 * rhs.m30),
+                m31 = (lhs.m30 * rhs.m01 + lhs.m31 * rhs.m11 + lhs.m32 * rhs.m21 + lhs.m33 * rhs.m31),
+                m32 = (lhs.m30 * rhs.m02 + lhs.m31 * rhs.m12 + lhs.m32 * rhs.m22 + lhs.m33 * rhs.m32),
+                m33 = (lhs.m30 * rhs.m03 + lhs.m31 * rhs.m13 + lhs.m32 * rhs.m23 + lhs.m33 * rhs.m33)
             };
         }
 
@@ -394,15 +394,15 @@ namespace Parallel
             return vector4;
         }
 
-        
+
         public static Fix64Matrix4X4 Inverse(Fix64Matrix4X4 m)
         {
             Fix64Matrix4X4 result;
-            Invert(m, out result);
+            Invert1(m, out result);
 
             return result;
         }
-        
+
         public static Fix64Matrix4X4 Transpose(Fix64Matrix4X4 matrix)
         {
             Fix64Matrix4X4 result = Fix64Matrix4X4.zero;
@@ -426,8 +426,138 @@ namespace Parallel
 
             return result;
         }
-        
-        internal static bool Invert(Fix64Matrix4X4 matrix, out Fix64Matrix4X4 result)
+
+        internal static bool Invert1(Fix64Matrix4X4 m, out Fix64Matrix4X4 result)
+        {
+            Fix64Matrix4X4 inv = Fix64Matrix4X4.zero;
+
+            inv[0] = m[5]  * m[10] * m[15] - 
+                     m[5]  * m[11] * m[14] - 
+                     m[9]  * m[6]  * m[15] + 
+                     m[9]  * m[7]  * m[14] +
+                     m[13] * m[6]  * m[11] - 
+                     m[13] * m[7]  * m[10];
+
+            inv[4] = -m[4]  * m[10] * m[15] + 
+                      m[4]  * m[11] * m[14] + 
+                      m[8]  * m[6]  * m[15] - 
+                      m[8]  * m[7]  * m[14] - 
+                      m[12] * m[6]  * m[11] + 
+                      m[12] * m[7]  * m[10];
+
+            inv[8] = m[4]  * m[9] * m[15] - 
+                     m[4]  * m[11] * m[13] - 
+                     m[8]  * m[5] * m[15] + 
+                     m[8]  * m[7] * m[13] + 
+                     m[12] * m[5] * m[11] - 
+                     m[12] * m[7] * m[9];
+
+            inv[12] = -m[4]  * m[9] * m[14] + 
+                       m[4]  * m[10] * m[13] +
+                       m[8]  * m[5] * m[14] - 
+                       m[8]  * m[6] * m[13] - 
+                       m[12] * m[5] * m[10] + 
+                       m[12] * m[6] * m[9];
+
+            inv[1] = -m[1]  * m[10] * m[15] + 
+                      m[1]  * m[11] * m[14] + 
+                      m[9]  * m[2] * m[15] - 
+                      m[9]  * m[3] * m[14] - 
+                      m[13] * m[2] * m[11] + 
+                      m[13] * m[3] * m[10];
+
+            inv[5] = m[0]  * m[10] * m[15] - 
+                     m[0]  * m[11] * m[14] - 
+                     m[8]  * m[2] * m[15] + 
+                     m[8]  * m[3] * m[14] + 
+                     m[12] * m[2] * m[11] - 
+                     m[12] * m[3] * m[10];
+
+            inv[9] = -m[0]  * m[9] * m[15] + 
+                      m[0]  * m[11] * m[13] + 
+                      m[8]  * m[1] * m[15] - 
+                      m[8]  * m[3] * m[13] - 
+                      m[12] * m[1] * m[11] + 
+                      m[12] * m[3] * m[9];
+
+            inv[13] = m[0]  * m[9] * m[14] - 
+                      m[0]  * m[10] * m[13] - 
+                      m[8]  * m[1] * m[14] + 
+                      m[8]  * m[2] * m[13] + 
+                      m[12] * m[1] * m[10] - 
+                      m[12] * m[2] * m[9];
+
+            inv[2] = m[1]  * m[6] * m[15] - 
+                     m[1]  * m[7] * m[14] - 
+                     m[5]  * m[2] * m[15] + 
+                     m[5]  * m[3] * m[14] + 
+                     m[13] * m[2] * m[7] - 
+                     m[13] * m[3] * m[6];
+
+            inv[6] = -m[0]  * m[6] * m[15] + 
+                      m[0]  * m[7] * m[14] + 
+                      m[4]  * m[2] * m[15] - 
+                      m[4]  * m[3] * m[14] - 
+                      m[12] * m[2] * m[7] + 
+                      m[12] * m[3] * m[6];
+
+            inv[10] = m[0]  * m[5] * m[15] - 
+                      m[0]  * m[7] * m[13] - 
+                      m[4]  * m[1] * m[15] + 
+                      m[4]  * m[3] * m[13] + 
+                      m[12] * m[1] * m[7] - 
+                      m[12] * m[3] * m[5];
+
+            inv[14] = -m[0]  * m[5] * m[14] + 
+                       m[0]  * m[6] * m[13] + 
+                       m[4]  * m[1] * m[14] - 
+                       m[4]  * m[2] * m[13] - 
+                       m[12] * m[1] * m[6] + 
+                       m[12] * m[2] * m[5];
+
+            inv[3] = -m[1] * m[6] * m[11] + 
+                      m[1] * m[7] * m[10] + 
+                      m[5] * m[2] * m[11] - 
+                      m[5] * m[3] * m[10] - 
+                      m[9] * m[2] * m[7] + 
+                      m[9] * m[3] * m[6];
+
+            inv[7] = m[0] * m[6] * m[11] - 
+                     m[0] * m[7] * m[10] - 
+                     m[4] * m[2] * m[11] + 
+                     m[4] * m[3] * m[10] + 
+                     m[8] * m[2] * m[7] - 
+                     m[8] * m[3] * m[6];
+
+            inv[11] = -m[0] * m[5] * m[11] + 
+                       m[0] * m[7] * m[9] + 
+                       m[4] * m[1] * m[11] - 
+                       m[4] * m[3] * m[9] - 
+                       m[8] * m[1] * m[7] + 
+                       m[8] * m[3] * m[5];
+
+            inv[15] = m[0] * m[5] * m[10] - 
+                      m[0] * m[6] * m[9] - 
+                      m[4] * m[1] * m[10] + 
+                      m[4] * m[2] * m[9] + 
+                      m[8] * m[1] * m[6] - 
+                      m[8] * m[2] * m[5];
+
+            Fix64 det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+
+            result = Fix64Matrix4X4.zero;
+
+            if (det == Fix64.zero)
+                return false;
+
+            det = Fix64.one / det;
+
+            for (int i = 0; i< 16; i++)
+                result[i] = inv[i] * det;
+
+            return true;
+        }
+    internal static bool Invert(Fix64Matrix4X4 matrix, out Fix64Matrix4X4 result)
         {
             Fix64 a = matrix.M11, b = matrix.M12, c = matrix.M13, d = matrix.M14;
             Fix64 e = matrix.M21, f = matrix.M22, g = matrix.M23, h = matrix.M24;
