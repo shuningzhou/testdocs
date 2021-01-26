@@ -86,15 +86,6 @@ namespace Parallel
             set
             {
                 _bodyType = value;
-                Parallel3D.UpdateBodyProperties(
-                    _body3D, 
-                    (int)bodyType, 
-                    linearDamping, 
-                    angularDamping, 
-                    gravityScale, 
-                    fixedRotationX, 
-                    fixedRotationY, 
-                    fixedRotationZ);
             }
         }
 
@@ -107,15 +98,6 @@ namespace Parallel
             set
             {
                 _linearDamping = value;
-                Parallel3D.UpdateBodyProperties(
-                    _body3D, 
-                    (int)bodyType, 
-                    linearDamping, 
-                    angularDamping, 
-                    gravityScale, 
-                    fixedRotationX, 
-                    fixedRotationY, 
-                    fixedRotationZ);
             }
         }
 
@@ -128,15 +110,6 @@ namespace Parallel
             set
             {
                 _angularDamping = value;
-                Parallel3D.UpdateBodyProperties(
-                    _body3D, 
-                    (int)bodyType, 
-                    linearDamping, 
-                    angularDamping, 
-                    gravityScale, 
-                    fixedRotationX, 
-                    fixedRotationY, 
-                    fixedRotationZ);
             }
         }
 
@@ -149,15 +122,6 @@ namespace Parallel
             set
             {
                 _gravityScale = value;
-                Parallel3D.UpdateBodyProperties(
-                    _body3D, 
-                    (int)bodyType, 
-                    linearDamping, 
-                    angularDamping, 
-                    gravityScale, 
-                    fixedRotationX, 
-                    fixedRotationY, 
-                    fixedRotationZ);
             }
         }
 
@@ -170,15 +134,6 @@ namespace Parallel
             set
             {
                 _fixedRotationX = value;
-                Parallel3D.UpdateBodyProperties(
-                    _body3D, 
-                    (int)bodyType, 
-                    linearDamping, 
-                    angularDamping, 
-                    gravityScale, 
-                    fixedRotationX, 
-                    fixedRotationY, 
-                    fixedRotationZ);
             }
         }
 
@@ -191,15 +146,6 @@ namespace Parallel
             set
             {
                 _fixedRotationY = value;
-                Parallel3D.UpdateBodyProperties(
-                    _body3D, 
-                    (int)bodyType, 
-                    linearDamping, 
-                    angularDamping, 
-                    gravityScale, 
-                    fixedRotationX, 
-                    fixedRotationY, 
-                    fixedRotationZ);
             }
         }
 
@@ -212,16 +158,21 @@ namespace Parallel
             set
             {
                 _fixedRotationZ = value;
-                Parallel3D.UpdateBodyProperties(
-                    _body3D, 
-                    (int)bodyType, 
-                    linearDamping, 
-                    angularDamping, 
-                    gravityScale, 
-                    fixedRotationX, 
-                    fixedRotationY, 
-                    fixedRotationZ);
+
             }
+        }
+
+        public void UpdateBodyProperties()
+        {
+            Parallel3D.UpdateBodyProperties(
+                _body3D,
+                (int)bodyType,
+                linearDamping,
+                angularDamping,
+                gravityScale,
+                fixedRotationX,
+                fixedRotationY,
+                fixedRotationZ);
         }
 
         //============================== Velocity ==============================
@@ -432,7 +383,7 @@ namespace Parallel
             parallelCollisions = GetComponents<IParallelCollision3D>();
             parallelTriggers = GetComponents<IParallelTrigger3D>();
 
-            pTransform.ImportFromUnity();
+            //pTransform.ImportFromUnity();
 
             colliders = GetComponentsInChildren<ParallelCollider3D>();
 

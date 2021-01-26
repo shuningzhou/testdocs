@@ -269,54 +269,6 @@ namespace Parallel
             }
         }
 
-        public static void UpdateContacts()
-        {
-            NativeParallel3D.FindContacts(internalWorld.IntPointer);
-        }
-
-        public static void ExportEngineInternalState(PInternalState3D internalState)
-        {
-            internalState.contactCount = _contactCount;
-            Array.Copy(contactExports, internalState.contactExports, _contactCount);
-            Array.Copy(convexExports, internalState.convexExports, _contactCount);
-            Array.Copy(manifoldExports, internalState.manifoldExports, _contactCount * 3);
-        }
-
-        public static void PrepareExternalContactData()
-        {
-            NativeParallel3D.PrepareExternalContactData();
-        }
-
-        public static void AddExternalContactWarmStartData(PInternalState3D state)
-        {
-            for(int i = 0; i < state.contactCount; i++)
-            {
-                PContactExport3D export = state.contactExports[i];
-                int manifoldIndex = 3 * i;
-                PManifoldExport3D m1 = state.manifoldExports[manifoldIndex];
-                PManifoldExport3D m2 = state.manifoldExports[manifoldIndex + 1];
-                PManifoldExport3D m3 = state.manifoldExports[manifoldIndex + 2];
-
-                //NativeParallel3D.AddExternalContactWarmStartData(export.id, export.flag, (byte)export.manifoldCount, m1, m2, m3);
-            }
-        }
-
-        public static void PrepareExternalConvexCacheData()
-        {
-            NativeParallel3D.PrepareExternalConvexCacheData();
-        }
-        
-        public static void AddExternalConvexCache(PInternalState3D state)
-        {
-            //for (int i = 0; i < state.contactCount; i++)
-            //{
-            //    PContactExport3D export = state.contactExports[i];
-            //    PConvexCacheExport3D convexExport = state.convexExports[i];
-
-            //    NativeParallel3D.AddExternalConvexCacheData(export.id, convexExport);
-            //}
-        }
-
         public static void ReadCollisionLayerMatrix()
         {
             for (int i = 0; i < 32; i++)
@@ -351,10 +303,12 @@ namespace Parallel
             }
 
             //using (new SProfiler($"rigidBody"))
-            foreach(var pair in bodySortedList)
             {
-                PBody3D body = pair.Value;
-                body.ReadNative();
+                foreach (var pair in bodySortedList)
+                {
+                    PBody3D body = pair.Value;
+                    body.ReadNative();
+                }
             }
         }
 
@@ -459,7 +413,7 @@ namespace Parallel
         //3D
         static PWorld3D CreateWorld(Fix64Vec3 gravity, bool allowSleep, bool warmStart)
         {
-            IntPtr m_NativeObject = NativeParallel3D.CreateWorld(gravity, allowSleep, warmStart, OnContactEnterCallback, OnContactExitCallBack);
+            IntPtr m_NativeObject = NativeParallel3D.CreateWorld3D(gravity, allowSleep, warmStart, OnContactEnterCallback, OnContactExitCallBack);
             return new PWorld3D(m_NativeObject);
         }
 
@@ -470,23 +424,23 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.GetWorldSize(internalWorld.IntPointer, ref lower, ref uppder);
+            NativeParallel3D.GetWorldSize3D(internalWorld.IntPointer, ref lower, ref uppder);
         }
 
         static void DestroyWorld(PWorld3D world)
         {
-            NativeParallel3D.DestroyWorld(world.IntPointer);
+            NativeParallel3D.DestroyWorld3D(world.IntPointer);
         }
 
         public static PSnapshot3D Snapshot()
         {
-            IntPtr m_NativeObject = NativeParallel3D.Snapshot(internalWorld.IntPointer);
+            IntPtr m_NativeObject = NativeParallel3D.Snapshot3D(internalWorld.IntPointer);
             return new PSnapshot3D(m_NativeObject);
         }
 
         public static void Restore(PSnapshot3D snapshot)
         {
-            NativeParallel3D.Restore(internalWorld.IntPointer, snapshot.IntPointer);
+            NativeParallel3D.Restore3D(internalWorld.IntPointer, snapshot.IntPointer);
 
             foreach (var pair in bodySortedList)
             {
@@ -497,7 +451,7 @@ namespace Parallel
 
         public static void DestroySnapshot(PSnapshot3D snapshot)
         {
-            NativeParallel2D.DestroySnapshot(snapshot.IntPointer);
+            NativeParallel3D.DestroySnapshot3D(snapshot.IntPointer);
         }
 
         public static void Step(Fix64 time, int velocityIterations, int positionIterations)
@@ -515,7 +469,7 @@ namespace Parallel
 
                 //using (new SProfiler($"Physics"))
                 {
-                    NativeParallel3D.Step(internalWorld.IntPointer, time, velocityIterations, positionIterations);
+                    NativeParallel3D.Step3D(internalWorld.IntPointer, time, velocityIterations, positionIterations);
                 }
 
                 //using (new SProfiler($"Export"))
@@ -535,7 +489,7 @@ namespace Parallel
             }
 
             byte shapeID = 0;
-            IntPtr m_NativeObject = NativeParallel3D.AddFixtureToBody(body.IntPointer, shape.IntPointer, density, ref shapeID);
+            IntPtr m_NativeObject = NativeParallel3D.AddFixtureToBody3D(body.IntPointer, shape.IntPointer, density, ref shapeID);
             return new PFixture3D(shapeID, m_NativeObject);
         }
 
@@ -560,7 +514,7 @@ namespace Parallel
             //shift layer
             int shiftedLayer = 1 << layer;
 
-            NativeParallel3D.SetLayer(fixture.IntPointer, shiftedLayer, mask, refilter);
+            NativeParallel3D.SetLayer3D(fixture.IntPointer, shiftedLayer, mask, refilter);
         }
 
         public static void SetFixtureProperties(PFixture3D fixture, bool isTrigger, Fix64 friction, Fix64 bounciness)
@@ -570,7 +524,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.SetFixtureProperties(fixture.IntPointer, isTrigger, friction, bounciness);
+            NativeParallel3D.SetFixtureProperties3D(fixture.IntPointer, isTrigger, friction, bounciness);
         }
 
         //3D shapes
@@ -581,7 +535,7 @@ namespace Parallel
                 Initialize();
             }
 
-            IntPtr m_NativeObject = NativeParallel3D.CreateCube(x, y, z, center, rotation);
+            IntPtr m_NativeObject = NativeParallel3D.CreateCube3D(x, y, z, center, rotation);
             return new PShape3D(m_NativeObject);
         }
 
@@ -592,7 +546,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.UpdateCube(shape.IntPointer, fixture.IntPointer, x, y, z, center, rotation);
+            NativeParallel3D.UpdateCube3D(shape.IntPointer, fixture.IntPointer, x, y, z, center, rotation);
         }
 
         public static PShape3D CreateSphere(Fix64 radius, Fix64Vec3 center)
@@ -602,7 +556,7 @@ namespace Parallel
                 Initialize();
             }
 
-            IntPtr m_NativeObject = NativeParallel3D.CreateSphere(radius, center);
+            IntPtr m_NativeObject = NativeParallel3D.CreateSphere3D(radius, center);
             return new PShape3D(m_NativeObject);
         }
 
@@ -613,7 +567,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.UpdateSphere(shape.IntPointer, fixture.IntPointer, radius, center);
+            NativeParallel3D.UpdateSphere3D(shape.IntPointer, fixture.IntPointer, radius, center);
         }
 
         public static PShape3D CreateCapsule(Fix64Vec3 v1, Fix64Vec3 v2, Fix64 radius, Fix64Vec3 center, Fix64Quat rotation)
@@ -623,7 +577,7 @@ namespace Parallel
                 Initialize();
             }
 
-            IntPtr m_NativeObject = NativeParallel3D.CreateCapsule(v1, v2, radius, center, rotation);
+            IntPtr m_NativeObject = NativeParallel3D.CreateCapsule3D(v1, v2, radius, center, rotation);
             return new PShape3D(m_NativeObject);
         }
 
@@ -634,7 +588,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.UpdateCapsule(shape.IntPointer, fixture.IntPointer, v1, v2, radius, center, rotation);
+            NativeParallel3D.UpdateCapsule3D(shape.IntPointer, fixture.IntPointer, v1, v2, radius, center, rotation);
         }
 
         public static PShape3D CreatePolyhedron(ParallelQHullData parallelQHullData, Fix64Vec3 scale, Fix64Vec3 center, Fix64Quat rotation)
@@ -644,7 +598,7 @@ namespace Parallel
                 Initialize();
             }
 
-            IntPtr m_NativeObject = NativeParallel3D.CreateConvex(parallelQHullData.vertices, parallelQHullData.vertexCount, parallelQHullData.edges, parallelQHullData.edgeCount, parallelQHullData.faces, parallelQHullData.faceCount, parallelQHullData.planes, scale, center, rotation);
+            IntPtr m_NativeObject = NativeParallel3D.CreateConvex3D(parallelQHullData.vertices, parallelQHullData.vertexCount, parallelQHullData.edges, parallelQHullData.edgeCount, parallelQHullData.faces, parallelQHullData.faceCount, parallelQHullData.planes, scale, center, rotation);
             return new PShape3D(m_NativeObject);
         }
 
@@ -655,7 +609,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.UpdateConvex(shape.IntPointer, fixture.IntPointer, scale);
+            NativeParallel3D.UpdateConvex3D(shape.IntPointer, fixture.IntPointer, scale);
         }
 
         public static PShape3D CreateMesh(ParallelMeshData parallelMeshData, Fix64Vec3 scale)
@@ -665,7 +619,7 @@ namespace Parallel
                 Initialize();
             }
 
-            IntPtr m_NativeObject = NativeParallel3D.CreateMesh(parallelMeshData.vertices, parallelMeshData.vertexCount, parallelMeshData.triangles, parallelMeshData.triangleCount, scale);
+            IntPtr m_NativeObject = NativeParallel3D.CreateMesh3D(parallelMeshData.vertices, parallelMeshData.vertexCount, parallelMeshData.triangles, parallelMeshData.triangleCount, scale);
 
             return new PShape3D(m_NativeObject);
         }
@@ -677,7 +631,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.UpdateMesh(shape.IntPointer, fixture.IntPointer, scale);
+            NativeParallel3D.UpdateMesh3D(shape.IntPointer, fixture.IntPointer, scale);
         }
 
         //3D body
@@ -700,7 +654,7 @@ namespace Parallel
 
             UInt16 bodyID = 0;
 
-            IntPtr m_NativeObject = NativeParallel3D.CreateBody(
+            IntPtr m_NativeObject = NativeParallel3D.CreateBody3D(
                 internalWorld.IntPointer, 
                 bodyType, 
                 position, 
@@ -728,7 +682,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.UpdateBodyTransform(body.IntPointer, pos, rot);
+            NativeParallel3D.UpdateBodyTransform3D(body.IntPointer, pos, rot);
         }
 
         public static void UpdateBodyTransformForRollback(PBody3D body, Fix64Vec3 pos, Fix64Quat rot, Fix64Quat rot0)
@@ -738,7 +692,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.UpdateBodyTransformForRollback(body.IntPointer, pos, rot, rot0);
+            NativeParallel3D.UpdateBodyTransformForRollback3D(body.IntPointer, pos, rot, rot0);
         }
 
         public static void UpdateBodyVelocity(PBody3D body, Fix64Vec3 linearVelocity, Fix64Vec3 angularVelocity)
@@ -748,7 +702,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.UpdateBodyVelocity(body.IntPointer, linearVelocity, angularVelocity);
+            NativeParallel3D.UpdateBodyVelocity3D(body.IntPointer, linearVelocity, angularVelocity);
         }
 
         public static void UpdateBodyProperties(PBody3D body,
@@ -765,7 +719,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.UpdateBodyProperties(
+            NativeParallel3D.UpdateBodyProperties3D(
                 body.IntPointer, 
                 bodyType, 
                 linearDamping, 
@@ -785,7 +739,7 @@ namespace Parallel
 
             Fix64Vec3 result = Fix64Vec3.zero;
 
-            NativeParallel3D.GetPointVelocity(body.IntPointer, point, ref result);
+            NativeParallel3D.GetPointVelocity3D(body.IntPointer, point, ref result);
 
             return result;
         }
@@ -798,7 +752,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.UpdateMassData(body.IntPointer, mass, centerOfMass);
+            NativeParallel3D.UpdateMassData3D(body.IntPointer, mass, centerOfMass);
         }
 
         public static void UpdateMass(PBody3D body, Fix64 mass)
@@ -808,7 +762,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.UpdateMass(body.IntPointer, mass);
+            NativeParallel3D.UpdateMass3D(body.IntPointer, mass);
         }
 
         public static void ApplyForce(PBody3D body, Fix64Vec3 point, Fix64Vec3 force)
@@ -818,7 +772,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.ApplyForce(body.IntPointer, point, force);
+            NativeParallel3D.ApplyForce3D(body.IntPointer, point, force);
         }
 
         public static void ApplyForceToCenter(PBody3D body, Fix64Vec3 force)
@@ -828,7 +782,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.ApplyForceToCenter(body.IntPointer, force);
+            NativeParallel3D.ApplyForceToCenter3D(body.IntPointer, force);
         }
 
         public static void ApplyTorque(PBody3D body, Fix64Vec3 torque)
@@ -838,7 +792,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.ApplyTorque(body.IntPointer, torque);
+            NativeParallel3D.ApplyTorque3D(body.IntPointer, torque);
         }
 
         public static void ApplyLinearImpulse(PBody3D body, Fix64Vec3 point, Fix64Vec3 impulse)
@@ -848,7 +802,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.ApplyLinearImpulse(body.IntPointer, point, impulse);
+            NativeParallel3D.ApplyLinearImpulse3D(body.IntPointer, point, impulse);
         }
 
         public static void ApplyLinearImpulseToCenter(PBody3D body, Fix64Vec3 impulse)
@@ -858,7 +812,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.ApplyLinearImpulseToCenter(body.IntPointer, impulse);
+            NativeParallel3D.ApplyLinearImpulseToCenter3D(body.IntPointer, impulse);
         }
 
         public static void ApplyAngularImpulse(PBody3D body, Fix64Vec3 impulse)
@@ -868,7 +822,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.ApplyAngularImpulse(body.IntPointer, impulse);
+            NativeParallel3D.ApplyAngularImpulse3D(body.IntPointer, impulse);
         }
 
         public static void DestoryBody(PBody3D body, IParallelRigidbody3D rigidBody3D)
@@ -883,7 +837,7 @@ namespace Parallel
                 bodySortedList.Remove(body.BodyID);
             }
 
-            NativeParallel3D.DestroyBody(internalWorld.IntPointer, body.IntPointer);
+            NativeParallel3D.DestroyBody3D(internalWorld.IntPointer, body.IntPointer);
         }
 
         public static void ReadNativeBody(PBody3D body)
@@ -893,10 +847,10 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.GetTransform(body.IntPointer, ref body.position, ref body.orientation, ref body.orientation0);
-            NativeParallel3D.GetVelocity(body.IntPointer, ref body.linearVelocity, ref body.angularVelocity);
-            body.awake = NativeParallel3D.IsAwake(body.IntPointer);
-            NativeParallel3D.GetSleepTime(body.IntPointer, ref body.sleepTime);
+            NativeParallel3D.GetTransform3D(body.IntPointer, ref body.position, ref body.orientation, ref body.orientation0);
+            NativeParallel3D.GetVelocity3D(body.IntPointer, ref body.linearVelocity, ref body.angularVelocity);
+            body.awake = NativeParallel3D.IsAwake3D(body.IntPointer);
+            NativeParallel3D.GetSleepTime3D(body.IntPointer, ref body.sleepTime);
         }
 
         public static void SetAwakeForRollback(PBody3D body, bool awake, Fix64 sleepTime)
@@ -906,7 +860,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.SetAwakeForRollback(body.IntPointer, awake, sleepTime);
+            NativeParallel3D.SetAwakeForRollback3D(body.IntPointer, awake, sleepTime);
         }
 
         public static void SetAwake(PBody3D body, bool awake)
@@ -916,7 +870,7 @@ namespace Parallel
                 Initialize();
             }
 
-            NativeParallel3D.SetAwake(body.IntPointer, awake);
+            NativeParallel3D.SetAwake3D(body.IntPointer, awake);
         }
 
         public static bool IsAwake(PBody3D body)
@@ -926,7 +880,7 @@ namespace Parallel
                 Initialize();
             }
 
-            return NativeParallel3D.IsAwake(body.IntPointer);
+            return NativeParallel3D.IsAwake3D(body.IntPointer);
         }
 
         public static void SetEnabled(PBody3D body, bool enabled)
@@ -936,7 +890,7 @@ namespace Parallel
                 return;
             }
 
-            NativeParallel3D.SetEnabled(body.IntPointer, enabled);
+            NativeParallel3D.SetEnabled3D(body.IntPointer, enabled);
         }
 
         public static bool IsEnabled(PBody3D body)
@@ -946,7 +900,7 @@ namespace Parallel
                 return false;
             }
 
-            return NativeParallel3D.IsEnabled(body.IntPointer);
+            return NativeParallel3D.IsEnabled3D(body.IntPointer);
         }
 
         public static ParallelQHullData ConvextHull3D(Fix64Vec3[] verts, UInt32 count, bool simplify, Fix64 rad)
@@ -1051,7 +1005,7 @@ namespace Parallel
             raycastHit3D = new PRaycastHit3D();
             UInt16 bodyID = 0;
 
-            bool hit = NativeParallel3D.RayCast(start, end, mask, ref point, ref normal, ref fraction, ref bodyID, internalWorld.IntPointer);
+            bool hit = NativeParallel3D.RayCast3D(start, end, mask, ref point, ref normal, ref fraction, ref bodyID, internalWorld.IntPointer);
 
             if (hit)
             {
@@ -1098,7 +1052,7 @@ namespace Parallel
             Fix64 fraction = Fix64.one;
             UInt16 bodyID = 0;
 
-            bool hit = NativeParallel3D.SphereCast(internalWorld.IntPointer, mask, start, radius, movement, ref point, ref normal, ref fraction, ref bodyID);
+            bool hit = NativeParallel3D.SphereCast3D(internalWorld.IntPointer, mask, start, radius, movement, ref point, ref normal, ref fraction, ref bodyID);
 
             if (hit)
             {
@@ -1137,7 +1091,7 @@ namespace Parallel
             }
 
             int count = 0;
-            bool hit = NativeParallel3D.SphereOverlap(internalWorld.IntPointer, mask, center, radius, _queryBodyIDs, ref count);
+            bool hit = NativeParallel3D.SphereOverlap3D(internalWorld.IntPointer, mask, center, radius, _queryBodyIDs, ref count);
 
             shapeOverlapResult.count = count;
 
@@ -1166,7 +1120,7 @@ namespace Parallel
             }
 
             int count = 0;
-            bool hit = NativeParallel3D.CubeOverlap(internalWorld.IntPointer, mask, center, rotation, x, y, z, _queryBodyIDs, ref count);
+            bool hit = NativeParallel3D.CubeOverlap3D(internalWorld.IntPointer, mask, center, rotation, x, y, z, _queryBodyIDs, ref count);
 
             shapeOverlapResult.count = count;
 
@@ -1325,14 +1279,14 @@ namespace Parallel
             _contactCount = 0;
             int index = 0;
 
-            IntPtr contactPtr = NativeParallel3D.GetContactList(internalWorld.IntPointer);
+            IntPtr contactPtr = NativeParallel3D.GetContactList3D(internalWorld.IntPointer);
 
             while (contactPtr != IntPtr.Zero)
             {
                 contactPtrs[index] = contactPtr;
                 PContactExport3D export = contactExports[index];
 
-                contactPtr = NativeParallel3D.ExportAndReturnNextContact(contactPtr, ref export);
+                contactPtr = NativeParallel3D.ExportAndReturnNextContact3D(contactPtr, ref export);
                 contactExports[index] = export;
                 index++;
             }

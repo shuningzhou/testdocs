@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Parallel;
 using System;
+using System.Linq;
 
 namespace Parallel
 {
@@ -8,28 +9,41 @@ namespace Parallel
     {
         public Parallel.LogLevel LoggingLevel;
         public bool autoUpdate = true;
+        public bool autoInitialization = true;
+
         public Fix64 fixedUpdateTime = Fix64.FromDivision(2, 100);
         public int velocityIteration = 4;
 
         public Fix64Vec2 gravity = new Fix64Vec2(Fix64.zero, Fix64.FromDivision(-98, 10));
-        public UInt16 bodyExportSize = 128;
+
         bool _initialized = false;
 
-        public void InitIfNecessary()
+        public void Initialize()
         {
             if(!_initialized)
             {
                 _initialized = true;
                 Parallel2D.gravity = gravity;
                 Parallel2D.SetLoggingLevel(LoggingLevel);
-                Parallel2D.bodyExportSize = bodyExportSize;
                 Time.fixedDeltaTime = (float)fixedUpdateTime;
+
+                ParallelRigidbody2D[] parallelRigidbody2Ds = FindObjectsOfType<ParallelRigidbody2D>().OrderBy(m => m.sceneIndex).ToArray();
+
+                foreach(ParallelRigidbody2D parallelRigidbody2D in parallelRigidbody2Ds)
+                {
+                    Debug.Log("Init " + parallelRigidbody2D.name + " index=" + parallelRigidbody2D.sceneIndex);
+                   
+                    parallelRigidbody2D.Initialize();
+                }
             }
         }
 
         private void Awake()
         {
-            InitIfNecessary();
+            if(autoInitialization)
+            {
+                Initialize();
+            }
         }
 
         private void OnDestroy()
@@ -72,26 +86,6 @@ namespace Parallel
                     ExcuteUserCallbacks(fixedUpdateTime);
                 }
             }
-        }
-
-        public void UpdateContacts()
-        {
-            Parallel2D.UpdateContacts();
-        }
-
-        public void PrepareExternalContactData()
-        {
-            Parallel2D.PrepareExternalContactData();
-        }
-
-        public void ExportEngineState(PInternalState2D state)
-        {
-            Parallel2D.ExportEngineInternalState(state);
-        }
-
-        public void ApplyEngineState(PInternalState2D state)
-        {
-            Parallel2D.AppleEngineInternalState(state);
         }
     }
 }

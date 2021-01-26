@@ -16,7 +16,6 @@ namespace Parallel
 
         [SerializeField]
         Fix64Vec3 _localPosition = Fix64Vec3.zero;
-        [SerializeField]
         Fix64Quat _localRotation = Fix64Quat.identity;
         [SerializeField]
         Fix64Vec3 _localEularAngles = Fix64Vec3.zero;
@@ -27,7 +26,7 @@ namespace Parallel
         ParallelRigidbody2D _rigidbody2D;
         ParallelRigidbody3D _rigidbody3D;
 
-        bool _quatReady = true;
+        bool _quatReady = false;
         bool _eularReady = true;
 
         Fix64Vec3 _internalLocalEularAngles
@@ -76,10 +75,13 @@ namespace Parallel
             }
         }
 
-        private void Reset()
+        void Reset()
         {
+#if UNITY_EDITOR
             ImportFromUnity();
             ExportToUnity();
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
         }
 
         public ParallelTransform parent
@@ -194,20 +196,16 @@ namespace Parallel
         }
 
         void Update()
-        {
-            //only import from unity in editing mode
+        { 
             if(!Application.isPlaying)
             {
-                ImportFromUnity();
+                ExportToUnity();
             }
-            else
+            else if(Interpolation)
             {
-                if(Interpolation)
-                {
-                    float increment = Time.deltaTime / Time.fixedDeltaTime;
-                    _interpolateProgress = Mathf.Min(1.0f, _interpolateProgress + increment);
-                    transform.localPosition = Vector3.Lerp(_interpolateStartPosition, (Vector3)_localPosition, _interpolateProgress);
-                }
+                float increment = Time.deltaTime / Time.fixedDeltaTime;
+                _interpolateProgress = Mathf.Min(1.0f, _interpolateProgress + increment);
+                transform.localPosition = Vector3.Lerp(_interpolateStartPosition, (Vector3)_localPosition, _interpolateProgress);
             }
         }
 
@@ -237,14 +235,17 @@ namespace Parallel
         /// Imports the floating point values from the Unity Transform Component
         /// NOT deterministic
         /// </summary>
-        public void ImportFromUnity()
+        void ImportFromUnity()
         {
             //Debug.LogWarning("ImportFromUnity");
-            _localPosition = (Fix64Vec3)transform.localPosition;
-            _localRotation = (Fix64Quat)transform.localRotation;
-            _localEularAngles = (Fix64Vec3)transform.localEulerAngles;
-            _localScale = (Fix64Vec3)transform.localScale;
-            _interpolateStartPosition = transform.localPosition;
+            if(!Application.isPlaying)
+            {
+                _localPosition = (Fix64Vec3)transform.localPosition;
+                _localRotation = (Fix64Quat)transform.localRotation;
+                _localEularAngles = (Fix64Vec3)transform.localEulerAngles;
+                _localScale = (Fix64Vec3)transform.localScale;
+                _interpolateStartPosition = transform.localPosition;
+            }
         }
 
         public Fix64Vec3 position

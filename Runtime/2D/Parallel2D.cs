@@ -209,6 +209,11 @@ namespace Parallel
             initialized = true;
         }
 
+        public static void HelloWorld()
+        {
+            NativeParallel2D.HelloWorld();
+        }
+
         public static void CleanUp()
         {
             if (initialized)
@@ -219,31 +224,6 @@ namespace Parallel
                 bodySortedList.Clear();
                 DestroyWorld(internalWorld);
                 initialized = false;
-            }
-        }
-
-        public static void UpdateContacts()
-        {
-            NativeParallel2D.FindContacts(internalWorld.IntPointer);
-        }
-
-        public static void ExportEngineInternalState(PInternalState2D internalState)
-        {
-            internalState.contactCount = _contactCount;
-            Array.Copy(contactExports, internalState.contactExports, _contactCount);
-        }
-
-        public static void PrepareExternalContactData()
-        {
-            NativeParallel2D.PrepareExternalContactData();
-        }
-
-        public static void AppleEngineInternalState(PInternalState2D internalState)
-        {
-            for(int i = 0; i < internalState.contactCount; i++)
-            {
-                PContactExport2D export = internalState.contactExports[i];
-                NativeParallel2D.AddExternalContactData(export);
             }
         }
 
@@ -962,6 +942,7 @@ namespace Parallel
             _exitContactCount = 0;
             _exitContactWrapperEnd = _exitContactWrapperHead;
         }
+        
         public static void PrepareContacts()
         {
             for (int i = 0; i < _contactCount; i++)

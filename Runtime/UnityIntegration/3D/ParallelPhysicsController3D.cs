@@ -80,35 +80,5 @@ namespace Parallel
                 }
             }
         }
-
-        public void UpdateContacts()
-        {
-            Parallel3D.UpdateContacts();
-        }
-
-        public void PrepareExternalContactData()
-        {
-            Parallel3D.PrepareExternalContactData();
-        }
-
-        public void ExportEngineState(PInternalState3D state)
-        {
-            Parallel3D.ExportEngineInternalState(state);
-        }
-
-        public void AddWarmStart(PInternalState3D state)
-        {
-            Parallel3D.AddExternalContactWarmStartData(state);
-        }
-
-        public void PrepareExternalConvexCacheData()
-        {
-            Parallel3D.PrepareExternalConvexCacheData();
-        }
-
-        public void AddConvexCache(PInternalState3D state)
-        {
-            Parallel3D.AddExternalConvexCache(state);
-        }
     }
 }

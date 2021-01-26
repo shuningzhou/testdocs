@@ -147,16 +147,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 56706665}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e16714dcc2a281a4299046e290f6b315, type: 3}
+  m_Script: {fileID: 11500000, guid: 9340863d1cd572d4faa317cc18c022a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   LoggingLevel: 0
-  Debugging: 0
-  fixedUpdateTime: 0
-  fixedUpdateTime64:
+  autoUpdate: 1
+  fixedUpdateTime:
     Raw: 20971
   velocityIteration: 4
-  positionIteration: 2
+  gravity:
+    RawX: 0
+    RawY: -10276044
   bodyExportSize: 128
 --- !u!4 &56706667
 Transform:

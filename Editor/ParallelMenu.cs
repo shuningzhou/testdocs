@@ -76,7 +76,7 @@ namespace Parallel.EditorTools
         }
 
         [MenuItem("GameObject/Parallel/3D/Quad", false, 0)]
-        public static void CreatePlane()
+        public static void CreateQuad()
         {
             GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
             gameObject.name = "Quad";
@@ -110,7 +110,7 @@ namespace Parallel.EditorTools
         }
 
         [MenuItem("GameObject/Parallel/3D/Plane", false, 0)]
-        public static void CreateQuad()
+        public static void CreatePlane()
         {
             GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Plane);
             gameObject.name = "Plane";

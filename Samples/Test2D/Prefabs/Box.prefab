@@ -98,14 +98,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Interpolation: 1
   _localPosition:
-    RawX: -5242880
-    RawY: 1048576
-    RawZ: 0
-  _localRotation:
     RawX: 0
     RawY: 0
     RawZ: 0
-    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -156,6 +151,7 @@ MonoBehaviour:
     angle:
       Raw: 0
   _bodyID: 0
+  sceneIndex: 0
   _bodyType: 2
   _linearDampling:
     Raw: 0

@@ -11,7 +11,7 @@ namespace Parallel
 #if !UNITY_EDITOR && UNITY_IOS
 		const string PLUGIN_NAME = "__Internal";
 #else
-        const string PLUGIN_NAME = "Parallel";
+        const string PLUGIN_NAME = "parallel";
 #endif
         internal static void Initialize()
         {
@@ -20,6 +20,9 @@ namespace Parallel
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void RegisterDebugCallback(debugCallback cb);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void HelloWorld();
 
         //2D world
         [DllImport(PLUGIN_NAME)]
@@ -33,15 +36,6 @@ namespace Parallel
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void Step(IntPtr worldHandle, Fix64 time, int velocityIterations, int positionIterations);
-
-        [DllImport(PLUGIN_NAME)]
-        internal static extern void FindContacts(IntPtr worldHandle);
-
-        [DllImport(PLUGIN_NAME)]
-        internal static extern void PrepareExternalContactData();
-
-        [DllImport(PLUGIN_NAME)]
-        internal static extern void AddExternalContactData(PContactExport2D contactExport);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr Snapshot(IntPtr worldHandle);
@@ -160,9 +154,6 @@ namespace Parallel
 
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr ExportAndReturnNextContact(IntPtr contactHandle, ref PContactExport2D export);
-
-        [DllImport(PLUGIN_NAME)]
-        internal static extern int ExportContacts(IntPtr worldHandle, IntPtr[] contacts, PContactExport2D[] exports, int limit);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern int GetContactDetail(IntPtr contactHandle, ref Fix64Vec2 point1, ref Fix64Vec2 point2, ref Fix64 penetration1, ref Fix64 penetration2, ref Fix64Vec2 normal);

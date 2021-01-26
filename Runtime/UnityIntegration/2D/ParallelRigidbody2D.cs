@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Parallel
 {
     [RequireComponent(typeof(ParallelTransform))]
-    public class ParallelRigidbody2D : MonoBehaviour, IParallelRigidbody2D, IReplayable
+    public class ParallelRigidbody2D : MonoBehaviour, IParallelRigidbody2D
     {
         ParallelTransform _pTransform;
         public ParallelTransform pTransform
@@ -28,6 +28,9 @@ namespace Parallel
         public PBody2D _body2D;
         [SerializeField]
         int _bodyID;
+
+        [SerializeField]
+        internal int sceneIndex;
 
         //============================== Body properties ==============================
         [SerializeField]
@@ -238,22 +241,18 @@ namespace Parallel
         }
 
         //============================== Unity Events ==============================
-        void Awake()
+        void OnValidate()
         {
-            ParallelPhysicsController2D pSettings = FindObjectOfType<ParallelPhysicsController2D>();
+            sceneIndex = transform.GetSiblingIndex();
+        }
 
-            if(pSettings == null)
-            {
-                return;
-            }
-
-            pSettings.InitIfNecessary();
-
+        internal void Initialize()
+        {
             parallelFixedUpdates = GetComponents<IParallelFixedUpdate>();
             parallelCollisions = GetComponents<IParallelCollision2D>();
             parallelTriggers = GetComponents<IParallelTrigger2D>();
 
-            pTransform.ImportFromUnity();
+            //pTransform.ImportFromUnity();
 
             colliders = GetComponentsInChildren<ParallelCollider2D>();
 
@@ -284,20 +283,6 @@ namespace Parallel
 
                 collider.ReceiveFixture(fixture2D);
             }
-        }
-
-        //============================== IReplayable ==============================
-        public void Save(uint step)
-        {
-            _body2D.SaveExport(step);
-        }
-
-        public bool Load(uint step)
-        {
-            bool result = _body2D.LoadSavedExport(step);
-            pTransform._internal_WriteTranform((Fix64Vec3)_body2D.position, new Fix64Vec3(Fix64.zero, Fix64.zero, Fix64.RadToDeg(_body2D.angle)));
-
-            return result;
         }
     }
 }
