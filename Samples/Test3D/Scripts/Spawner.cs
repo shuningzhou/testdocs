@@ -33,7 +33,7 @@ public class Spawner : MonoBehaviour
         int index = Random.Range(0, size);
         GameObject go = Instantiate(prefabs[index], transform.position, Quaternion.identity);
         ParallelTransform pTransform = go.GetComponent<ParallelTransform>();
-        pTransform.Interpolation = false;
+        pTransform.interpolateMethod = InterpolateMethod.None;
         int randomSize = Random.Range(5, 30);
         pTransform.localScale = pTransform.localScale * Fix64.FromDivision(randomSize, 10);
         pTransform.position = (Fix64Vec3)transform.position;

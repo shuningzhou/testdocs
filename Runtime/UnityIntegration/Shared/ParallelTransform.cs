@@ -4,13 +4,21 @@ namespace Parallel
 {
     public delegate void TransformScaleUpdated();
 
+    public enum InterpolateMethod
+    {
+        MoveTowards,
+        Lerp,
+        None
+    }
+
     /// <summary>
     /// Position, rotation, and scale of an object.
     /// </summary>
     [ExecuteInEditMode]
     public class ParallelTransform : MonoBehaviour
     {
-        public bool Interpolation = true;
+        public InterpolateMethod interpolateMethod = InterpolateMethod.MoveTowards;
+        public float lerp = 0.2f;
         Vector3 _interpolateStartPosition;
         float _interpolateProgress;
 
@@ -201,11 +209,18 @@ namespace Parallel
             {
                 ExportToUnity();
             }
-            else if(Interpolation)
+            else 
             {
-                float increment = Time.deltaTime / Time.fixedDeltaTime;
-                _interpolateProgress = Mathf.Min(1.0f, _interpolateProgress + increment);
-                transform.localPosition = Vector3.Lerp(_interpolateStartPosition, (Vector3)_localPosition, _interpolateProgress);
+                if(interpolateMethod == InterpolateMethod.MoveTowards)
+                {
+                    float increment = Time.deltaTime / Time.fixedDeltaTime;
+                    _interpolateProgress = Mathf.Min(1.0f, _interpolateProgress + increment);
+                    transform.localPosition = Vector3.Lerp(_interpolateStartPosition, (Vector3)_localPosition, _interpolateProgress);
+                }
+                else if(interpolateMethod == InterpolateMethod.Lerp)
+                {
+                    transform.localPosition = Vector3.Lerp(transform.localPosition, (Vector3)_localPosition, lerp);
+                }
             }
         }
 
@@ -214,7 +229,7 @@ namespace Parallel
         /// </summary>
         private void ExportToUnity()
         {
-            if(!Application.isPlaying || !Interpolation)
+            if(!Application.isPlaying || interpolateMethod == InterpolateMethod.None)
             {
                 transform.localPosition = (Vector3)_localPosition;
                 _interpolateProgress = 1;
@@ -228,6 +243,7 @@ namespace Parallel
             {
                 transform.localRotation = (Quaternion)_localRotation;
             }
+
             transform.localScale = (Vector3)_localScale;
         }
 
@@ -291,7 +307,7 @@ namespace Parallel
                 }
 
                 //set unity transform to the previous parallel transform position
-                if (Interpolation)
+                if (interpolateMethod == InterpolateMethod.MoveTowards)
                 {
                     transform.localPosition = (Vector3)_localPosition;
                     _interpolateStartPosition = transform.localPosition;
@@ -537,10 +553,11 @@ namespace Parallel
         //IMPORTATNT: all the internal transform data are in world space and should only be called on the root GameObject
         internal void _internal_WriteTranform(Fix64Vec3 position, Fix64Vec3 eulerAngles)
         {
-            //set unity transform to the previous parallel transform position
-            if (Interpolation)
+            
+            if (interpolateMethod == InterpolateMethod.MoveTowards)
             {
-                transform.localPosition = (Vector3)_localPosition;
+                //set unity transform to the previous parallel transform position
+                //transform.localPosition = (Vector3)_localPosition;
                 _interpolateStartPosition = transform.localPosition;
                 _interpolateProgress = 0;
             }
@@ -553,10 +570,10 @@ namespace Parallel
 
         internal void _internal_WriteTranform(Fix64Vec3 position, Fix64Quat rotation)
         {
-            //set unity transform to the previous parallel transform position
-            if(Interpolation)
+            if(interpolateMethod == InterpolateMethod.MoveTowards)
             {
-                transform.localPosition = (Vector3)_localPosition;
+                //set unity transform to the previous parallel transform position
+                //transform.localPosition = (Vector3)_localPosition;
                 _interpolateStartPosition = transform.localPosition;
                 _interpolateProgress = 0;
             }
@@ -570,7 +587,7 @@ namespace Parallel
 
         internal void _internal_ExportToUnity()
         {
-            if(!Interpolation)
+            if(interpolateMethod == InterpolateMethod.None )
             {
                 transform.localPosition = (Vector3)_localPosition;
             }
@@ -583,6 +600,7 @@ namespace Parallel
             {
                 transform.localRotation = (Quaternion)_localRotation;
             }
+
             transform.localScale = (Vector3)_localScale;
         }
     }
