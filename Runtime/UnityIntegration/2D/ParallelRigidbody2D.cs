@@ -25,9 +25,9 @@ namespace Parallel
         IParallelTrigger2D[] parallelTriggers = new IParallelTrigger2D[0];
         ParallelCollider2D[] colliders = new ParallelCollider2D[0];
 
-        public PBody2D _body2D;
+        internal PBody2D _body2D;
         [SerializeField]
-        int _bodyID;
+        int _bodyId;
 
         [SerializeField]
         internal int sceneIndex;
@@ -43,6 +43,22 @@ namespace Parallel
         Fix64 _gravityScale = Fix64.one;
         [SerializeField]
         bool _fixedRotation = false;
+
+        public int bodyId
+        {
+            get
+            {
+                return _bodyId;
+            }
+        }
+
+        public Fix64 mass
+        {
+            get
+            {
+                return _body2D.mass;
+            }
+        }
 
         public BodyType bodyType
         {
@@ -266,7 +282,7 @@ namespace Parallel
                                                 gravityScale,
                                                 this);
 
-            _bodyID = _body2D.BodyID;
+            _bodyId = _body2D.BodyID;
 
             foreach (ParallelCollider2D collider in colliders)
             {   
@@ -283,6 +299,14 @@ namespace Parallel
 
                 collider.ReceiveFixture(fixture2D);
             }
+
+            Parallel2D.ReadBodyMassInfo(_body2D);
         }
+
+        internal void Destroy()
+        {
+            Parallel2D.DestoryBody(_body2D, this);
+        }
+
     }
 }

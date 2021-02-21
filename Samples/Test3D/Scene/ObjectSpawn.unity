@@ -322,6 +322,16 @@ PrefabInstance:
     - target: {fileID: 1706341962362521628, guid: 174d4204bcce71441b8447431208a627,
         type: 3}
       propertyPath: velocityIteration
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706341962362521628, guid: 174d4204bcce71441b8447431208a627,
+        type: 3}
+      propertyPath: allowSleep
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706341962362521628, guid: 174d4204bcce71441b8447431208a627,
+        type: 3}
+      propertyPath: warmStart
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8288772684901661520, guid: 174d4204bcce71441b8447431208a627,

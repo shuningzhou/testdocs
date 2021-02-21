@@ -223,12 +223,10 @@ namespace Parallel
         //
         static bool initialized = false;
         static PWorld3D internalWorld;
+        static IntPtr referenceBody;
         public static Fix64Vec3 gravity = new Fix64Vec3(Fix64.zero, Fix64.FromDivision(-98, 10), Fix64.zero);
         public static bool allowSleep = true;
         public static bool warmStart = true;
-
-        //body exports
-        public static UInt16 bodyExportSize = 128;
 
         //used for cast and overlap queruies
         static UInt16[] _queryBodyIDs = new UInt16[ParallelConstants.SHAPE_OVERLAP_BODY_COUNT_3D];
@@ -254,6 +252,20 @@ namespace Parallel
                 _allContactWrapperEnd.next = new PContact3DWrapper();
                 _allContactWrapperEnd = _allContactWrapperEnd.next;
             }
+
+            UInt16 bodyID = 0;
+            referenceBody = NativeParallel3D.CreateBody3D(
+                internalWorld.IntPointer,
+                (int)BodyType.Static,
+                Fix64Vec3.zero,
+                Fix64Quat.identity,
+                Fix64Vec3.zero,
+                Fix64Vec3.zero,
+                Fix64Vec3.zero,
+                true,
+                true,
+                true,
+                ref bodyID);
 
             initialized = true;
         }
@@ -667,7 +679,7 @@ namespace Parallel
                 fixedRotationZ,
                 ref bodyID);
 
-            PBody3D body = new PBody3D(m_NativeObject, bodyID, rigidBody as ParallelRigidbody3D, bodyExportSize);
+            PBody3D body = new PBody3D(m_NativeObject, bodyID, rigidBody as ParallelRigidbody3D);
             bodySortedList[bodyID] = body;
 
             ReadNativeBody(body);
@@ -849,8 +861,22 @@ namespace Parallel
 
             NativeParallel3D.GetTransform3D(body.IntPointer, ref body.position, ref body.orientation, ref body.orientation0);
             NativeParallel3D.GetVelocity3D(body.IntPointer, ref body.linearVelocity, ref body.angularVelocity);
-            body.awake = NativeParallel3D.IsAwake3D(body.IntPointer);
-            NativeParallel3D.GetSleepTime3D(body.IntPointer, ref body.sleepTime);
+            
+            if(allowSleep)
+            {
+                body.awake = NativeParallel3D.IsAwake3D(body.IntPointer);
+                NativeParallel3D.GetSleepTime3D(body.IntPointer, ref body.sleepTime);
+            }
+        }
+
+        public static void ReadBodyMassInfo(PBody3D body)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            NativeParallel3D.GetBodyMassInfo3D(body.IntPointer, ref body.mass);
         }
 
         public static void SetAwakeForRollback(PBody3D body, bool awake, Fix64 sleepTime)
@@ -1333,6 +1359,139 @@ namespace Parallel
         public static bool TriangulatePolyIsland(int[] indices, int[] indiceCounts, ref int triangleCount, ref int totalIndicesCount, int level, PolyIsland polyIsland)
         {
             return NativeParallel3D.TriangulatePolyIsland(indices, indiceCounts, ref triangleCount, ref totalIndicesCount, level, polyIsland.IntPointer);
+        }
+
+        //joints
+        public static void DestroyJoint(PJoint3D joint)
+        {
+            if (!initialized)
+            {
+                return;
+            }
+
+            NativeParallel3D.DestroyJoint3D(internalWorld.IntPointer, joint.IntPointer);
+        }
+
+        public static PJoint3D CreateMouseJoint(ParallelRigidbody3D rb, Fix64Vec3 p, Fix64 maxForce)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            IntPtr m_NativeObject = NativeParallel3D.CreateMouseJoint3D(internalWorld.IntPointer, referenceBody, rb._body3D.IntPointer, p, maxForce);
+
+            PJoint3D j = new PJoint3D(m_NativeObject);
+
+            return j;
+        }
+
+        public static void MoveMouseJoint(PJoint3D joint, Fix64Vec3 position)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            NativeParallel3D.MoveMouseJoint3D(joint.IntPointer, position);
+        }
+
+        public static PJoint3D CreateSprintJoint(ParallelRigidbody3D rbA,
+                                                 ParallelRigidbody3D rbB,
+                                                 Fix64Vec3 anchorA,
+                                                 Fix64Vec3 anchorB,
+                                                 bool collide,
+                                                 Fix64 frequency,
+                                                 Fix64 damping)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            IntPtr other = referenceBody;
+
+            if (rbB != null)
+            {
+                other = rbB._body3D.IntPointer;
+            }
+
+            IntPtr m_NativeObject = NativeParallel3D.CreateDistanceJoint3D(internalWorld.IntPointer,
+                                                                            rbA._body3D.IntPointer,
+                                                                            other,
+                                                                            anchorA, anchorB,
+                                                                            collide,
+                                                                            frequency, damping);
+
+            PJoint3D j = new PJoint3D(m_NativeObject);
+
+            return j;
+        }
+
+        public static PJoint3D CreateHingeJoint(ParallelRigidbody3D rbA,
+                                                ParallelRigidbody3D rbB,
+                                                Fix64Vec3 anchor,
+                                                Fix64Vec3 axis,
+                                                bool collide,
+                                                bool limit, Fix64 lowerAngle, Fix64 upperAngle,
+                                                bool motor, Fix64 motorSpeed, Fix64 motorTorque)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            IntPtr other = referenceBody;
+
+            if (rbB != null)
+            {
+                other = rbB._body3D.IntPointer;
+            }
+
+            IntPtr m_NativeObject = NativeParallel3D.CreateHingeJoint3D(internalWorld.IntPointer,
+                                                                            rbA._body3D.IntPointer,
+                                                                            other,
+                                                                            anchor, axis,
+                                                                            collide,
+                                                                            limit, lowerAngle, upperAngle,
+                                                                            motor, motorSpeed, motorTorque);
+
+            PJoint3D j = new PJoint3D(m_NativeObject);
+
+            return j;
+        }
+
+        public static PJoint3D CreateConeJoint(ParallelRigidbody3D rbA,
+                                                ParallelRigidbody3D rbB,
+                                                Fix64Vec3 anchor,
+                                                Fix64Vec3 axis,
+                                                bool collide,
+                                                bool limit, Fix64 angle,
+                                                bool twist, Fix64 lowerAngle, Fix64 upperAngle)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            IntPtr other = referenceBody;
+
+            if (rbB != null)
+            {
+                other = rbB._body3D.IntPointer;
+            }
+
+            IntPtr m_NativeObject = NativeParallel3D.CreateConeJoint3D(internalWorld.IntPointer,
+                                                                            rbA._body3D.IntPointer,
+                                                                            other,
+                                                                            anchor, axis,
+                                                                            collide,
+                                                                            limit, angle,
+                                                                            twist, lowerAngle, upperAngle);
+
+            PJoint3D j = new PJoint3D(m_NativeObject);
+
+            return j;
         }
     }
 }

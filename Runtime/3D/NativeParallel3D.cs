@@ -110,6 +110,9 @@ namespace Parallel
         internal static extern bool IsAwake3D(IntPtr bodyHandle);
 
         [DllImport(PLUGIN_NAME)]
+        internal static extern void GetBodyMassInfo3D(IntPtr bodyHandle, ref Fix64 mass);
+
+        [DllImport(PLUGIN_NAME)]
         internal static extern void SetAwake3D(IntPtr bodyHandle, bool awake);
 
         [DllImport(PLUGIN_NAME)]
@@ -262,5 +265,49 @@ namespace Parallel
                                         ref int totalIndicesCount, 
                                         int level, 
                                         IntPtr PolyIslandHandle);
+
+        //joint
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void DestroyJoint3D(IntPtr worldHandle, IntPtr jointHandle);
+
+        //mouse joint
+        [DllImport(PLUGIN_NAME)]
+        internal static extern IntPtr CreateMouseJoint3D(IntPtr worldHandle, IntPtr bodyHandleA, IntPtr bodyHandleB, Fix64Vec3 position, Fix64 maxForce);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void MoveMouseJoint3D(IntPtr MoveMouseJoint, Fix64Vec3 position);
+
+        //spring joint
+        [DllImport(PLUGIN_NAME)]
+        internal static extern IntPtr CreateDistanceJoint3D(IntPtr worldHandle,
+                                                            IntPtr bodyHandleA,
+                                                            IntPtr bodyHandleB,
+                                                            Fix64Vec3 anchorA,
+                                                            Fix64Vec3 anchorB,
+                                                            bool collide,
+                                                            Fix64 frequency,
+                                                            Fix64 damp);
+
+        //hinge joint
+        [DllImport(PLUGIN_NAME)]
+        internal static extern IntPtr CreateHingeJoint3D(IntPtr worldHandle,
+                                                         IntPtr bodyHandleA,
+                                                         IntPtr bodyHandleB,
+                                                         Fix64Vec3 anchor,
+                                                         Fix64Vec3 axis,
+                                                         bool collide,
+                                                         bool limit, Fix64 lowerAngle, Fix64 upperAngle,
+                                                         bool motor, Fix64 motorSpeed, Fix64 motorTorque);
+
+        //cone joint
+        [DllImport(PLUGIN_NAME)]
+        internal static extern IntPtr CreateConeJoint3D(IntPtr worldHandle,
+                                                         IntPtr bodyHandleA,
+                                                         IntPtr bodyHandleB,
+                                                         Fix64Vec3 anchor,
+                                                         Fix64Vec3 axis,
+                                                         bool collide,
+                                                         bool limit, Fix64 angle,
+                                                         bool twist, Fix64 lowerAngle, Fix64 upperAngle);
     }
 }

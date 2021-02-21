@@ -62,7 +62,7 @@ namespace Parallel
                 }
 
                 Gizmos.color = ParallelUtil.ColliderOutlineColor;
-                Gizmos.matrix = Matrix4x4.TRS((Vector3)pTransform.position, transform.rotation, Vector3.one);
+                Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
                 Gizmos.DrawWireSphere((Vector2)p1, (float)radius);
                 Gizmos.DrawWireSphere((Vector2)p2, (float)radius);
 

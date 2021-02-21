@@ -105,7 +105,7 @@ namespace Parallel
 
         public override string ToString()
         {
-            if(contactPointCount == 0)
+            if (contactPointCount == 0)
             {
                 return $"PContactPoints2D(contactPointCount={contactPointCount})";
             }
@@ -189,10 +189,10 @@ namespace Parallel
 
         static bool initialized = false;
         static PWorld2D internalWorld;
+        static IntPtr referenceBody;
         public static Fix64Vec2 gravity = new Fix64Vec2(Fix64.zero, Fix64.FromDivision(-98, 10));
-
-        //body exports
-        public static UInt16 bodyExportSize = 128;
+        public static bool allowSleep = true;
+        public static bool warmStart = true;
 
         //used for cast and overlap queries
         static UInt16[] _queryBodyIDs = new UInt16[ParallelConstants.SHAPE_OVERLAP_BODY_COUNT_2D];
@@ -205,7 +205,17 @@ namespace Parallel
         {
             ReadCollisionLayerMatrix();
             NativeParallel2D.Initialize();
-            internalWorld = CreateWorld(gravity);
+            internalWorld = CreateWorld(gravity, allowSleep, warmStart);
+            UInt16 bodyID = 0;
+            referenceBody = NativeParallel2D.CreateBody(
+                                        internalWorld.IntPointer,
+                                        (int)Parallel.BodyType.Static,
+                                        Fix64Vec2.zero,
+                                        Fix64.zero,
+                                        Fix64.zero,
+                                        Fix64.zero,
+                                        false,
+                                        Fix64.zero, ref bodyID);
             initialized = true;
         }
 
@@ -365,7 +375,7 @@ namespace Parallel
 
         public static void ExcuteUserFixedUpdate(Fix64 time)
         {
-            foreach(var pair in bodySortedList)
+            foreach (var pair in bodySortedList)
             {
                 PBody2D body = pair.Value;
                 body.Step(time);
@@ -373,9 +383,9 @@ namespace Parallel
         }
 
         //2D
-        static PWorld2D CreateWorld(Fix64Vec2 gravity)
+        static PWorld2D CreateWorld(Fix64Vec2 gravity, bool allowSleep, bool warmStart)
         {
-            IntPtr m_NativeObject = NativeParallel2D.CreateWorld(gravity, OnContactEnterCallback, OnContactExitCallBack);
+            IntPtr m_NativeObject = NativeParallel2D.CreateWorld(gravity, allowSleep, warmStart, OnContactEnterCallback, OnContactExitCallBack);
             return new PWorld2D(m_NativeObject);
         }
 
@@ -570,9 +580,9 @@ namespace Parallel
 
         //2D body
         public static PBody2D AddBody
-            (int bodyType, 
-            Fix64Vec2 position, 
-            Fix64 angle, 
+            (int bodyType,
+            Fix64Vec2 position,
+            Fix64 angle,
             Fix64 linearDamping,
             Fix64 angularDamping,
             bool fixedRotation,
@@ -587,17 +597,17 @@ namespace Parallel
             UInt16 bodyID = 0;
 
             IntPtr m_NativeObject = NativeParallel2D.CreateBody(
-                internalWorld.IntPointer, 
-                bodyType, 
-                position, 
-                angle, 
+                internalWorld.IntPointer,
+                bodyType,
+                position,
+                angle,
                 linearDamping,
                 angularDamping,
                 fixedRotation,
                 gravityScale,
                 ref bodyID);
 
-            PBody2D body2D = new PBody2D(m_NativeObject, bodyID, rigidBody2D as ParallelRigidbody2D, bodyExportSize);
+            PBody2D body2D = new PBody2D(m_NativeObject, bodyID, rigidBody2D as ParallelRigidbody2D);
             bodySortedList[bodyID] = body2D;
 
             ReadNativeBody(body2D);
@@ -607,7 +617,7 @@ namespace Parallel
 
         internal static PBody2D FindBodyByID(UInt16 bodyID)
         {
-            if(bodySortedList.ContainsKey(bodyID))
+            if (bodySortedList.ContainsKey(bodyID))
             {
                 return bodySortedList[bodyID];
             }
@@ -619,7 +629,7 @@ namespace Parallel
 
         public static void UpdateBodyTransForm(PBody2D body, Fix64Vec2 pos, Fix64 angle)
         {
-            if(!initialized)
+            if (!initialized)
             {
                 Initialize();
             }
@@ -637,7 +647,7 @@ namespace Parallel
             NativeParallel2D.UpdateBodyVelocity(body.IntPointer, linearVelocity, angularVelocity);
         }
 
-        public static void UpdateBodyProperties(PBody2D body, 
+        public static void UpdateBodyProperties(PBody2D body,
             int bodyType,
             Fix64 linearDamping,
             Fix64 angularDamping,
@@ -719,7 +729,7 @@ namespace Parallel
                 Initialize();
             }
 
-            if(bodySortedList.ContainsKey(body2D.BodyID))
+            if (bodySortedList.ContainsKey(body2D.BodyID))
             {
                 bodySortedList.Remove(body2D.BodyID);
             }
@@ -735,6 +745,16 @@ namespace Parallel
             }
             NativeParallel2D.GetTransform(body2D.IntPointer, ref body2D.position, ref body2D.angle);
             NativeParallel2D.GetVelocity(body2D.IntPointer, ref body2D.linearVelocity, ref body2D.angularVelocity);
+        }
+
+        public static void ReadBodyMassInfo(PBody2D body2D)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            NativeParallel2D.GetBodyMassInfo(body2D.IntPointer, ref body2D.mass);
         }
 
         //raycast
@@ -762,7 +782,7 @@ namespace Parallel
                 raycastHit2D.point = point;
                 raycastHit2D.normal = normal;
 
-                if(bodySortedList.ContainsKey(bodyID))
+                if (bodySortedList.ContainsKey(bodyID))
                 {
                     raycastHit2D.rigidbody = bodySortedList[bodyID].RigidBody;
                 }
@@ -770,7 +790,7 @@ namespace Parallel
                 {
                     Debug.LogError($"Rigibody not found: {bodyID}");
                 }
-                
+
                 return true;
             }
             else
@@ -942,7 +962,7 @@ namespace Parallel
             _exitContactCount = 0;
             _exitContactWrapperEnd = _exitContactWrapperHead;
         }
-        
+
         public static void PrepareContacts()
         {
             for (int i = 0; i < _contactCount; i++)
@@ -950,14 +970,14 @@ namespace Parallel
                 PContactExport2D export = contactExports[i];
 
                 //some
-                if(export.id == 0)
+                if (export.id == 0)
                 {
                     continue;
                 }
 
                 PContact2D c;
 
-                if(contactDictionary.ContainsKey(export.id))
+                if (contactDictionary.ContainsKey(export.id))
                 {
                     c = contactDictionary[export.id];
                 }
@@ -1008,8 +1028,8 @@ namespace Parallel
             int index = 0;
 
             IntPtr contactPtr = NativeParallel2D.GetContactList(internalWorld.IntPointer);
-            
-            while(contactPtr != IntPtr.Zero)
+
+            while (contactPtr != IntPtr.Zero)
             {
                 contactPtrs[index] = contactPtr;
                 PContactExport2D export = contactExports[index];
@@ -1033,11 +1053,11 @@ namespace Parallel
 
 
             contactPoints2D.contactPointCount = NativeParallel2D.GetContactDetail(
-                                                                    contactHandler, 
-                                                                    ref contactPoints2D.point1, 
-                                                                    ref contactPoints2D.point2, 
-                                                                    ref contactPoints2D.penetration1, 
-                                                                    ref contactPoints2D.penetration2, 
+                                                                    contactHandler,
+                                                                    ref contactPoints2D.point1,
+                                                                    ref contactPoints2D.point2,
+                                                                    ref contactPoints2D.penetration1,
+                                                                    ref contactPoints2D.penetration2,
                                                                     ref contactPoints2D.contactNormal);
         }
 
@@ -1061,6 +1081,105 @@ namespace Parallel
             NativeParallel2D.ConvexHull2D(ref parallelVec2List, ref parallelVec2ListOutput, limit);
 
             return parallelVec2ListOutput;
+        }
+
+        //joints
+        public static void DestroyJoint(PJoint2D joint)
+        {
+            if (!initialized)
+            {
+                return;
+            }
+
+            NativeParallel2D.DestroyJoint(internalWorld.IntPointer, joint.IntPointer);
+        }
+
+        public static PJoint2D CreateMouseJoint(ParallelRigidbody2D rb, Fix64Vec2 p, Fix64 maxForce)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            IntPtr m_NativeObject = NativeParallel2D.CreateMouseJoint(internalWorld.IntPointer, referenceBody, rb._body2D.IntPointer, p, maxForce);
+
+            PJoint2D j = new PJoint2D(m_NativeObject);
+
+            return j;
+        }
+
+        public static void MoveMouseJoint(PJoint2D joint, Fix64Vec2 position)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            NativeParallel2D.MoveMouseJoint(joint.IntPointer, position);
+        }
+
+        public static PJoint2D CreateSprintJoint(ParallelRigidbody2D rbA,
+                                                 ParallelRigidbody2D rbB,
+                                                 Fix64Vec2 anchorA,
+                                                 Fix64Vec2 anchorB,
+                                                 bool collide,
+                                                 Fix64 frequency,
+                                                 Fix64 damping)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            IntPtr other = referenceBody;
+
+            if (rbB != null)
+            {
+                other = rbB._body2D.IntPointer;
+            }
+
+            IntPtr m_NativeObject = NativeParallel2D.CreateDistanceJoint(internalWorld.IntPointer,
+                rbA._body2D.IntPointer,
+                other,
+                anchorA, anchorB,
+                collide,
+                frequency, damping);
+
+            PJoint2D j = new PJoint2D(m_NativeObject);
+
+            return j;
+        }
+
+        public static PJoint2D CreateHingeJoint(ParallelRigidbody2D rbA,
+                                                ParallelRigidbody2D rbB,
+                                                Fix64Vec2 anchor,
+                                                bool collide,
+                                                bool limit, Fix64 lowerAngle, Fix64 upperAngle,
+                                                bool motor, Fix64 motorSpeed, Fix64 motorTorque)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            IntPtr other = referenceBody;
+
+            if (rbB != null)
+            {
+                other = rbB._body2D.IntPointer;
+            }
+
+            IntPtr m_NativeObject = NativeParallel2D.CreateHingeJoint(internalWorld.IntPointer,
+                                                                        rbA._body2D.IntPointer,
+                                                                        other,
+                                                                        anchor,
+                                                                        collide,
+                                                                        limit, lowerAngle, upperAngle,
+                                                                        motor, motorSpeed, motorTorque);
+
+            PJoint2D j = new PJoint2D(m_NativeObject);
+
+            return j;
         }
     }
 }

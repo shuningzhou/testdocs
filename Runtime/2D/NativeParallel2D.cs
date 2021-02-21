@@ -26,7 +26,7 @@ namespace Parallel
 
         //2D world
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateWorld(Fix64Vec2 gravity, ContactEnterCallBack enterCallback, ContactExitCallBack exitCallback);
+        internal static extern IntPtr CreateWorld(Fix64Vec2 gravity, bool allowSleep, bool warmStart, ContactEnterCallBack enterCallback, ContactExitCallBack exitCallback);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr SetGravity(IntPtr worldHandle, Fix64Vec2 gravity);
@@ -99,6 +99,9 @@ namespace Parallel
         [DllImport(PLUGIN_NAME)]
         internal static extern void GetVelocity(IntPtr bodyHandle, ref Fix64Vec2 linearVelocity, ref Fix64 rz);
 
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void GetBodyMassInfo(IntPtr bodyHandle, ref Fix64 mass);
+
         //2D fixture
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr AddFixtureToBody(IntPtr bodyHandle, IntPtr shapeHandle, Fix64 density);
@@ -168,5 +171,37 @@ namespace Parallel
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void Vec2Length64(Fix64Vec2 a, ref Fix64 result);
+
+        //joint
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void DestroyJoint(IntPtr worldHandle, IntPtr jointHandle);
+
+        //mouse joint
+        [DllImport(PLUGIN_NAME)]
+        internal static extern IntPtr CreateMouseJoint(IntPtr worldHandle, IntPtr bodyHandleA, IntPtr bodyHandleB, Fix64Vec2 position, Fix64 maxForce);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void MoveMouseJoint(IntPtr MoveMouseJoint, Fix64Vec2 position);
+
+        //spring joint
+        [DllImport(PLUGIN_NAME)]
+        internal static extern IntPtr CreateDistanceJoint(IntPtr worldHandle,
+                                                          IntPtr bodyHandleA,
+                                                          IntPtr bodyHandleB,
+                                                          Fix64Vec2 anchorA,
+                                                          Fix64Vec2 anchorB,
+                                                          bool collide,
+                                                          Fix64 frequency,
+                                                          Fix64 damp);
+
+        //hinge joint
+        [DllImport(PLUGIN_NAME)]
+        internal static extern IntPtr CreateHingeJoint(IntPtr worldHandle,
+                                                          IntPtr bodyHandleA,
+                                                          IntPtr bodyHandleB,
+                                                          Fix64Vec2 anchor,
+                                                          bool collide,
+                                                          bool limit, Fix64 lowerAngle, Fix64 upperAngle,
+                                                          bool motor, Fix64 motorSpeed, Fix64 motorTorque);
     }
 }

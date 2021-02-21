@@ -207,7 +207,14 @@ namespace Parallel
         { 
             if(!Application.isPlaying)
             {
-                ExportToUnity();
+#if UNITY_EDITOR
+                if (transform.hasChanged)
+                {
+                    transform.hasChanged = false;
+                    ImportFromUnity();
+                    UnityEditor.EditorUtility.SetDirty(this);
+                }
+#endif
             }
             else 
             {
@@ -229,7 +236,7 @@ namespace Parallel
         /// </summary>
         private void ExportToUnity()
         {
-            if(!Application.isPlaying || interpolateMethod == InterpolateMethod.None)
+            if (!Application.isPlaying || interpolateMethod == InterpolateMethod.None)
             {
                 transform.localPosition = (Vector3)_localPosition;
                 _interpolateProgress = 1;
@@ -248,12 +255,12 @@ namespace Parallel
         }
 
         /// <summary>
-        /// Imports the floating point values from the Unity Transform Component
+        /// Imports the floating point values from the Unity Transform Component.
+        /// Only works in the editing mode.
         /// NOT deterministic
         /// </summary>
-        void ImportFromUnity()
+        public void ImportFromUnity()
         {
-            //Debug.LogWarning("ImportFromUnity");
             if(!Application.isPlaying)
             {
                 _localPosition = (Fix64Vec3)transform.localPosition;
@@ -309,7 +316,6 @@ namespace Parallel
                 //set unity transform to the previous parallel transform position
                 if (interpolateMethod == InterpolateMethod.MoveTowards)
                 {
-                    transform.localPosition = (Vector3)_localPosition;
                     _interpolateStartPosition = transform.localPosition;
                     _interpolateProgress = 0;
                 }

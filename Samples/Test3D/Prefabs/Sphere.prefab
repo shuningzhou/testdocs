@@ -94,16 +94,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  interpolateMethod: 0
+  lerp: 0.2
   _localPosition:
     RawX: 0
     RawY: 0
     RawZ: 0
-  _localRotation:
-    RawX: 0
-    RawY: 0
-    RawZ: 0
-    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -161,7 +157,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81caa2a3210dfdf4fac9a331b662873b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:

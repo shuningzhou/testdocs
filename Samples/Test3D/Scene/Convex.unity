@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 12
   m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_LightingSettings: {fileID: 1041854861}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,6 +118,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -546,6 +548,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2641579372402057586, guid: b58cac3dec47eeb4a8895e925cb460b0,
+        type: 3}
+      propertyPath: _localScale.RawX
+      value: 104857600
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641579372402057586, guid: b58cac3dec47eeb4a8895e925cb460b0,
+        type: 3}
+      propertyPath: _localScale.RawZ
+      value: 104857600
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b58cac3dec47eeb4a8895e925cb460b0, type: 3}
 --- !u!1 &568564133 stripped
@@ -566,16 +578,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  interpolateMethod: 0
+  lerp: 0.2
   _localPosition:
     RawX: -25406996
     RawY: 4928307
     RawZ: 0
-  _localRotation:
-    RawX: 0
-    RawY: 0
-    RawZ: 0
-    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -596,7 +604,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -8756,7 +8766,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bodyID: 0
+  sceneIndex: 16
+  _bodyId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -8775,9 +8786,9 @@ MonoBehaviour:
   _fixedRotationY: 0
   _fixedRotationZ: 0
   _overideMassData: 0
-  _mass:
+  _customMass:
     Raw: 1048576
-  _centerOfMass:
+  _customCenterOfMass:
     RawX: 0
     RawY: 0
     RawZ: 0
@@ -8860,7 +8871,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -9343,10 +9356,10 @@ MonoBehaviour:
         Raw: 1048591
     - normal:
         RawX: 1048575
-        RawY: 0
+        RawY: -2
         RawZ: 0
       offset:
-        Raw: 1048574
+        Raw: 1048573
     - normal:
         RawX: 287947
         RawY: -467634
@@ -9362,9 +9375,9 @@ MonoBehaviour:
     - normal:
         RawX: -20388
         RawY: 869
-        RawZ: 1048377
+        RawZ: 1048378
       offset:
-        Raw: 1029766
+        Raw: 1029767
     - normal:
         RawX: 0
         RawY: -1048577
@@ -9657,16 +9670,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  interpolateMethod: 0
+  lerp: 0.2
   _localPosition:
     RawX: -28311552
     RawY: 10485760
     RawZ: 0
-  _localRotation:
-    RawX: 230396
-    RawY: -65744
-    RawZ: -267824
-    RawW: -985076
   _localEularAngles:
     RawX: 349789632
     RawY: 373071
@@ -9701,7 +9710,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bodyID: 0
+  sceneIndex: 6
+  _bodyId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -9720,9 +9730,9 @@ MonoBehaviour:
   _fixedRotationY: 0
   _fixedRotationZ: 0
   _overideMassData: 0
-  _mass:
+  _customMass:
     Raw: 1048576
-  _centerOfMass:
+  _customCenterOfMass:
     RawX: 0
     RawY: 0
     RawZ: 0
@@ -9827,7 +9837,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -10649,7 +10661,7 @@ MonoBehaviour:
         RawY: -1048486
         RawZ: 16136
       offset:
-        Raw: -7293
+        Raw: -7294
     - normal:
         RawX: -524161
         RawY: 303855
@@ -11235,7 +11247,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bodyID: 0
+  sceneIndex: 11
+  _bodyId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -11254,9 +11267,9 @@ MonoBehaviour:
   _fixedRotationY: 0
   _fixedRotationZ: 0
   _overideMassData: 0
-  _mass:
+  _customMass:
     Raw: 1048576
-  _centerOfMass:
+  _customCenterOfMass:
     RawX: 0
     RawY: 0
     RawZ: 0
@@ -11272,16 +11285,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  interpolateMethod: 0
+  lerp: 0.2
   _localPosition:
     RawX: 0
     RawY: -3470786
     RawZ: -12142510
-  _localRotation:
-    RawX: -301807
-    RawY: -406384
-    RawZ: -737227
-    RawW: 547513
   _localEularAngles:
     RawX: 316953056
     RawY: -10
@@ -11378,6 +11387,26 @@ PrefabInstance:
     - target: {fileID: 1258077026, guid: 10a182742b70adc45b9d6177dd2b0000, type: 3}
       propertyPath: m_Name
       value: SM_PolygonPrototype_Primitive_Cylander_01P
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258077028, guid: 10a182742b70adc45b9d6177dd2b0000, type: 3}
+      propertyPath: _localPosition.RawX
+      value: 29360128
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258077028, guid: 10a182742b70adc45b9d6177dd2b0000, type: 3}
+      propertyPath: _localPosition.RawY
+      value: 10485760
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258077028, guid: 10a182742b70adc45b9d6177dd2b0000, type: 3}
+      propertyPath: _localEularAngles.RawX
+      value: 348545152
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258077028, guid: 10a182742b70adc45b9d6177dd2b0000, type: 3}
+      propertyPath: _localEularAngles.RawY
+      value: 327459136
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258077028, guid: 10a182742b70adc45b9d6177dd2b0000, type: 3}
+      propertyPath: _localEularAngles.RawZ
+      value: 70409768
       objectReference: {fileID: 0}
     - target: {fileID: 5040507478634144979, guid: 10a182742b70adc45b9d6177dd2b0000,
         type: 3}
@@ -11520,7 +11549,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -11856,11 +11887,11 @@ MonoBehaviour:
     - edge: 33
     planes:
     - normal:
-        RawX: 493056
-        RawY: 233984
-        RawZ: 924160
+        RawX: 509346
+        RawY: 241714
+        RawZ: 954693
       offset:
-        Raw: 1362734
+        Raw: 1407758
     - normal:
         RawX: -1
         RawY: 950352
@@ -11869,10 +11900,10 @@ MonoBehaviour:
         Raw: 443104
     - normal:
         RawX: 1048578
-        RawY: -5
+        RawY: -7
         RawZ: 0
       offset:
-        Raw: 1048575
+        Raw: 1048574
     - normal:
         RawX: 0
         RawY: 0
@@ -12067,7 +12098,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bodyID: 0
+  sceneIndex: 8
+  _bodyId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -12086,9 +12118,9 @@ MonoBehaviour:
   _fixedRotationY: 0
   _fixedRotationZ: 0
   _overideMassData: 0
-  _mass:
+  _customMass:
     Raw: 1048576
-  _centerOfMass:
+  _customCenterOfMass:
     RawX: 0
     RawY: 0
     RawZ: 0
@@ -12104,16 +12136,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  interpolateMethod: 0
+  lerp: 0.2
   _localPosition:
     RawX: -20971520
     RawY: 10485760
     RawZ: 0
-  _localRotation:
-    RawX: -223898
-    RawY: -91438
-    RawZ: 385757
-    RawW: 944569
   _localEularAngles:
     RawX: 357884160
     RawY: 357173344
@@ -12122,6 +12150,67 @@ MonoBehaviour:
     RawX: 1048576
     RawY: 1048576
     RawZ: 1048576
+--- !u!850595691 &1041854861
+LightingSettings:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Settings.lighting
+  serializedVersion: 2
+  m_GIWorkflowMode: 0
+  m_EnableBakedLightmaps: 1
+  m_EnableRealtimeLightmaps: 1
+  m_RealtimeEnvironmentLighting: 1
+  m_BounceScale: 1
+  m_AlbedoBoost: 1
+  m_IndirectOutputScale: 1
+  m_UsingShadowmask: 1
+  m_BakeBackend: 1
+  m_LightmapMaxSize: 1024
+  m_BakeResolution: 40
+  m_Padding: 2
+  m_TextureCompression: 1
+  m_AO: 0
+  m_AOMaxDistance: 1
+  m_CompAOExponent: 1
+  m_CompAOExponentDirect: 0
+  m_ExtractAO: 0
+  m_MixedBakeMode: 2
+  m_LightmapsBakeMode: 1
+  m_FilterMode: 1
+  m_LightmapParameters: {fileID: 0}
+  m_ExportTrainingData: 0
+  m_TrainingDataDestination: TrainingData
+  m_RealtimeResolution: 2
+  m_ForceWhiteAlbedo: 0
+  m_ForceUpdates: 0
+  m_FinalGather: 0
+  m_FinalGatherRayCount: 256
+  m_FinalGatherFiltering: 1
+  m_PVRCulling: 1
+  m_PVRSampling: 1
+  m_PVRDirectSampleCount: 32
+  m_PVRSampleCount: 500
+  m_PVREnvironmentSampleCount: 500
+  m_PVREnvironmentReferencePointCount: 2048
+  m_LightProbeSampleCountMultiplier: 4
+  m_PVRBounces: 2
+  m_PVRRussianRouletteStartBounce: 2
+  m_PVREnvironmentMIS: 0
+  m_PVRFilteringMode: 2
+  m_PVRDenoiserTypeDirect: 0
+  m_PVRDenoiserTypeIndirect: 0
+  m_PVRDenoiserTypeAO: 0
+  m_PVRFilterTypeDirect: 0
+  m_PVRFilterTypeIndirect: 0
+  m_PVRFilterTypeAO: 0
+  m_PVRFilteringGaussRadiusDirect: 1
+  m_PVRFilteringGaussRadiusIndirect: 5
+  m_PVRFilteringGaussRadiusAO: 2
+  m_PVRFilteringAtrousPositionSigmaDirect: 0.5
+  m_PVRFilteringAtrousPositionSigmaIndirect: 2
+  m_PVRFilteringAtrousPositionSigmaAO: 1
 --- !u!1 &1262230884 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1611405630702498, guid: 0a38eb871bfa7c646bc59c4f2eeea64b,
@@ -12140,7 +12229,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -12839,16 +12930,16 @@ MonoBehaviour:
         Raw: 69271
     - normal:
         RawX: -698051
-        RawY: -217519
+        RawY: -217553
         RawZ: 753222
       offset:
-        Raw: 112918
+        Raw: 112926
     - normal:
-        RawX: 3205
-        RawY: -1042166
-        RawZ: -18954
+        RawX: 3094
+        RawY: -1051953
+        RawZ: -19273
       offset:
-        Raw: 353389
+        Raw: 356710
     - normal:
         RawX: -682924
         RawY: -212819
@@ -12868,11 +12959,11 @@ MonoBehaviour:
       offset:
         Raw: 115399
     - normal:
-        RawX: 8159
-        RawY: -1045622
-        RawZ: -19132
+        RawX: 8236
+        RawY: -1055535
+        RawZ: -19313
       offset:
-        Raw: 354581
+        Raw: 357943
     - normal:
         RawX: 686649
         RawY: -221952
@@ -12881,10 +12972,10 @@ MonoBehaviour:
         Raw: 122610
     - normal:
         RawX: 4307
-        RawY: 14108
-        RawZ: -1048511
+        RawY: 14109
+        RawZ: -1048544
       offset:
-        Raw: 54960
+        Raw: 54962
     - normal:
         RawX: 510734
         RawY: 916530
@@ -13296,7 +13387,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bodyID: 0
+  sceneIndex: 14
+  _bodyId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -13315,9 +13407,9 @@ MonoBehaviour:
   _fixedRotationY: 0
   _fixedRotationZ: 0
   _overideMassData: 0
-  _mass:
+  _customMass:
     Raw: 1048576
-  _centerOfMass:
+  _customCenterOfMass:
     RawX: 0
     RawY: 0
     RawZ: 0
@@ -13333,16 +13425,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  interpolateMethod: 0
+  lerp: 0.2
   _localPosition:
     RawX: 31457280
     RawY: 10485760
     RawZ: 0
-  _localRotation:
-    RawX: 717300
-    RawY: 0
-    RawZ: 0
-    RawW: 764847
   _localEularAngles:
     RawX: 90518448
     RawY: 0
@@ -13369,16 +13457,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  interpolateMethod: 0
+  lerp: 0.2
   _localPosition:
     RawX: 0
     RawY: 0
     RawZ: 0
-  _localRotation:
-    RawX: 0
-    RawY: 0
-    RawZ: 0
-    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -13399,7 +13483,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bodyID: 0
+  sceneIndex: 15
+  _bodyId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -13418,9 +13503,9 @@ MonoBehaviour:
   _fixedRotationY: 0
   _fixedRotationZ: 0
   _overideMassData: 0
-  _mass:
+  _customMass:
     Raw: 1048576
-  _centerOfMass:
+  _customCenterOfMass:
     RawX: 0
     RawY: 0
     RawZ: 0
@@ -13436,7 +13521,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -21602,16 +21689,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  interpolateMethod: 0
+  lerp: 0.2
   _localPosition:
     RawX: -30807162
     RawY: 16577987
     RawZ: 0
-  _localRotation:
-    RawX: 318180
-    RawY: 488084
-    RawZ: 432246
-    RawW: -757105
   _localEularAngles:
     RawX: 319522080
     RawY: 327354944
@@ -21632,7 +21715,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bodyID: 0
+  sceneIndex: 17
+  _bodyId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -21651,9 +21735,9 @@ MonoBehaviour:
   _fixedRotationY: 0
   _fixedRotationZ: 0
   _overideMassData: 0
-  _mass:
+  _customMass:
     Raw: 1048576
-  _centerOfMass:
+  _customCenterOfMass:
     RawX: 0
     RawY: 0
     RawZ: 0
@@ -21669,7 +21753,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -29979,7 +30065,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bodyID: 0
+  sceneIndex: 5
+  _bodyId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -29998,9 +30085,9 @@ MonoBehaviour:
   _fixedRotationY: 0
   _fixedRotationZ: 0
   _overideMassData: 0
-  _mass:
+  _customMass:
     Raw: 1048576
-  _centerOfMass:
+  _customCenterOfMass:
     RawX: 0
     RawY: 0
     RawZ: 0
@@ -30016,16 +30103,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  interpolateMethod: 0
+  lerp: 0.2
   _localPosition:
     RawX: -31457280
     RawY: 10485760
     RawZ: 0
-  _localRotation:
-    RawX: 190297
-    RawY: -83285
-    RawZ: -406295
-    RawW: -944079
   _localEularAngles:
     RawX: 353525792
     RawY: 155507
@@ -30046,7 +30129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -30482,9 +30567,9 @@ MonoBehaviour:
     - normal:
         RawX: 0
         RawY: 1048577
-        RawZ: -3
+        RawZ: -5
       offset:
-        Raw: 2363025
+        Raw: 2363024
     - normal:
         RawX: -344325
         RawY: 392720
@@ -30492,17 +30577,17 @@ MonoBehaviour:
       offset:
         Raw: 1027426
     - normal:
-        RawX: 10575
-        RawY: 300347
-        RawZ: 1004694
+        RawX: 10577
+        RawY: 300387
+        RawZ: 1004829
       offset:
-        Raw: 851197
+        Raw: 851311
     - normal:
         RawX: 1048576
-        RawY: -2
+        RawY: -3
         RawZ: 0
       offset:
-        Raw: 1370602
+        Raw: 1370600
     - normal:
         RawX: 0
         RawY: -1048579
@@ -30820,7 +30905,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bodyID: 0
+  sceneIndex: 7
+  _bodyId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -30839,9 +30925,9 @@ MonoBehaviour:
   _fixedRotationY: 0
   _fixedRotationZ: 0
   _overideMassData: 0
-  _mass:
+  _customMass:
     Raw: 1048576
-  _centerOfMass:
+  _customCenterOfMass:
     RawX: 0
     RawY: 0
     RawZ: 0
@@ -30857,16 +30943,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  interpolateMethod: 0
+  lerp: 0.2
   _localPosition:
     RawX: -24117248
     RawY: 10485760
     RawZ: 0
-  _localRotation:
-    RawX: 35476
-    RawY: -12139
-    RawZ: -339258
-    RawW: -991468
   _localEularAngles:
     RawX: 373189664
     RawY: 0
@@ -30887,7 +30969,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -31531,11 +31615,11 @@ MonoBehaviour:
       offset:
         Raw: 1858671
     - normal:
-        RawX: 0
+        RawX: -1
         RawY: 0
         RawZ: 1048576
       offset:
-        Raw: 104856
+        Raw: 104855
     - normal:
         RawX: 0
         RawY: 1048601
@@ -31972,7 +32056,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bodyID: 0
+  sceneIndex: 12
+  _bodyId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -31991,9 +32076,9 @@ MonoBehaviour:
   _fixedRotationY: 0
   _fixedRotationZ: 0
   _overideMassData: 0
-  _mass:
+  _customMass:
     Raw: 1048576
-  _centerOfMass:
+  _customCenterOfMass:
     RawX: 0
     RawY: 0
     RawZ: 0
@@ -32009,7 +32094,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -32687,11 +32774,11 @@ MonoBehaviour:
       offset:
         Raw: 233582
     - normal:
-        RawX: 50675
-        RawY: -1046503
-        RawZ: 60493
+        RawX: 50855
+        RawY: -1050229
+        RawZ: 60708
       offset:
-        Raw: 5145
+        Raw: 5163
     - normal:
         RawX: 49196
         RawY: -1046379
@@ -32706,8 +32793,8 @@ MonoBehaviour:
         Raw: 0
     - normal:
         RawX: -284780
-        RawY: -1009471
-        RawZ: 0
+        RawY: -1009491
+        RawZ: -62
       offset:
         Raw: 48021
     - normal:
@@ -32771,23 +32858,23 @@ MonoBehaviour:
       offset:
         Raw: 287531
     - normal:
-        RawX: 47277
-        RawY: -976153
-        RawZ: -385671
+        RawX: 47349
+        RawY: -977638
+        RawZ: -386258
       offset:
-        Raw: 79401
+        Raw: 79521
     - normal:
         RawX: -1021998
         RawY: 234622
-        RawZ: -4
+        RawZ: -7
       offset:
         Raw: 235422
     - normal:
-        RawX: 1022459
+        RawX: 1022456
         RawY: 232379
         RawZ: -10677
       offset:
-        Raw: 233570
+        Raw: 233569
   convexData2:
     triCount: 20
     tris:
@@ -33183,16 +33270,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  interpolateMethod: 0
+  lerp: 0.2
   _localPosition:
     RawX: 26214400
     RawY: 10485760
     RawZ: 0
-  _localRotation:
-    RawX: 850625
-    RawY: 0
-    RawZ: 0
-    RawW: 613146
   _localEularAngles:
     RawX: 75046112
     RawY: 188743680
@@ -33481,7 +33564,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bodyID: 0
+  sceneIndex: 10
+  _bodyId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -33500,9 +33584,9 @@ MonoBehaviour:
   _fixedRotationY: 0
   _fixedRotationZ: 0
   _overideMassData: 0
-  _mass:
+  _customMass:
     Raw: 1048576
-  _centerOfMass:
+  _customCenterOfMass:
     RawX: 0
     RawY: 0
     RawZ: 0
@@ -33518,7 +33602,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ceeecdef0deb8498fc9bbcf311e9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shapeID: 0
   isTrigger: 0
+  createUnityPhysicsCollider: 0
   _friction:
     Raw: 419430
   _bounciness:
@@ -41678,16 +41764,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deterministic: 1
+  interpolateMethod: 0
+  lerp: 0.2
   _localPosition:
     RawX: 8388608
     RawY: 10485760
     RawZ: 0
-  _localRotation:
-    RawX: 511544
-    RawY: -202555
-    RawZ: -117090
-    RawW: 884926
   _localEularAngles:
     RawX: 53777248
     RawY: 331278208
@@ -41707,6 +41789,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SM_PolygonPrototype_Buildings_Stairs_1x1_01P
+      objectReference: {fileID: 0}
+    - target: {fileID: 2082285084004617741, guid: b4c939bd6a93add4a9394b87ae3b3d5f,
+        type: 3}
+      propertyPath: _localPosition.RawX
+      value: -36637244
+      objectReference: {fileID: 0}
+    - target: {fileID: 2082285084004617741, guid: b4c939bd6a93add4a9394b87ae3b3d5f,
+        type: 3}
+      propertyPath: _localPosition.RawY
+      value: 10485760
+      objectReference: {fileID: 0}
+    - target: {fileID: 2082285084004617741, guid: b4c939bd6a93add4a9394b87ae3b3d5f,
+        type: 3}
+      propertyPath: _localEularAngles.RawX
+      value: 19271636
+      objectReference: {fileID: 0}
+    - target: {fileID: 2082285084004617741, guid: b4c939bd6a93add4a9394b87ae3b3d5f,
+        type: 3}
+      propertyPath: _localEularAngles.RawY
+      value: 317772704
+      objectReference: {fileID: 0}
+    - target: {fileID: 2082285084004617741, guid: b4c939bd6a93add4a9394b87ae3b3d5f,
+        type: 3}
+      propertyPath: _localEularAngles.RawZ
+      value: 350378528
       objectReference: {fileID: 0}
     - target: {fileID: 2083790887549469636, guid: b4c939bd6a93add4a9394b87ae3b3d5f,
         type: 3}
@@ -41776,6 +41883,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SM_PolygonApocalypse_Bld_House_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3662589169306080867, guid: c05a8ac5c32f9db4ea5b88e34a65935f,
+        type: 3}
+      propertyPath: _localPosition.RawX
+      value: -11534336
+      objectReference: {fileID: 0}
+    - target: {fileID: 3662589169306080867, guid: c05a8ac5c32f9db4ea5b88e34a65935f,
+        type: 3}
+      propertyPath: _localPosition.RawY
+      value: 10485760
+      objectReference: {fileID: 0}
+    - target: {fileID: 3662589169306080867, guid: c05a8ac5c32f9db4ea5b88e34a65935f,
+        type: 3}
+      propertyPath: _localEularAngles.RawX
+      value: 355572128
+      objectReference: {fileID: 0}
+    - target: {fileID: 3662589169306080867, guid: c05a8ac5c32f9db4ea5b88e34a65935f,
+        type: 3}
+      propertyPath: _localEularAngles.RawY
+      value: 239423456
+      objectReference: {fileID: 0}
+    - target: {fileID: 3662589169306080867, guid: c05a8ac5c32f9db4ea5b88e34a65935f,
+        type: 3}
+      propertyPath: _localEularAngles.RawZ
+      value: 158628608
       objectReference: {fileID: 0}
     - target: {fileID: 3664564541826222952, guid: c05a8ac5c32f9db4ea5b88e34a65935f,
         type: 3}

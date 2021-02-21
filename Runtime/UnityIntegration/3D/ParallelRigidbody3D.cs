@@ -3,7 +3,7 @@
 namespace Parallel
 {
     [RequireComponent(typeof(ParallelTransform))]
-    public class ParallelRigidbody3D : MonoBehaviour, IParallelRigidbody3D, IReplayable
+    public class ParallelRigidbody3D : MonoBehaviour, IParallelRigidbody3D
     {
         ParallelTransform _pTransform;
 
@@ -26,9 +26,13 @@ namespace Parallel
 
         ParallelCollider3D[] colliders = new ParallelCollider3D[0];
 
-        public PBody3D _body3D;
+        internal PBody3D _body3D;
+
         [SerializeField]
-        int _bodyID;
+        internal int sceneIndex;
+
+        [SerializeField]
+        int _bodyId;
         [SerializeField]
         bool _awake;
 
@@ -56,11 +60,19 @@ namespace Parallel
         [SerializeField]
         bool _overideMassData = false;
         [SerializeField]
-        Fix64 _mass = Fix64.one;
+        Fix64 _customMass = Fix64.one;
         [SerializeField]
-        Fix64Vec3 _centerOfMass = Fix64Vec3.zero;
+        Fix64Vec3 _customCenterOfMass = Fix64Vec3.zero;
 
-        public bool IsAwake
+        public int bodyId
+        {
+            get
+            {
+                return _bodyId;
+            }
+        }
+
+        public bool isAwake
         {
             get
             {
@@ -68,12 +80,20 @@ namespace Parallel
             }
         }
 
-        public Fix64Vec3 COM
+        public Fix64Vec3 centerOfMass
         {
             get
             {
                 //TODO: get com from physics engine
-                return _centerOfMass;
+                return _customCenterOfMass;
+            }
+        }
+
+        public Fix64 mass
+        {
+            get
+            {
+                return _body3D.mass;
             }
         }
 
@@ -368,17 +388,13 @@ namespace Parallel
         }
 
         //============================== Unity Events ==============================
-        void Awake()
+        void OnValidate()
         {
-            ParallelPhysicsController3D pSettings = FindObjectOfType<ParallelPhysicsController3D>();
+            sceneIndex = transform.GetSiblingIndex();
+        }
 
-            if (pSettings == null)
-            {
-                return;
-            }
-
-            pSettings.InitIfNecessary();
-
+        internal void Initialize()
+        {
             parallelFixedUpdates = GetComponents<IParallelFixedUpdate>();
             parallelCollisions = GetComponents<IParallelCollision3D>();
             parallelTriggers = GetComponents<IParallelTrigger3D>();
@@ -399,7 +415,7 @@ namespace Parallel
                                         fixedRotationZ,
                                         this);
 
-            _bodyID = _body3D.BodyID;
+            _bodyId = _body3D.BodyID;
 
             foreach (ParallelCollider3D collider in colliders)
             {
@@ -418,20 +434,21 @@ namespace Parallel
 
             if(_overideMassData)
             {
-                //Parallel3D.UpdateMassData(_body3D, _mass, _centerOfMass);
-                if (_centerOfMass != null)
+                if (_customCenterOfMass != null)
                 {
-                    Fix64Vec3 com = _centerOfMass;
+                    Fix64Vec3 com = _customCenterOfMass;
                     //Debug.Log(com);
-                    Parallel3D.UpdateMassData(_body3D, _mass, com);
+                    Parallel3D.UpdateMassData(_body3D, _customMass, com);
 
 
                 }
                 else
                 {
-                    Parallel3D.UpdateMass(_body3D, _mass);
+                    Parallel3D.UpdateMass(_body3D, _customMass);
                 }
             }
+
+            Parallel3D.ReadBodyMassInfo(_body3D);
         }
 
         void OnEnable()
@@ -442,11 +459,6 @@ namespace Parallel
         void OnDisable()
         {
             Parallel3D.SetEnabled(_body3D, false);
-        }
-
-        void OnDestroy()
-        {
-            Parallel3D.DestoryBody(_body3D, this);
         }
 
         // Path finding
@@ -482,21 +494,13 @@ namespace Parallel
 
                 Parallel3D.AddFixture(body, shape, (Fix64)1);
             }
+
+            Parallel3D.ReadBodyMassInfo(_body3D);
         }
 
-        //============================== IReplayable ==============================
-        public void Save(uint step)
+        internal void Destroy()
         {
-            _body3D.SaveExport(step);
-        }
-
-        public bool Load(uint step)
-        {
-            bool result = _body3D.LoadSavedExport(step);
-            //todo: velocity and awake
-            pTransform._internal_WriteTranform(_body3D.position, _body3D.orientation);
-
-            return result;
+            Parallel3D.DestoryBody(_body3D, this);
         }
     }
 }
