@@ -58,7 +58,7 @@ namespace Parallel.Sample
             Fix64 radius = (Fix64)sphereRadius;
             Fix64Vec3 end = start + movement;
 
-            hit = Parallel3D.SphereCast(start, radius, movement, layerMask, ref hitInfo);
+            hit = Parallel3D.SphereCast(start, radius, movement, layerMask, ref hitInfo, null);
 
             if (hit)
             {

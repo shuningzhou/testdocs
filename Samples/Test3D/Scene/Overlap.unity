@@ -304,6 +304,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5453278432847577398, guid: 4e8160c27d8b5c442b2a84668b02d75a,
+        type: 3}
+      propertyPath: sceneIndex
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e8160c27d8b5c442b2a84668b02d75a, type: 3}
 --- !u!1 &606035434
@@ -396,6 +401,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 55064673435790780, guid: 0afdb65dbb329fa4285f5983a1cecb90,
+        type: 3}
+      propertyPath: sceneIndex
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3273625959571764502, guid: 0afdb65dbb329fa4285f5983a1cecb90,
         type: 3}
       propertyPath: _position.RawX
@@ -590,6 +600,11 @@ PrefabInstance:
       propertyPath: _localScale.RawZ
       value: 31457280
       objectReference: {fileID: 0}
+    - target: {fileID: 5185590011432162343, guid: b58cac3dec47eeb4a8895e925cb460b0,
+        type: 3}
+      propertyPath: sceneIndex
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b58cac3dec47eeb4a8895e925cb460b0, type: 3}
 --- !u!1001 &937596291
@@ -688,6 +703,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8908760540659672827, guid: 90777aaade1f7cf4ba4a97ae1dda263b,
+        type: 3}
+      propertyPath: sceneIndex
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90777aaade1f7cf4ba4a97ae1dda263b, type: 3}
@@ -822,6 +842,11 @@ PrefabInstance:
     - target: {fileID: 1258077028, guid: 10a182742b70adc45b9d6177dd2b0000, type: 3}
       propertyPath: _localPosition.RawZ
       value: -2569011
+      objectReference: {fileID: 0}
+    - target: {fileID: 1786638509656915246, guid: 10a182742b70adc45b9d6177dd2b0000,
+        type: 3}
+      propertyPath: sceneIndex
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5040507478634144979, guid: 10a182742b70adc45b9d6177dd2b0000,
         type: 3}
@@ -1055,6 +1080,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 884731636311265817, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: sceneIndex
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1565869874750588696, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
       propertyPath: _position.RawX

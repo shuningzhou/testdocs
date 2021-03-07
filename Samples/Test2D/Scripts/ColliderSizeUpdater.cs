@@ -7,13 +7,13 @@ namespace Parallel.Sample
 {
     public class ColliderSizeUpdater : MonoBehaviour
     {
-        ParallelBoxCollider _boxCollider;
+        ParallelBoxCollider2D _boxCollider;
         Fix64 scale = Fix64.FromDivision(12, 10);
 
         // Start is called before the first frame update
         void Start()
         {
-            _boxCollider = GetComponent<ParallelBoxCollider>();
+            _boxCollider = GetComponent<ParallelBoxCollider2D>();
         }
 
         // Update is called once per frame

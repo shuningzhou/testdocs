@@ -58,6 +58,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -82,6 +83,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &2641579372402057586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,12 +96,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: -5242880
     RawZ: 0
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -120,7 +126,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bodyID: 0
+  childrenRigidbodies: []
+  parent: {fileID: 0}
+  _bodyId: 0
+  sceneIndex: 0
+  parentTransform: {fileID: 0}
+  externalId: 0
   _awake: 0
   _bodyType: 0
   _linearDamping:
@@ -138,10 +149,13 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
-  _mass:
+  _customMass:
     Raw: 1048576
-  _centerOfMass:
+  _customCenterOfMass:
     RawX: 0
     RawY: 0
     RawZ: 0

@@ -271,8 +271,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndex: 4
   _bodyId: 0
+  sceneIndex: 4
+  externalId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -290,6 +291,9 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
   _customMass:
     Raw: 1048576
@@ -309,12 +313,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.1
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: 8904507
     RawZ: 0
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -511,8 +519,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndex: 3
   _bodyId: 0
+  sceneIndex: 3
+  externalId: 0
   _awake: 0
   _bodyType: 0
   _linearDamping:
@@ -530,6 +539,9 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
   _customMass:
     Raw: 1048576
@@ -549,12 +561,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: 0
     RawZ: 0
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0

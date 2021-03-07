@@ -1,8 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Parallel
 {
     [RequireComponent(typeof(ParallelTransform))]
+    [ExecuteInEditMode]
     public class ParallelRigidbody3D : MonoBehaviour, IParallelRigidbody3D
     {
         ParallelTransform _pTransform;
@@ -25,14 +29,18 @@ namespace Parallel
         IParallelTrigger3D[] parallelTriggers = new IParallelTrigger3D[0];
 
         ParallelCollider3D[] colliders = new ParallelCollider3D[0];
+        public List<ParallelRigidbody3D> childrenRigidbodies = new List<ParallelRigidbody3D>();
+        public ParallelRigidbody3D parent;
 
         internal PBody3D _body3D;
+        [SerializeField]
+        int _bodyId;
 
         [SerializeField]
         internal int sceneIndex;
+        public Transform parentTransform;
+        public uint externalId;
 
-        [SerializeField]
-        int _bodyId;
         [SerializeField]
         bool _awake;
 
@@ -55,6 +63,15 @@ namespace Parallel
         bool _fixedRotationY = false;
         [SerializeField]
         bool _fixedRotationZ = false;
+
+
+        [SerializeField]
+        bool _fixedPositionX = false;
+        [SerializeField]
+        bool _fixedPositionY = false;
+        [SerializeField]
+        bool _fixedPositionZ = false;
+
 
         //only used when creating the body
         [SerializeField]
@@ -179,6 +196,42 @@ namespace Parallel
             {
                 _fixedRotationZ = value;
 
+            }
+        }
+
+        public bool fixedPositionX
+        {
+            get
+            {
+                return _fixedPositionX;
+            }
+            set
+            {
+                _fixedPositionX = value;
+            }
+        }
+
+        public bool fixedPositionY
+        {
+            get
+            {
+                return _fixedPositionY;
+            }
+            set
+            {
+                _fixedPositionY = value;
+            }
+        }
+
+        public bool fixedPositionZ
+        {
+            get
+            {
+                return _fixedPositionZ;
+            }
+            set
+            {
+                _fixedPositionZ = value;
             }
         }
 
@@ -375,8 +428,28 @@ namespace Parallel
 
         public void OnTransformUpdated()
         {
+            if (parent != null)
+            {
+                return;
+            }
+
             _awake = _body3D.IsAwake;
+
+            //parent update
             pTransform._internal_WriteTranform(_body3D.position, _body3D.orientation);
+
+            UpdateChildren();
+        }
+
+        void UpdateChildren()
+        {
+            //update children rigidbodies
+            foreach (ParallelRigidbody3D child in childrenRigidbodies)
+            {
+                Parallel3D.UpdateBodyTransForm(child._body3D, child.pTransform.position, child.pTransform.rotation);
+
+                child.UpdateChildren();
+            }
         }
 
         public void Step(Fix64 timeStep)
@@ -387,10 +460,66 @@ namespace Parallel
             }
         }
 
-        //============================== Unity Events ==============================
-        void OnValidate()
+        public void UpdateRigidbodyHierarchy()
         {
-            sceneIndex = transform.GetSiblingIndex();
+            if(parent != null)
+            {
+                parent.childrenRigidbodies.Remove(this);
+            }
+
+            parent = ParallelUtil.FindParentComponent<ParallelRigidbody3D>(this.gameObject);
+
+            if (parent != null)
+            {
+                if(!parent.childrenRigidbodies.Contains(this))
+                {
+                    parent.childrenRigidbodies.Add(this);
+                }
+
+                UnityEditor.EditorUtility.SetDirty(parent);
+            }
+
+            childrenRigidbodies.RemoveAll(item => item == null);
+        }
+
+        //============================== Unity Events ==============================
+
+        void Update()
+        {
+#if UNITY_EDITOR
+            if(!Application.isPlaying)
+            {
+                if (sceneIndex != transform.GetSiblingIndex())
+                {
+                    sceneIndex = transform.GetSiblingIndex();
+                    UnityEditor.EditorUtility.SetDirty(this);
+                }
+
+                if (transform.parent != null)
+                {
+                    if (parentTransform == null || parentTransform != transform.parent)
+                    {
+                        parentTransform = transform.parent;
+                        UpdateRigidbodyHierarchy();
+                        UnityEditor.EditorUtility.SetDirty(this);
+                    }
+                }
+            }
+#endif
+        }
+
+        void OnDestroy()
+        {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                if (parent != null)
+                {
+                    parent.childrenRigidbodies.Remove(this);
+                    UnityEditor.EditorUtility.SetDirty(parent);
+                }
+            }
+#endif
         }
 
         internal void Initialize()
@@ -399,10 +528,9 @@ namespace Parallel
             parallelCollisions = GetComponents<IParallelCollision3D>();
             parallelTriggers = GetComponents<IParallelTrigger3D>();
 
-            //pTransform.ImportFromUnity();
-
             colliders = GetComponentsInChildren<ParallelCollider3D>();
 
+            //add the parent first, so parent has the smallest body id
             _body3D = Parallel3D.AddBody(
                                         (int)bodyType,
                                         pTransform.position,
@@ -413,12 +541,29 @@ namespace Parallel
                                         fixedRotationX,
                                         fixedRotationY,
                                         fixedRotationZ,
-                                        this);
+                                        fixedPositionX,
+                                        fixedPositionY,
+                                        fixedPositionZ,
+                                        this,
+                                        externalId);
 
             _bodyId = _body3D.BodyID;
 
+            //mark all children rigidbodies as static and add to the physics world 
+            //all colliders of the children will be added first
+            foreach (ParallelRigidbody3D child in childrenRigidbodies)
+            {
+                child.bodyType = BodyType.Static;
+                child.Initialize();
+            }
+
             foreach (ParallelCollider3D collider in colliders)
             {
+                if(collider.attachedBody != null)
+                {
+                    continue;
+                }
+
                 PShape3D shape = collider.CreateShape(gameObject);
 
                 if (shape == null)
@@ -429,7 +574,12 @@ namespace Parallel
 
                 PFixture3D fixture = Parallel3D.AddFixture(_body3D, shape, (Fix64)1);
 
-                collider.ReceiveFixture(fixture);
+                collider.ReceiveFixture(fixture, this);
+            }
+
+            if(bodyType == BodyType.Static)
+            {
+                return;
             }
 
             if(_overideMassData)
@@ -451,17 +601,114 @@ namespace Parallel
             Parallel3D.ReadBodyMassInfo(_body3D);
         }
 
+        internal PBody3D Insert(UInt16 bId, UInt32 exId, IntPtr previousBody)
+        {
+            parallelFixedUpdates = GetComponents<IParallelFixedUpdate>();
+            parallelCollisions = GetComponents<IParallelCollision3D>();
+            parallelTriggers = GetComponents<IParallelTrigger3D>();
+
+            colliders = GetComponentsInChildren<ParallelCollider3D>();
+
+            _body3D = Parallel3D.InsertBody(
+                                        (int)bodyType,
+                                        pTransform.position,
+                                        pTransform.rotation,
+                                        linearDamping,
+                                        angularDamping,
+                                        gravityScale,
+                                        fixedRotationX,
+                                        fixedRotationY,
+                                        fixedRotationZ,
+                                        fixedPositionX,
+                                        fixedPositionY,
+                                        fixedPositionZ,
+                                        this,
+                                        exId,
+                                        bId,
+                                        previousBody);
+
+            _bodyId = bId;
+            externalId = exId;
+
+            //mark all children rigidbodies as static and add to the physics world 
+            //all colliders of the children will be added first
+            PBody3D lastInsertedBody = _body3D;
+            bId = (UInt16)(lastInsertedBody.BodyID + 1);
+            exId = 0; //does not matter because children are created when parent is created, for now, we don't allow create/destory children directly
+
+            foreach (ParallelRigidbody3D child in childrenRigidbodies)
+            {
+                child.bodyType = BodyType.Static;
+
+                lastInsertedBody = child.Insert(bId, exId, lastInsertedBody.IntPointer);
+
+                bId = (UInt16)(lastInsertedBody.BodyID + 1);
+            }
+
+            foreach (ParallelCollider3D collider in colliders)
+            {
+                if (collider.attachedBody != null)
+                {
+                    continue;
+                }
+
+                PShape3D shape = collider.CreateShape(gameObject);
+
+                if (shape == null)
+                {
+                    Debug.LogError("Failed to create collider shape");
+                    continue;
+                }
+
+                PFixture3D fixture = Parallel3D.AddFixture(_body3D, shape, (Fix64)1);
+
+                collider.ReceiveFixture(fixture, this);
+            }
+
+            if (bodyType == BodyType.Static)
+            {
+                return lastInsertedBody;
+            }
+
+            if (_overideMassData)
+            {
+                if (_customCenterOfMass != null)
+                {
+                    Fix64Vec3 com = _customCenterOfMass;
+                    //Debug.Log(com);
+                    Parallel3D.UpdateMassData(_body3D, _customMass, com);
+
+
+                }
+                else
+                {
+                    Parallel3D.UpdateMass(_body3D, _customMass);
+                }
+            }
+
+            Parallel3D.ReadBodyMassInfo(_body3D);
+
+            return lastInsertedBody;
+        }
+
         void OnEnable()
         {
-            Parallel3D.SetEnabled(_body3D, true);
+            //when gameobject is create dynamically, body3D object is not created when the gameobject is enabled
+            if(_body3D != null)
+            {
+                Parallel3D.SetEnabled(_body3D, true);
+            }
         }
 
         void OnDisable()
         {
-            Parallel3D.SetEnabled(_body3D, false);
+            if (_body3D != null)
+            {
+                Parallel3D.SetEnabled(_body3D, false);
+            }
         }
 
-        // Path finding
+        // Path finding, children rigidbodies are ignored
         public void AddToWorldForPathFinding()
         {
             if(_bodyType != BodyType.Static)
@@ -480,7 +727,11 @@ namespace Parallel
                             fixedRotationX,
                             fixedRotationY,
                             fixedRotationZ,
-                            this);
+                            fixedPositionX,
+                            fixedPositionY,
+                            fixedPositionZ,
+                            this,
+                            externalId);
 
             foreach (ParallelCollider3D collider in colliders)
             {
@@ -501,6 +752,11 @@ namespace Parallel
         internal void Destroy()
         {
             Parallel3D.DestoryBody(_body3D, this);
+
+            foreach (ParallelRigidbody3D child in childrenRigidbodies)
+            {
+                child.Destroy();
+            }
         }
     }
 }

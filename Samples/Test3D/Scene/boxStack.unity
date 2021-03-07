@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 12
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,6 +118,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -177,8 +179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndex: 10
   _bodyId: 0
+  sceneIndex: 10
+  externalId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -196,6 +199,9 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
   _customMass:
     Raw: 1048576
@@ -215,12 +221,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: 9577693
     RawZ: 0
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -244,6 +254,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -268,6 +279,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &429147856
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -346,8 +358,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndex: 7
   _bodyId: 0
+  sceneIndex: 7
+  externalId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -365,6 +378,9 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
   _customMass:
     Raw: 1048576
@@ -384,12 +400,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: 4194304
     RawZ: 0
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -413,6 +433,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -437,6 +458,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &449171586
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -515,8 +537,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndex: 8
   _bodyId: 0
+  sceneIndex: 8
+  externalId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -534,6 +557,9 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
   _customMass:
     Raw: 1048576
@@ -553,12 +579,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: 5242880
     RawZ: 0
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -582,6 +612,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -606,6 +637,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &573281629
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -684,8 +716,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndex: 6
   _bodyId: 0
+  sceneIndex: 6
+  externalId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -703,6 +736,9 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
   _customMass:
     Raw: 1048576
@@ -722,12 +758,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: 3145728
     RawZ: 0
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -751,6 +791,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -775,6 +816,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &585794185
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -936,8 +978,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndex: 9
   _bodyId: 0
+  sceneIndex: 9
+  externalId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -955,6 +998,9 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
   _customMass:
     Raw: 1048576
@@ -974,12 +1020,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: 6291456
     RawZ: 0
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -1003,6 +1053,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1027,6 +1078,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1080838784
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1085,7 +1137,7 @@ MonoBehaviour:
     Raw: 20971
   velocityIteration: 8
   allowSleep: 0
-  warmStart: 0
+  warmStart: 1
   gravity:
     RawX: 0
     RawY: -10276044
@@ -1160,8 +1212,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndex: 4
   _bodyId: 0
+  sceneIndex: 4
+  externalId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -1179,6 +1232,9 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
   _customMass:
     Raw: 1048576
@@ -1198,12 +1254,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: 1048576
     RawZ: 0
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -1227,6 +1287,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1251,6 +1312,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1590670212
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1370,6 +1432,11 @@ PrefabInstance:
       propertyPath: _localPosition.RawY
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5185590011432162343, guid: b58cac3dec47eeb4a8895e925cb460b0,
+        type: 3}
+      propertyPath: sceneIndex
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b58cac3dec47eeb4a8895e925cb460b0, type: 3}
 --- !u!1 &1844407586
@@ -1428,8 +1495,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndex: 5
   _bodyId: 0
+  sceneIndex: 5
+  externalId: 0
   _awake: 0
   _bodyType: 2
   _linearDamping:
@@ -1447,6 +1515,9 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
   _customMass:
     Raw: 1048576
@@ -1466,12 +1537,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: 2097152
     RawZ: 0
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -1495,6 +1570,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1519,6 +1595,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1844407591
 MeshFilter:
   m_ObjectHideFlags: 0

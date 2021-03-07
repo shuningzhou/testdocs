@@ -39,7 +39,8 @@ namespace Parallel
 
         Fix64 CalculateRadius()
         {
-            Fix64 maxScale = Fix64Math.Max(colliderScale.x, colliderScale.y);
+
+            Fix64 maxScale = Fix64Math.Max(Fix64Math.Abs(colliderScale.x), Fix64Math.Abs(colliderScale.y));
             Fix64 result = maxScale * _radius;
             return result;
         }

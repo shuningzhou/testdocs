@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Parallel
 {
     [RequireComponent(typeof(ParallelTransform))]
+    [ExecuteInEditMode]
     public class ParallelRigidbody2D : MonoBehaviour, IParallelRigidbody2D
     {
         ParallelTransform _pTransform;
@@ -25,12 +27,18 @@ namespace Parallel
         IParallelTrigger2D[] parallelTriggers = new IParallelTrigger2D[0];
         ParallelCollider2D[] colliders = new ParallelCollider2D[0];
 
+        public List<ParallelRigidbody2D> childrenRigidbodies = new List<ParallelRigidbody2D>();
+        public ParallelRigidbody2D parent;
+
         internal PBody2D _body2D;
         [SerializeField]
         int _bodyId;
 
         [SerializeField]
         internal int sceneIndex;
+
+        public Transform parentTransform;
+        public uint externalId;
 
         //============================== Body properties ==============================
         [SerializeField]
@@ -69,7 +77,6 @@ namespace Parallel
             set
             {
                 _bodyType = value;
-                Parallel2D.UpdateBodyProperties(_body2D, (int)bodyType, linearDampling, angularDamping, fixedRotation, gravityScale);
             }
         }
 
@@ -82,7 +89,6 @@ namespace Parallel
             set
             {
                 _linearDampling = value;
-                Parallel2D.UpdateBodyProperties(_body2D, (int)bodyType, linearDampling, angularDamping, fixedRotation, gravityScale);
             }
         }
 
@@ -95,7 +101,6 @@ namespace Parallel
             set
             {
                 _angularDamping = value;
-                Parallel2D.UpdateBodyProperties(_body2D, (int)bodyType, linearDampling, angularDamping, fixedRotation, gravityScale);
             }
         }
 
@@ -108,7 +113,6 @@ namespace Parallel
             set
             {
                 _gravityScale = value;
-                Parallel2D.UpdateBodyProperties(_body2D, (int)bodyType, linearDampling, angularDamping, fixedRotation, gravityScale);
             }
         }
 
@@ -121,8 +125,12 @@ namespace Parallel
             set
             {
                 _fixedRotation = value;
-                Parallel2D.UpdateBodyProperties(_body2D, (int)bodyType, linearDampling, angularDamping, fixedRotation, gravityScale);
             }
+        }
+
+        public void UpdateBodyProperties()
+        {
+            Parallel2D.UpdateBodyProperties(_body2D, (int)bodyType, linearDampling, angularDamping, fixedRotation, gravityScale);
         }
 
         //============================== Velocity ==============================
@@ -245,7 +253,25 @@ namespace Parallel
 
         public void OnTransformUpdated()
         {
+            if (parent != null)
+            {
+                return;
+            }
+
             pTransform._internal_WriteTranform((Fix64Vec3)_body2D.position, new Fix64Vec3(Fix64.zero, Fix64.zero, Fix64.RadToDeg(_body2D.angle)));
+
+            UpdateChildren();
+        }
+
+        void UpdateChildren()
+        {
+            //update children rigidbodies
+            foreach (ParallelRigidbody2D child in childrenRigidbodies)
+            {
+                Parallel2D.UpdateBodyTransForm(child._body2D, (Fix64Vec2)child.pTransform.position, Fix64.DegToRad(child.pTransform.eulerAngles.z));
+
+                child.UpdateChildren();
+            }
         }
 
         public void Step(Fix64 timeStep)
@@ -256,10 +282,64 @@ namespace Parallel
             }
         }
 
-        //============================== Unity Events ==============================
-        void OnValidate()
+        public void UpdateRigidbodyHierarchy()
         {
-            sceneIndex = transform.GetSiblingIndex();
+            if (parent != null)
+            {
+                parent.childrenRigidbodies.Remove(this);
+            }
+
+            parent = ParallelUtil.FindParentComponent<ParallelRigidbody2D>(this.gameObject);
+
+            if (parent != null)
+            {
+                if (!parent.childrenRigidbodies.Contains(this))
+                {
+                    parent.childrenRigidbodies.Add(this);
+                }
+                UnityEditor.EditorUtility.SetDirty(parent);
+            }
+
+            childrenRigidbodies.RemoveAll(item => item == null);
+        }
+
+        //============================== Unity Events ==============================
+        void Update()
+        {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                if (sceneIndex != transform.GetSiblingIndex())
+                {
+                    sceneIndex = transform.GetSiblingIndex();
+                    UnityEditor.EditorUtility.SetDirty(this);
+                }
+
+                if(transform.parent != null)
+                {
+                    if (parentTransform == null || parentTransform != transform.parent)
+                    {
+                        parentTransform = transform.parent;
+                        UpdateRigidbodyHierarchy();
+                        UnityEditor.EditorUtility.SetDirty(this);
+                    }
+                }
+            }
+#endif
+        }
+
+        void OnDestroy()
+        {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                if (parent != null)
+                {
+                    parent.childrenRigidbodies.Remove(this);
+                    UnityEditor.EditorUtility.SetDirty(parent);
+                }
+            }
+#endif
         }
 
         internal void Initialize()
@@ -280,12 +360,26 @@ namespace Parallel
                                                 angularDamping,
                                                 fixedRotation,
                                                 gravityScale,
-                                                this);
+                                                this,
+                                                externalId);
 
             _bodyId = _body2D.BodyID;
 
+            //mark all children rigidbodies as static and add to the physics world 
+            //all colliders of the children will be added first
+            foreach (ParallelRigidbody2D child in childrenRigidbodies)
+            {
+                child.bodyType = BodyType.Static;
+                child.Initialize();
+            }
+
             foreach (ParallelCollider2D collider in colliders)
-            {   
+            {
+                if (collider.attachedBody != null)
+                {
+                    continue;
+                }
+
                 collider.SetRootGameObject(gameObject);
                 PShape2D shape = collider.CreateShape(gameObject);
 
@@ -295,17 +389,99 @@ namespace Parallel
                     continue;
                 }
 
-                PFixture2D fixture2D = Parallel2D.AddFixture(_body2D, shape, (Fix64)1);
+                PFixture2D fixture2D = Parallel2D.AddFixture(_body2D, shape, collider.density);
 
-                collider.ReceiveFixture(fixture2D);
+                collider.ReceiveFixture(fixture2D, this);
+            }
+
+            if (bodyType == BodyType.Static)
+            {
+                return;
             }
 
             Parallel2D.ReadBodyMassInfo(_body2D);
         }
 
+        internal PBody2D Insert(UInt16 bId, UInt32 exId, IntPtr previousBody)
+        {
+            parallelFixedUpdates = GetComponents<IParallelFixedUpdate>();
+            parallelCollisions = GetComponents<IParallelCollision2D>();
+            parallelTriggers = GetComponents<IParallelTrigger2D>();
+
+            colliders = GetComponentsInChildren<ParallelCollider2D>();
+
+            _body2D = Parallel2D.InsertBody(
+                                                (int)bodyType,
+                                                (Fix64Vec2)pTransform.position,
+                                                pTransform.rotation.GetZAngle(),
+                                                linearDampling,
+                                                angularDamping,
+                                                fixedRotation,
+                                                gravityScale,
+                                                this,
+                                                bId,
+                                                exId,
+                                                previousBody
+                                                );
+
+            _bodyId = bId;
+            externalId = exId;
+
+            //mark all children rigidbodies as static and add to the physics world 
+            //all colliders of the children will be added first
+            PBody2D lastInsertedBody = _body2D;
+            bId = (UInt16)(lastInsertedBody.BodyID + 1);
+            exId = 0; //does not matter because children are created when parent is created, for now, we don't allow create/destory children directly
+
+            foreach (ParallelRigidbody2D child in childrenRigidbodies)
+            {
+                child.bodyType = BodyType.Static;
+
+                lastInsertedBody = child.Insert(bId, exId, lastInsertedBody.IntPointer);
+
+                bId = (UInt16)(lastInsertedBody.BodyID + 1);
+            }
+
+            foreach (ParallelCollider2D collider in colliders)
+            {
+                if (collider.attachedBody != null)
+                {
+                    continue;
+                }
+
+                collider.SetRootGameObject(gameObject);
+                PShape2D shape = collider.CreateShape(gameObject);
+
+                if (shape == null)
+                {
+                    Debug.LogError("Failed to create collider shape");
+                    continue;
+                }
+
+                PFixture2D fixture2D = Parallel2D.AddFixture(_body2D, shape, collider.density);
+
+                collider.ReceiveFixture(fixture2D, this);
+            }
+
+            if (bodyType == BodyType.Static)
+            {
+                return lastInsertedBody;
+            }
+
+
+            Parallel2D.ReadBodyMassInfo(_body2D);
+
+            return lastInsertedBody;
+        }
+
         internal void Destroy()
         {
             Parallel2D.DestoryBody(_body2D, this);
+
+            foreach (ParallelRigidbody2D child in childrenRigidbodies)
+            {
+                child.Destroy();
+            }
         }
 
     }

@@ -49,6 +49,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -96,11 +97,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Interpolation: 1
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: 0
     RawZ: 0
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -126,6 +132,9 @@ MonoBehaviour:
     Raw: 419430
   _bounciness:
     Raw: 209715
+  _density:
+    Raw: 1048576
+  _useSpriteRendererSize: 1
   _spriteRendererSize:
     RawX: 62914560
     RawY: 1048576
@@ -144,14 +153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2714b05307525a34a8ed6c96406083c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _body2D:
-    position:
-      RawX: 0
-      RawY: 0
-    angle:
-      Raw: 0
-  _bodyID: 0
-  sceneIndex: 0
+  _bodyId: 0
+  sceneIndex: 3
+  externalId: 0
   _bodyType: 0
   _linearDampling:
     Raw: 0

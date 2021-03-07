@@ -10,10 +10,10 @@ namespace Parallel
         Camera _camera;
         ParallelTransform _parallelTransform;
         [SerializeField]
-        Fix64 _aspect = Fix64.FromDivision(16, 9);
+        Fix64 _aspect = Fix64.one;
 
         [SerializeField]
-        Fix64 _fieldOfView = Fix64.FromDivision(60, 1);
+        Fix64 _fieldOfView = Fix64.FromDivision(160, 1);
 
         [SerializeField]
         Fix64 _nearClipPlane = Fix64.FromDivision(3, 100);
@@ -21,15 +21,30 @@ namespace Parallel
         [SerializeField]
         Fix64 _farClipPlane = Fix64.FromDivision(1000, 1);
 
+        [SerializeField]
+        Fix64 _unityAspect = Fix64.FromDivision(16, 9);
+
         Fix64Matrix4X4 _projectionMatrix;
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+            Gizmos.DrawFrustum(Vector3.zero, (float)_fieldOfView, (float)_farClipPlane, (float)_nearClipPlane, (float)_aspect);
+            Gizmos.matrix = Matrix4x4.identity;
+        }
+
+        private void OnDrawGizmos()
+        {
+
+        }
 
         // Start is called before the first frame update
         void Start()
         {
             _camera = GetComponent<Camera>();
             _parallelTransform = GetComponent<ParallelTransform>();
-            _camera.aspect = (float)_aspect;
-            _camera.fieldOfView = (float)_fieldOfView;
+            //_camera.fieldOfView = (float)_fieldOfView;
             _camera.nearClipPlane = (float)_nearClipPlane;
             _camera.farClipPlane = (float)_farClipPlane;
 
@@ -45,7 +60,6 @@ namespace Parallel
             set
             {
                 _aspect = value;
-                _camera.aspect = (float)_aspect;
                 _projectionMatrix = CalculateFixedProjectionMatrix();
             }
         }
@@ -59,7 +73,7 @@ namespace Parallel
             set
             {
                 _fieldOfView = value;
-                _camera.fieldOfView = (float)_fieldOfView;
+                //_camera.fieldOfView = (float)_fieldOfView;
                 _projectionMatrix = CalculateFixedProjectionMatrix();
             }
         }
@@ -100,6 +114,39 @@ namespace Parallel
             }
         }
 
+        // converts a view port point of the Unity Camera to a view port point of the parallel camera
+        public Fix64Vec3 GetParallelViewPortPointFromUnityViewPortPoint(Vector3 unityViewPortPoint)
+        {
+            float unityAspect = _camera.aspect;
+            float unityFOV = _camera.fieldOfView;
+            float fov = (float)_fieldOfView;
+
+            float unityX = unityViewPortPoint.x;
+            float unityY = unityViewPortPoint.y;
+            float unityZ = unityViewPortPoint.z;
+
+            //distances from camera to the near clip plane are the same 
+            float halfFOVRad = fov / 2 * Mathf.Deg2Rad;
+            float halfUnityFOVYRad = unityFOV / 2 * Mathf.Deg2Rad;
+            float halfUnityFOVXRad = Mathf.Atan(unityAspect * Mathf.Tan(halfUnityFOVYRad));
+
+            float ratioY = Mathf.Tan(halfFOVRad) / Mathf.Tan(halfUnityFOVYRad);
+            float ratioX = Mathf.Tan(halfFOVRad) / Mathf.Tan(halfUnityFOVXRad);
+
+            // parallel length = A
+            // Unity length = a
+            // view port unity = Va
+            // view port parallel = VA
+            // VA = ( (A - a) / 2 + Va * a ) / A 
+            // if A : a = R
+            // VA = (( R * a - a) / 2 + Va * a ) / R * a
+            // VA = (( R - ) / 2 + Va ) / R 
+            float y = ((ratioY - 1) / 2 + unityY) / ratioY;
+            float x = ((ratioX - 1) / 2 + unityX) / ratioX;
+
+            return new Fix64Vec3((Fix64)x, (Fix64)y, (Fix64)unityZ);
+        }
+
         Fix64Matrix4X4 CalculateFixedProjectionMatrix()
         {
             Fix64 rad = fieldOfView / Fix64.two * Fix64Math.DegreeToRad;
@@ -110,7 +157,7 @@ namespace Parallel
 
             Fix64Vec4 column0 = new Fix64Vec4(e * a, Fix64.zero, Fix64.zero, Fix64.zero);
             Fix64Vec4 column1 = new Fix64Vec4(Fix64.zero, e, Fix64.zero, Fix64.zero);
-            Fix64Vec4 column2 = new Fix64Vec4(Fix64.zero, Fix64.zero, -(f + n) / (f - n), Fix64.NegOne);
+            Fix64Vec4 column2 = new Fix64Vec4(Fix64.zero, Fix64.zero, -(f + n) / (f - n), Fix64.negOne);
             Fix64Vec4 column3 = new Fix64Vec4(Fix64.zero, Fix64.zero, -(Fix64.two * f * n) / (f - n), Fix64.zero);
 
             Fix64Matrix4X4 result = Fix64Matrix4X4.zero;
@@ -215,9 +262,10 @@ namespace Parallel
                 _camera = GetComponent<Camera>();
             }
 
-            _fieldOfView = (Fix64)_camera.fieldOfView;
-            _nearClipPlane = (Fix64)_camera.nearClipPlane;
+            //_fieldOfView = (Fix64)_camera.fieldOfView;
+            //_nearClipPlane = (Fix64)_camera.nearClipPlane;
             _farClipPlane = (Fix64)_camera.farClipPlane;
+            _unityAspect = (Fix64)_camera.aspect;
         }
     }
 }

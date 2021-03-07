@@ -25,6 +25,7 @@ namespace Parallel
         public Fix64 mass;
 
         public UInt16 BodyID { get; private set; }
+        public UInt32 ExternalID { get; private set; }
 
         public IParallelRigidbody3D RigidBody { get; private set; }
         public bool IsAwake
@@ -34,9 +35,11 @@ namespace Parallel
             }
         }
 
-        public PBody3D(IntPtr intPtr, UInt16 bodyID, IParallelRigidbody3D rigidBody) : base(intPtr)
+        public PBody3D(IntPtr intPtr, UInt16 bodyID, UInt32 externalID, IParallelRigidbody3D rigidBody) : base(intPtr)
         {
             BodyID = bodyID;
+            ExternalID = externalID;
+
             RigidBody = rigidBody;
 
             awake = true;

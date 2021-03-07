@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace Parallel
 {
@@ -9,6 +8,7 @@ namespace Parallel
         public const int SHIFT = 20;
         public const double FLOAT_ONE = 1048576.0;
         public const int ONE = 1048576;
+        public const int NINETY = 94371840;
         public const int HALF = 524288;
         public const int QUARTER = 262144;
         public const int NEG_ONE = -1048576;
@@ -30,9 +30,23 @@ namespace Parallel
         public static Fix64 zero    { get { return FromRaw(0L); } }
         public static Fix64 one     { get { return FromRaw(1L << FixedConstants64.SHIFT); } }
         public static Fix64 two     { get { return FromRaw(FixedConstants64.TWO); } }
-        public static Fix64 NegOne  { get { return FromRaw(-1L << FixedConstants64.SHIFT); } }
+        public static Fix64 ninety { get { return FromRaw(FixedConstants64.NINETY); } }
+        public static Fix64 negOne  { get { return FromRaw(FixedConstants64.NEG_ONE); } }
+        public static Fix64 negTwo { get { return FromRaw(FixedConstants64.NEG_TWO); } }
+
         public static Fix64 half { get { return FromRaw(FixedConstants64.HALF); } }
         public static Fix64 quarter { get { return FromRaw(FixedConstants64.QUARTER); } }
+
+        public static Fix64 pi { get { return FromRaw(FixedConstants64.PI); } }
+        public static Fix64 halfPi { get { return FromRaw(FixedConstants64.PI_HALF); } }
+        public static Fix64 twoPi { get { return FromRaw(FixedConstants64.PI_TWO); } }
+
+        public static Fix64 e { get { return FromRaw(FixedConstants64.E); } }
+
+        public static Fix64 max { get { return FromRaw(FixedConstants64.MIN); } }
+        public static Fix64 min { get { return FromRaw(FixedConstants64.MIN); } }
+
+        public static Fix64 spv { get { return FromRaw(1); } }
 
         public long Raw;
 
@@ -125,7 +139,7 @@ namespace Parallel
         public override string ToString()
         {
             float f = (float)this;
-            return f.ToString() + "(" + Raw.ToString() + ")";
+            return f.ToString("0.000") + "(" + Raw.ToString() + ")";
         }
 
         public override int GetHashCode()

@@ -4,6 +4,25 @@ namespace Parallel
 {
     public static class ParallelUtil
     {
+        public static T FindParentComponent<T>(GameObject childObject)
+        {
+            Transform t = childObject.transform;
+
+            while (t.parent != null)
+            {
+                T p = t.parent.GetComponent<T>();
+
+                if (p != null)
+                {
+                    return p;
+                }
+
+                t = t.parent.transform;
+            }
+
+            return default(T);
+        }
+
         public static Vector3 TransformPointUnscaled(this Transform transform, Vector3 position)
         {
             var localToWorldMatrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);

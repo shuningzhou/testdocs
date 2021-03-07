@@ -23,7 +23,14 @@ namespace Parallel
 
         //3D world
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateWorld3D(Fix64Vec3 gravity, bool allowSleep, bool warmStart, ContactEnterCallBack3D enterCallback, ContactExitCallBack3D exitCallback);
+        internal static extern IntPtr CreateWorld3D(
+            Fix64Vec3 gravity, 
+            bool allowSleep, 
+            bool warmStart, 
+            ContactEnterCallBack3D enterCallback, 
+            ContactExitCallBack3D exitCallback,
+            RollbackAddRigidbodyCallback3D rollbackAddRigidbodyCallback,
+            RollbackRemoveRigidbodyCallback3D rollbackRemoveRigidbodyCallback);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void GetWorldSize3D(IntPtr worldHandle, ref Fix64Vec3 lower, ref Fix64Vec3 upper);
@@ -58,7 +65,30 @@ namespace Parallel
             bool fixedRotationX,
             bool fixedRotationY,
             bool fixedRotationZ,
+            bool fixedPositionX,
+            bool fixedPositionY,
+            bool fixedPositionZ,
+            UInt32 externalID,
             ref UInt16 bodyID);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern IntPtr InsertBody3D(
+            IntPtr worldHandle,
+            int bodyType,
+            Fix64Vec3 position,
+            Fix64Quat orientation,
+            Fix64Vec3 linearDamping,
+            Fix64Vec3 angularDamping,
+            Fix64Vec3 gravityScale,
+            bool fixedRotationX,
+            bool fixedRotationY,
+            bool fixedRotationZ,
+            bool fixedPositionX,
+            bool fixedPositionY,
+            bool fixedPositionZ,
+            UInt32 externalID,
+            UInt16 bodyID,
+            IntPtr previousBody);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void UpdateBodyTransform3D(IntPtr bodyHandle, Fix64Vec3 position, Fix64Quat orientation);
@@ -166,6 +196,9 @@ namespace Parallel
         internal static extern void UpdateCapsule3D(IntPtr shapeHandle, IntPtr fixtureHandle, Fix64Vec3 v1, Fix64Vec3 v2, Fix64 radius, Fix64Vec3 center, Fix64Quat rotation);
 
         [DllImport(PLUGIN_NAME)]
+        internal static extern IntPtr CreateConvexPolyhedron3D(Fix64Vec3[] verts, UInt32 vertsCount, Fix64Vec3 scale, Fix64Vec3 center, Fix64Quat rotation);
+
+        [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr CreateConvex3D(Fix64Vec3[] verts, UInt32 vertsCount, ParallelEdge[] edges, UInt32 edgesCount, ParallelFace[] faces, UInt32 faceCount, ParallelPlane[] planes, Fix64Vec3 scale, Fix64Vec3 center, Fix64Quat rotation);
 
         [DllImport(PLUGIN_NAME)]
@@ -199,7 +232,8 @@ namespace Parallel
                             ref Fix64Vec3 point,
                             ref Fix64Vec3 normal,
                             ref Fix64 fraction,
-                            ref UInt16 bodyID);
+                            ref UInt16 bodyID,
+                            UInt16 ignoreBodyID);
 
         //overlap
         [DllImport(PLUGIN_NAME)]

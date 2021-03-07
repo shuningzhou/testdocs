@@ -77,19 +77,8 @@ namespace Parallel
 
         Fix64Vec2 CalculateSize()
         {
-
             Fix64Vec2 s = _size * (Fix64Vec2)colliderScale;
-
-
-            if (s.x > Fix64.zero && s.y > Fix64.zero)
-            {
-                return s;
-            }
-            else
-            {
-                Debug.LogError("Invalid size");
-                return Fix64Vec2.zero;
-            }
+            return s;
         }
 
         protected override void UpdateShape(GameObject root)
@@ -98,7 +87,6 @@ namespace Parallel
 
             if (s != Fix64Vec2.zero)
             {
-
                 Fix64Vec2[] scaled = new Fix64Vec2[convexVertsCount];
 
                 for (int i = 0; i < convexVertsCount; i++)

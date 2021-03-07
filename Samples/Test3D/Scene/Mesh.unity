@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 206783811}
   - component: {fileID: 206783810}
   - component: {fileID: 206783809}
+  - component: {fileID: 206783812}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -206,6 +207,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &206783812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 206783808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c3a14cc77e5f243a60e06bb9e1f347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 10
+  fastMovementSpeed: 100
+  freeLookSensitivity: 3
+  zoomSensitivity: 10
+  fastZoomSensitivity: 50
 --- !u!1001 &351626058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -213,6 +231,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 55064673435790780, guid: 0afdb65dbb329fa4285f5983a1cecb90,
+        type: 3}
+      propertyPath: sceneIndex
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3273625959571764502, guid: 0afdb65dbb329fa4285f5983a1cecb90,
         type: 3}
       propertyPath: _localPosition.RawX
@@ -327,6 +350,26 @@ PrefabInstance:
       propertyPath: _localEularAngles.RawZ
       value: 332503104
       objectReference: {fileID: 0}
+    - target: {fileID: 237660354195657745, guid: 90777aaade1f7cf4ba4a97ae1dda263b,
+        type: 3}
+      propertyPath: _localRotation.RawX
+      value: 685022
+      objectReference: {fileID: 0}
+    - target: {fileID: 237660354195657745, guid: 90777aaade1f7cf4ba4a97ae1dda263b,
+        type: 3}
+      propertyPath: _localRotation.RawY
+      value: 269147
+      objectReference: {fileID: 0}
+    - target: {fileID: 237660354195657745, guid: 90777aaade1f7cf4ba4a97ae1dda263b,
+        type: 3}
+      propertyPath: _localRotation.RawZ
+      value: -273122
+      objectReference: {fileID: 0}
+    - target: {fileID: 237660354195657745, guid: 90777aaade1f7cf4ba4a97ae1dda263b,
+        type: 3}
+      propertyPath: _localRotation.RawW
+      value: 695139
+      objectReference: {fileID: 0}
     - target: {fileID: 2566288937330139385, guid: 90777aaade1f7cf4ba4a97ae1dda263b,
         type: 3}
       propertyPath: m_Name
@@ -401,6 +444,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _bounciness.Raw
       value: 220200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8908760540659672827, guid: 90777aaade1f7cf4ba4a97ae1dda263b,
+        type: 3}
+      propertyPath: sceneIndex
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90777aaade1f7cf4ba4a97ae1dda263b, type: 3}
@@ -42254,8 +42302,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneIndex: 0
   _bodyId: 0
+  sceneIndex: 0
+  externalId: 0
   _awake: 0
   _bodyType: 0
   _linearDamping:
@@ -42273,6 +42322,9 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
   _customMass:
     Raw: 1048576
@@ -42292,12 +42344,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: 0
     RawZ: 0
+  _localRotation:
+    RawX: 741455
+    RawY: 0
+    RawZ: 0
+    RawW: -741455
   _localEularAngles:
     RawX: 283115520
     RawY: 0
@@ -42479,6 +42535,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 884731636311265817, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: sceneIndex
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1565869874750588696, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
       propertyPath: _localPosition.RawX

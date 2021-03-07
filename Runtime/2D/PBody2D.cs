@@ -22,12 +22,14 @@ namespace Parallel
         public Fix64 mass;
 
         public UInt16 BodyID { get; private set; }
+        public UInt32 ExternalID { get; private set; }
 
         public IParallelRigidbody2D RigidBody { get; private set; }
 
-        public PBody2D(IntPtr intPtr, UInt16 bodyID, IParallelRigidbody2D rigidBody) : base(intPtr)
+        public PBody2D(IntPtr intPtr, UInt16 bodyID, UInt32 externalID, IParallelRigidbody2D rigidBody) : base(intPtr)
         {
             BodyID = bodyID;
+            ExternalID = externalID;
             RigidBody = rigidBody;
         }
 

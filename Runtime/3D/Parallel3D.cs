@@ -188,10 +188,13 @@ namespace Parallel
 
     internal delegate void ContactEnterCallBack3D(IntPtr contactPtr, UInt64 contactID);
     internal delegate void ContactExitCallBack3D(IntPtr contactPtr, UInt64 contactID);
+    internal delegate void RollbackAddRigidbodyCallback3D(UInt32 externalID, UInt16 bodyID, IntPtr previousBody, IntPtr world);
+    internal delegate void RollbackRemoveRigidbodyCallback3D(UInt32 externalID, UInt16 bodyID, IntPtr body, IntPtr world);
+
 
     public class Parallel3D
     {
-        static SortedList<UInt32, PBody3D> bodySortedList = new SortedList<UInt32, PBody3D>();
+        internal static SortedList<UInt32, PBody3D> bodySortedList = new SortedList<UInt32, PBody3D>();
 
         //CONTACT
         static int _contactCount;
@@ -234,6 +237,10 @@ namespace Parallel
         //layer
         static Dictionary<int, int> masksByLayer = new Dictionary<int, int>();
 
+        //rollback
+        internal static Action<UInt32, UInt16, IntPtr> _rollbackAddRigidbodyCallback3D;
+        internal static Action<UInt32, UInt16> _rollbackRemoveRigidbodyCallback3D;
+
         //common
         public static void Initialize()
         {
@@ -265,6 +272,10 @@ namespace Parallel
                 true,
                 true,
                 true,
+                true,
+                true,
+                true,
+                0,
                 ref bodyID);
 
             initialized = true;
@@ -425,7 +436,14 @@ namespace Parallel
         //3D
         static PWorld3D CreateWorld(Fix64Vec3 gravity, bool allowSleep, bool warmStart)
         {
-            IntPtr m_NativeObject = NativeParallel3D.CreateWorld3D(gravity, allowSleep, warmStart, OnContactEnterCallback, OnContactExitCallBack);
+            IntPtr m_NativeObject = NativeParallel3D.CreateWorld3D(
+                gravity, 
+                allowSleep, 
+                warmStart, 
+                OnContactEnterCallback, 
+                OnContactExitCallBack,
+                OnRollbackAddRigidbodyCallback3D,
+                OnRollbackRemoveRigidbodyCallback3D);
             return new PWorld3D(m_NativeObject);
         }
 
@@ -459,6 +477,18 @@ namespace Parallel
                 PBody3D body = pair.Value;
                 body.ReadNative();
             }
+        }
+
+        [MonoPInvokeCallback(typeof(RollbackAddRigidbodyCallback3D))]
+        public static void OnRollbackAddRigidbodyCallback3D(UInt32 externalID, UInt16 bodyID, IntPtr previousBody, IntPtr world)
+        {
+            _rollbackAddRigidbodyCallback3D(externalID, bodyID, previousBody);
+        }
+
+        [MonoPInvokeCallback(typeof(RollbackRemoveRigidbodyCallback3D))]
+        public static void OnRollbackRemoveRigidbodyCallback3D(UInt32 externalID, UInt16 bodyID, IntPtr body, IntPtr world)
+        {
+            _rollbackRemoveRigidbodyCallback3D(externalID, bodyID);
         }
 
         public static void DestroySnapshot(PSnapshot3D snapshot)
@@ -610,7 +640,19 @@ namespace Parallel
                 Initialize();
             }
 
-            IntPtr m_NativeObject = NativeParallel3D.CreateConvex3D(parallelQHullData.vertices, parallelQHullData.vertexCount, parallelQHullData.edges, parallelQHullData.edgeCount, parallelQHullData.faces, parallelQHullData.faceCount, parallelQHullData.planes, scale, center, rotation);
+            string output = "";
+            output += $"b3Vec3 verts[{parallelQHullData.vertexCount}] = {{}};\n";
+            //Debug.Log($"b3Vec3 verts[{convexData.vertexCount}] = {{}};");
+            for (int i = 0; i < parallelQHullData.vertexCount; i++)
+            {
+                Vector3 vec3 = (Vector3)parallelQHullData.vertices[i];
+                output += $"verts[{i}] = b3Vec3({vec3.x}, {vec3.y}, {vec3.z});\n";
+                //Debug.Log($"verts[{i}] = b3Vec3({vec3.x}, {vec3.y}, {vec3.z});");
+            }
+            Debug.Log(output);
+
+            IntPtr m_NativeObject = NativeParallel3D.CreateConvexPolyhedron3D(parallelQHullData.vertices, parallelQHullData.vertexCount, scale, center, rotation);
+            //IntPtr m_NativeObject = NativeParallel3D.CreateConvex3D(parallelQHullData.vertices, parallelQHullData.vertexCount, parallelQHullData.edges, parallelQHullData.edgeCount, parallelQHullData.faces, parallelQHullData.faceCount, parallelQHullData.planes, scale, center, rotation);
             return new PShape3D(m_NativeObject);
         }
 
@@ -657,7 +699,11 @@ namespace Parallel
             bool fixedRotationX,
             bool fixedRotationY,
             bool fixedRotationZ,
-            IParallelRigidbody3D rigidBody)
+            bool fixedPositionX,
+            bool fixedPositionY,
+            bool fixedPositionZ,
+            IParallelRigidbody3D rigidBody,
+            UInt32 externalID)
         {
             if (!initialized)
             {
@@ -667,24 +713,89 @@ namespace Parallel
             UInt16 bodyID = 0;
 
             IntPtr m_NativeObject = NativeParallel3D.CreateBody3D(
-                internalWorld.IntPointer, 
-                bodyType, 
-                position, 
-                orientation, 
+                internalWorld.IntPointer,
+                bodyType,
+                position,
+                orientation,
                 linearDamping,
                 angularDamping,
                 gravityScale,
                 fixedRotationX,
                 fixedRotationY,
                 fixedRotationZ,
+                fixedPositionX,
+                fixedPositionY,
+                fixedPositionZ,
+                externalID,
                 ref bodyID);
 
-            PBody3D body = new PBody3D(m_NativeObject, bodyID, rigidBody as ParallelRigidbody3D);
+            PBody3D body = new PBody3D(m_NativeObject, bodyID, externalID, rigidBody as ParallelRigidbody3D);
             bodySortedList[bodyID] = body;
 
             ReadNativeBody(body);
 
             return body;
+        }
+
+        public static PBody3D InsertBody(
+            int bodyType,
+            Fix64Vec3 position,
+            Fix64Quat orientation,
+            Fix64Vec3 linearDamping,
+            Fix64Vec3 angularDamping,
+            Fix64Vec3 gravityScale,
+            bool fixedRotationX,
+            bool fixedRotationY,
+            bool fixedRotationZ,
+            bool fixedPositionX,
+            bool fixedPositionY,
+            bool fixedPositionZ,
+            IParallelRigidbody3D rigidBody,
+            UInt32 externalID,
+            UInt16 bodyID,
+            IntPtr previousBody)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            IntPtr m_NativeObject = NativeParallel3D.InsertBody3D(
+                internalWorld.IntPointer,
+                bodyType,
+                position,
+                orientation,
+                linearDamping,
+                angularDamping,
+                gravityScale,
+                fixedRotationX,
+                fixedRotationY,
+                fixedRotationZ,
+                fixedPositionX,
+                fixedPositionY,
+                fixedPositionZ,
+                externalID,
+                bodyID,
+                previousBody);
+
+            PBody3D body = new PBody3D(m_NativeObject, bodyID, externalID, rigidBody as ParallelRigidbody3D);
+            bodySortedList[bodyID] = body;
+
+            ReadNativeBody(body);
+
+            return body;
+        }
+
+        internal static PBody3D FindBodyByID(UInt16 bodyID)
+        {
+            if (bodySortedList.ContainsKey(bodyID))
+            {
+                return bodySortedList[bodyID];
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public static void UpdateBodyTransForm(PBody3D body, Fix64Vec3 pos, Fix64Quat rot)
@@ -931,11 +1042,6 @@ namespace Parallel
 
         public static ParallelQHullData ConvextHull3D(Fix64Vec3[] verts, UInt32 count, bool simplify, Fix64 rad)
         {
-            if (!initialized)
-            {
-                Initialize();
-            }
-
             UInt32 outCount = 1024 * 10;
             Fix64Vec3[] vertsOut = new Fix64Vec3[outCount];
             ParallelEdge[] edgesOut = new ParallelEdge[outCount];
@@ -962,21 +1068,11 @@ namespace Parallel
 
         public static void ConvextHull3D1(Vector3[] verts, UInt32 count)
         {
-            if (!initialized)
-            {
-                Initialize();
-            }
-
             NativeParallel3D.ConvexHull3D1(verts, count);
         }
 
         public static ParallelQHullData2 ConvextHull3D2(Vector3[] verts, UInt32 count, int limit)
         {
-            if (!initialized)
-            {
-                Initialize();
-            }
-
             UInt32 outCount = 1024;
             ParallelIntTriangle[] trisOut = new ParallelIntTriangle[outCount];
 
@@ -1055,12 +1151,12 @@ namespace Parallel
             }
         }
 
-        public static bool SphereCast(Fix64Vec3 start, Fix64 radius, Fix64Vec3 movement, ref PShapecastHit3D shapeCastHit3D)
+        public static bool SphereCast(Fix64Vec3 start, Fix64 radius, Fix64Vec3 movement, ref PShapecastHit3D shapeCastHit3D, ParallelRigidbody3D ignoreBody)
         {
-            return SphereCast(start, radius, movement, -1, ref shapeCastHit3D);
+            return SphereCast(start, radius, movement, -1, ref shapeCastHit3D, ignoreBody);
         }
 
-        public static bool SphereCast(Fix64Vec3 start, Fix64 radius, Fix64Vec3 movement, int mask, ref PShapecastHit3D shapeCastHit3D)
+        public static bool SphereCast(Fix64Vec3 start, Fix64 radius, Fix64Vec3 movement, int mask, ref PShapecastHit3D shapeCastHit3D, ParallelRigidbody3D ignoreBody)
         {
             if (!initialized)
             {
@@ -1078,7 +1174,14 @@ namespace Parallel
             Fix64 fraction = Fix64.one;
             UInt16 bodyID = 0;
 
-            bool hit = NativeParallel3D.SphereCast3D(internalWorld.IntPointer, mask, start, radius, movement, ref point, ref normal, ref fraction, ref bodyID);
+            UInt16 ignoreBodyID = 0;
+
+            if(ignoreBody != null)
+            {
+                ignoreBodyID = ignoreBody._body3D.BodyID;
+            }
+
+            bool hit = NativeParallel3D.SphereCast3D(internalWorld.IntPointer, mask, start, radius, movement, ref point, ref normal, ref fraction, ref bodyID, ignoreBodyID);
 
             if (hit)
             {

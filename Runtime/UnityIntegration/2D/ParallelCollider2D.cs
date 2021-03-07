@@ -9,6 +9,7 @@ namespace Parallel
         protected PShape2D _shape;
         protected PFixture2D _fixture;
         protected ParallelTransform _pTransform;
+        protected ParallelRigidbody2D _attachedBody;
 
         protected GameObject _root;
 
@@ -22,17 +23,38 @@ namespace Parallel
         Fix64 _bounciness = Fix64.FromDivision(2, 10);
 
         [SerializeField]
+        Fix64 _density = Fix64.FromDivision(1, 1);
+
+        public ParallelRigidbody2D attachedBody
+        {
+            get
+            {
+                return _attachedBody;
+            }
+
+        }
+
+        [SerializeField]
+        bool _useSpriteRendererSize = false;
+
+        [SerializeField]
         Fix64Vec2 _spriteRendererSize = Fix64Vec2.one;
 
         protected Fix64Vec3 colliderScale
         {
             get
             {
-                Fix64 x = pTransform.localScale.x * _spriteRendererSize.x;
-                Fix64 y = pTransform.localScale.y * _spriteRendererSize.y;
-                Fix64 z = pTransform.localScale.z;
+                if (_useSpriteRendererSize)
+                {
+                    Fix64 x = pTransform.localScale.x * _spriteRendererSize.x;
+                    Fix64 y = pTransform.localScale.y * _spriteRendererSize.y;
+                    Fix64 z = pTransform.localScale.z;
 
-                return new Fix64Vec3(x, y, z);
+                    return new Fix64Vec3(x, y, z);
+                }
+                else{
+                    return pTransform.localScale;
+                }
             }
         }
 
@@ -68,6 +90,18 @@ namespace Parallel
             }
         }
 
+        public Fix64 density
+        {
+            get
+            {
+                return _density;
+            }
+            set
+            {
+                _density = value;
+            }
+        }
+
         public ParallelTransform pTransform
         {
             get
@@ -89,8 +123,9 @@ namespace Parallel
             _root = root;
         }
         
-        public void ReceiveFixture(PFixture2D fixture)
+        public void ReceiveFixture(PFixture2D fixture, ParallelRigidbody2D parallelRigidbody2D)
         {
+            _attachedBody = parallelRigidbody2D;
             _fixture = fixture;
             _shape = Parallel2D.GetShapeOfFixture(fixture);
             Parallel2D.SetLayer(fixture, gameObject.layer, false);
@@ -108,11 +143,35 @@ namespace Parallel
             //only import from unity if in editing mode
             if (!Application.isPlaying)
             {
-                if(spriteRenderer == null)
+                if (spriteRenderer != null)
                 {
-                    _spriteRendererSize = Fix64Vec2.one;
+                    if (spriteRenderer.drawMode == SpriteDrawMode.Sliced)
+                    {
+                        if(_spriteRendererSize != (Fix64Vec2)spriteRenderer.size)
+                        {
+                            _spriteRendererSize = (Fix64Vec2)spriteRenderer.size;
+                            UnityEditor.EditorUtility.SetDirty(this);
+                        }
+                    }
                 }
-                else
+            }
+        }
+
+        void Reset()
+        {
+#if UNITY_EDITOR
+            ImportFromUnity();
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
+        }
+
+        void ImportFromUnity()
+        {
+            _spriteRendererSize = Fix64Vec2.one;
+
+            if (spriteRenderer != null)
+            {
+                if (spriteRenderer.drawMode == SpriteDrawMode.Sliced)
                 {
                     _spriteRendererSize = (Fix64Vec2)spriteRenderer.size;
                 }

@@ -91,15 +91,15 @@ namespace Parallel
 
             if (Direction == ParallelCapsuleDirection3D.XAxis)
             {
-                maxScale = Fix64Math.Max(pTransform.localScale.y, pTransform.localScale.z);
+                maxScale = Fix64Math.Max(Fix64Math.Abs(pTransform.localScale.y), Fix64Math.Abs(pTransform.localScale.z));
             }
             else if (Direction == ParallelCapsuleDirection3D.YAxis)
             {
-                maxScale = Fix64Math.Max(pTransform.localScale.x, pTransform.localScale.z);
+                maxScale = Fix64Math.Max(Fix64Math.Abs(pTransform.localScale.x), Fix64Math.Abs(pTransform.localScale.z));
             }
             else
             {
-                maxScale = Fix64Math.Max(pTransform.localScale.x, pTransform.localScale.y);
+                maxScale = Fix64Math.Max(Fix64Math.Abs(pTransform.localScale.x), Fix64Math.Abs(pTransform.localScale.y));
             }
 
             return maxScale * _radius;
@@ -122,7 +122,7 @@ namespace Parallel
                 maxScale = pTransform.localScale.z;
             }
 
-            return maxScale * _height;
+            return Fix64Math.Abs(maxScale * _height);
         }
 
         public override void UpdateShape(GameObject root)

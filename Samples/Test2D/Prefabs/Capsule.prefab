@@ -46,6 +46,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -110,7 +111,7 @@ Transform:
   m_GameObject: {fileID: 8421880994896340589}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children:
   - {fileID: 8421880995334980248}
   m_Father: {fileID: 0}
@@ -131,6 +132,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -182,15 +184,15 @@ MonoBehaviour:
   lerp: 0.2
   _localPosition:
     RawX: 0
-    RawY: 0
+    RawY: 15938355
     RawZ: 0
   _localEularAngles:
     RawX: 0
     RawY: 0
     RawZ: 0
   _localScale:
-    RawX: 1048576
-    RawY: 1048576
+    RawX: 3145728
+    RawY: 3145728
     RawZ: 1048576
 --- !u!114 &7645410873683073645
 MonoBehaviour:
@@ -209,6 +211,8 @@ MonoBehaviour:
     Raw: 419430
   _bounciness:
     Raw: 209715
+  _density:
+    Raw: 1048576
   _spriteRendererSize:
     RawX: 1048576
     RawY: 1048576
@@ -231,6 +235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bodyId: 0
   sceneIndex: 0
+  externalId: 2
   _bodyType: 2
   _linearDampling:
     Raw: 0
@@ -285,6 +290,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -399,6 +405,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

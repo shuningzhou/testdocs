@@ -1,15 +1,29 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Parallel
 {
-    public delegate void TransformScaleUpdated();
-
-    public enum InterpolateMethod
+    public struct InterpolationPostionTimeData
     {
-        MoveTowards,
-        Lerp,
-        None
+        public float time;
+        public Vector3 pos;
+
+        public static InterpolationPostionTimeData empty
+        {
+            get
+            {
+                return new InterpolationPostionTimeData(0.0f, Vector3.zero);
+            }
+        }
+
+        public InterpolationPostionTimeData(float time, Vector3 pos)
+        {
+            this.time = time;
+            this.pos = pos;
+        }
     }
+
+    public delegate void TransformScaleUpdated();
 
     /// <summary>
     /// Position, rotation, and scale of an object.
@@ -17,13 +31,22 @@ namespace Parallel
     [ExecuteInEditMode]
     public class ParallelTransform : MonoBehaviour
     {
-        public InterpolateMethod interpolateMethod = InterpolateMethod.MoveTowards;
-        public float lerp = 0.2f;
-        Vector3 _interpolateStartPosition;
-        float _interpolateProgress;
+        // used for interpolation
+        static List<ParallelTransform> _sParallelTransforms = new List<ParallelTransform>();
+        public static void Commit(float deltaTime)
+        {
+            foreach(ParallelTransform parallelTransform in _sParallelTransforms)
+            {
+                parallelTransform.CommitChanges(deltaTime);
+            }
+        }
+
+        [SerializeField]
+        bool Interpolate = false;
 
         [SerializeField]
         Fix64Vec3 _localPosition = Fix64Vec3.zero;
+        [SerializeField]
         Fix64Quat _localRotation = Fix64Quat.identity;
         [SerializeField]
         Fix64Vec3 _localEularAngles = Fix64Vec3.zero;
@@ -81,15 +104,6 @@ namespace Parallel
                 _quatReady = true;
                 _eularReady = false;
             }
-        }
-
-        void Reset()
-        {
-#if UNITY_EDITOR
-            ImportFromUnity();
-            ExportToUnity();
-            UnityEditor.EditorUtility.SetDirty(this);
-#endif
         }
 
         public ParallelTransform parent
@@ -203,45 +217,13 @@ namespace Parallel
             }
         }
 
-        void Update()
-        { 
-            if(!Application.isPlaying)
-            {
-#if UNITY_EDITOR
-                if (transform.hasChanged)
-                {
-                    transform.hasChanged = false;
-                    ImportFromUnity();
-                    UnityEditor.EditorUtility.SetDirty(this);
-                }
-#endif
-            }
-            else 
-            {
-                if(interpolateMethod == InterpolateMethod.MoveTowards)
-                {
-                    float increment = Time.deltaTime / Time.fixedDeltaTime;
-                    _interpolateProgress = Mathf.Min(1.0f, _interpolateProgress + increment);
-                    transform.localPosition = Vector3.Lerp(_interpolateStartPosition, (Vector3)_localPosition, _interpolateProgress);
-                }
-                else if(interpolateMethod == InterpolateMethod.Lerp)
-                {
-                    transform.localPosition = Vector3.Lerp(transform.localPosition, (Vector3)_localPosition, lerp);
-                }
-            }
-        }
-
         /// <summary>
         /// Exports the fixed point values to the Unity Transform Component
         /// </summary>
         private void ExportToUnity()
         {
-            if (!Application.isPlaying || interpolateMethod == InterpolateMethod.None)
-            {
-                transform.localPosition = (Vector3)_localPosition;
-                _interpolateProgress = 1;
-            }
-            
+            transform.localPosition = (Vector3)_localPosition;
+
             if (_eularReady)
             {
                 transform.localEulerAngles = (Vector3)_localEularAngles;
@@ -267,7 +249,6 @@ namespace Parallel
                 _localRotation = (Fix64Quat)transform.localRotation;
                 _localEularAngles = (Fix64Vec3)transform.localEulerAngles;
                 _localScale = (Fix64Vec3)transform.localScale;
-                _interpolateStartPosition = transform.localPosition;
             }
         }
 
@@ -313,41 +294,38 @@ namespace Parallel
                     return;
                 }
 
-                //set unity transform to the previous parallel transform position
-                if (interpolateMethod == InterpolateMethod.MoveTowards)
-                {
-                    _interpolateStartPosition = transform.localPosition;
-                    _interpolateProgress = 0;
-                }
-
                 _localPosition = value;
 
                 UpdateRigidbodyTransform();
-                ExportToUnity();
+
+                if(!Interpolate)
+                {
+                    ExportToUnity();
+                }
             }
         }
 
         void UpdateRigidbodyTransform()
         {
-                if(_rigidbody2D == null)
-                {
-                    _rigidbody2D = GetComponent<ParallelRigidbody2D>();
-                }
+            if(_rigidbody2D == null)
+            {
+                _rigidbody2D = GetComponent<ParallelRigidbody2D>();
+            }
 
-                if(_rigidbody3D == null)
-                {
-                    _rigidbody3D = GetComponent<ParallelRigidbody3D>();
-                }
+            if(_rigidbody3D == null)
+            {
+                _rigidbody3D = GetComponent<ParallelRigidbody3D>();
+            }
 
-                if(_rigidbody2D != null)
-                {
-                    Parallel2D.UpdateBodyTransForm(_rigidbody2D._body2D, (Fix64Vec2)_localPosition, Fix64.DegToRad(_internalLocalEularAngles.z));
-                }
+            if(_rigidbody2D != null)
+            {
+                Parallel2D.UpdateBodyTransForm(_rigidbody2D._body2D, (Fix64Vec2)_localPosition, Fix64.DegToRad(_internalLocalEularAngles.z));
+            }
 
-                if(_rigidbody3D != null && _rigidbody3D.enabled)
-                {
-                    Parallel3D.UpdateBodyTransForm(_rigidbody3D._body3D, _localPosition, _internalLocalRotation);
-                }
+            if(_rigidbody3D != null && _rigidbody3D.enabled)
+            {
+                Parallel3D.UpdateBodyTransForm(_rigidbody3D._body3D, _localPosition, _internalLocalRotation);
+            }
         }
 
 
@@ -369,7 +347,10 @@ namespace Parallel
 
                 _internalLocalEularAngles = value;
                 UpdateRigidbodyTransform();
-                ExportToUnity();
+                if (!Interpolate)
+                {
+                    ExportToUnity();
+                }
             } 
         }
 
@@ -416,7 +397,10 @@ namespace Parallel
 
                 _internalLocalRotation = value;
                 UpdateRigidbodyTransform();
-                ExportToUnity();
+                if (!Interpolate)
+                {
+                    ExportToUnity();
+                }
             }
         }
 
@@ -466,7 +450,10 @@ namespace Parallel
 
                 _localScale = value;
                 //Todo: update collider dimensions
-                ExportToUnity();
+                if (!Interpolate)
+                {
+                    ExportToUnity();
+                }
             }
         }
 
@@ -559,45 +546,30 @@ namespace Parallel
         //IMPORTATNT: all the internal transform data are in world space and should only be called on the root GameObject
         internal void _internal_WriteTranform(Fix64Vec3 position, Fix64Vec3 eulerAngles)
         {
-            
-            if (interpolateMethod == InterpolateMethod.MoveTowards)
-            {
-                //set unity transform to the previous parallel transform position
-                //transform.localPosition = (Vector3)_localPosition;
-                _interpolateStartPosition = transform.localPosition;
-                _interpolateProgress = 0;
-            }
-
             _localPosition = position;
             _internalLocalEularAngles = eulerAngles;
 
-            ExportToUnity();
+            if (!Interpolate)
+            {
+                ExportToUnity();
+            }
         }
 
         internal void _internal_WriteTranform(Fix64Vec3 position, Fix64Quat rotation)
         {
-            if(interpolateMethod == InterpolateMethod.MoveTowards)
-            {
-                //set unity transform to the previous parallel transform position
-                //transform.localPosition = (Vector3)_localPosition;
-                _interpolateStartPosition = transform.localPosition;
-                _interpolateProgress = 0;
-            }
-
             _localPosition = position;
             _internalLocalRotation = rotation;
 
-            
-            ExportToUnity();
+            if (!Interpolate)
+            {
+                ExportToUnity();
+            }
         }
 
         internal void _internal_ExportToUnity()
         {
-            if(interpolateMethod == InterpolateMethod.None )
-            {
-                transform.localPosition = (Vector3)_localPosition;
-            }
-            
+            transform.localPosition = (Vector3)_localPosition;
+
             if (_eularReady)
             {
                 transform.localEulerAngles = (Vector3)_localEularAngles;
@@ -608,6 +580,169 @@ namespace Parallel
             }
 
             transform.localScale = (Vector3)_localScale;
+        }
+
+        // used for interpolation
+        float _updateTime;
+        float _internalTime;
+        bool _oldIs1 = true;
+        InterpolationPostionTimeData _interpolationPostionTimeData1 = InterpolationPostionTimeData.empty;
+        InterpolationPostionTimeData _interpolationPostionTimeData2 = InterpolationPostionTimeData.empty;
+
+        void CommitChanges(float deltaTime)
+        {
+            if(_internalTime < 0.001f)
+            {
+                _internalTime += deltaTime;
+            }
+
+            _internalTime += deltaTime;
+
+            //Debug.Log("CommitChanges: add=" + deltaTime + " internal=" + _internalTime);
+
+            if(_oldIs1)
+            {
+                _interpolationPostionTimeData1.time = _internalTime;
+                _interpolationPostionTimeData1.pos = (Vector3)_localPosition;
+            }
+            else
+            {
+                _interpolationPostionTimeData2.time = _internalTime;
+                _interpolationPostionTimeData2.pos = (Vector3)_localPosition;
+            }
+
+            _oldIs1 = !_oldIs1;
+
+            if (_eularReady)
+            {
+                transform.localEulerAngles = (Vector3)_localEularAngles;
+            }
+            else
+            {
+                transform.localRotation = (Quaternion)_localRotation;
+            }
+
+            transform.localScale = (Vector3)_localScale;
+        }
+
+        public void UpdateUnityTransform()
+        {
+            if(!Interpolate)
+            {
+                return;
+            }
+
+            //set the current new position to _localPosition
+            //in the next commit change call, the new position will become the old position
+            //and the old posiiton will be updated and become the new position
+            
+            if (_oldIs1)
+            {
+                _interpolationPostionTimeData2.pos = (Vector3)_localPosition;
+            }
+            else
+            {
+                _interpolationPostionTimeData1.pos = (Vector3)_localPosition;
+            }
+        }
+
+        Vector3 CalculateInterpolatedPosition(float time)
+        {
+            InterpolationPostionTimeData positionTimeDataOld = _interpolationPostionTimeData1;
+            InterpolationPostionTimeData positionTimeDataNew = _interpolationPostionTimeData2;
+
+            if (!_oldIs1)
+            {
+                positionTimeDataOld = _interpolationPostionTimeData2;
+                positionTimeDataNew = _interpolationPostionTimeData1;
+            }
+
+            //Debug.Log("CalculateInterpolatedPosition: time=" + time + " oldTime=" + positionTimeDataOld.time + " newTime=" + positionTimeDataNew.time);
+
+            float oldTime = positionTimeDataOld.time;
+
+            if(time <= oldTime)
+            {
+                //Debug.LogError("time is smaller than oldTime");
+                return positionTimeDataOld.pos;
+            }
+
+            float newTime = positionTimeDataNew.time;
+
+            if (time >= newTime)
+            {
+                //Debug.LogError("time is larger than newtime");
+                return positionTimeDataNew.pos;
+            }
+
+            float a = time - oldTime;
+            float b = newTime - oldTime;
+
+            return Vector3.Lerp(positionTimeDataOld.pos, positionTimeDataNew.pos, a / b);
+        }
+
+        void InitializeInterpolation()
+        {
+            _updateTime = 0;
+            _internalTime = 0;
+
+            _interpolationPostionTimeData1.time = 0;
+            _interpolationPostionTimeData2.time = 0;
+
+            _interpolationPostionTimeData1.pos = (Vector3)_localPosition;
+            _interpolationPostionTimeData2.pos = (Vector3)_localPosition;
+        }
+
+        // Unity events
+
+        private void OnEnable()
+        {
+            if(Interpolate)
+            {
+                InitializeInterpolation();
+                _sParallelTransforms.Add(this);
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (Interpolate)
+            {
+                _sParallelTransforms.Remove(this);
+            }
+        }
+
+        void Reset()
+        {
+#if UNITY_EDITOR
+            ImportFromUnity();
+            ExportToUnity();
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
+        }
+
+        void Update()
+        {
+            if (!Application.isPlaying)
+            {
+#if UNITY_EDITOR
+                if (transform.hasChanged)
+                {
+                    ImportFromUnity();
+                    UnityEditor.EditorUtility.SetDirty(this);
+                    transform.hasChanged = false;
+                }
+#endif
+            }
+            else
+            {
+                if(Interpolate)
+                {
+                    _updateTime += Time.deltaTime;
+                    //Debug.Log("Update: add=" + Time.deltaTime + " _updateTime=" + _updateTime);
+                    transform.localPosition = CalculateInterpolatedPosition(_updateTime);
+                }
+            }
         }
     }
 }

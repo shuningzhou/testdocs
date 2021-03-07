@@ -115,7 +115,7 @@ namespace Parallel
 
 
             Fix64 result = maxScale * _radius;
-            return result;
+            return Fix64Math.Abs(result);
         }
 
         Fix64 CalculateHeight()
@@ -133,7 +133,7 @@ namespace Parallel
 
             Fix64 result = maxScale * _height;
 
-            return result;
+            return Fix64Math.Abs(result);
         }
 
         protected override void UpdateShape(GameObject root)

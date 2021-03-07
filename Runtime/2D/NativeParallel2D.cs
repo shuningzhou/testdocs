@@ -26,7 +26,14 @@ namespace Parallel
 
         //2D world
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateWorld(Fix64Vec2 gravity, bool allowSleep, bool warmStart, ContactEnterCallBack enterCallback, ContactExitCallBack exitCallback);
+        internal static extern IntPtr CreateWorld(
+            Fix64Vec2 gravity, 
+            bool allowSleep, 
+            bool warmStart, 
+            ContactEnterCallBack enterCallback, 
+            ContactExitCallBack exitCallback, 
+            RollbackAddRigidbodyCallback rollbackAddRigidbodyCallback,
+            RollbackRemoveRigidbodyCallback rollbackRemoveRigidbodyCallback);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr SetGravity(IntPtr worldHandle, Fix64Vec2 gravity);
@@ -56,7 +63,21 @@ namespace Parallel
             Fix64 angularDamping,
             bool fixedRotation,
             Fix64 gravityScale,
+            UInt32 externalID,
             ref UInt16 bodyID);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern IntPtr InsertBody(IntPtr worldHandle,
+            int bodyType,
+            Fix64Vec2 position,
+            Fix64 angle,
+            Fix64 linearDamping,
+            Fix64 angularDamping,
+            bool fixedRotation,
+            Fix64 gravityScale,
+            UInt32 externalID,
+            UInt16 bodyID,
+            IntPtr previousBody);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void UpdateBodyTransform(IntPtr bodyHandle, Fix64Vec2 position, Fix64 angle);

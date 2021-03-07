@@ -155,12 +155,14 @@ namespace Parallel
 
     internal delegate void ContactEnterCallBack(IntPtr contactPtr, UInt32 contactID);
     internal delegate void ContactExitCallBack(IntPtr contactPtr, UInt32 contactID);
+    internal delegate void RollbackAddRigidbodyCallback(UInt32 externalID, UInt16 bodyID, IntPtr previousBody, IntPtr world);
+    internal delegate void RollbackRemoveRigidbodyCallback(UInt32 externalID, UInt16 bodyID, IntPtr body, IntPtr world);
 
     public class Parallel2D
     {
         //static List<IParallelRigidbody2D> rigidBodies = new List<IParallelRigidbody2D>();
         //static Dictionary<UInt32, PBody2D> bodyDictionary = new Dictionary<UInt32, PBody2D>();
-        static SortedList<UInt32, PBody2D> bodySortedList = new SortedList<UInt32, PBody2D>();
+        internal static SortedList<UInt32, PBody2D> bodySortedList = new SortedList<UInt32, PBody2D>();
         //CONTACT
         static int _contactCount;
         static IntPtr[] contactPtrs = new IntPtr[ParallelConstants.MAX_CONTACT_COUNT_2D];
@@ -200,6 +202,10 @@ namespace Parallel
         //layer
         static Dictionary<int, int> masksByLayer = new Dictionary<int, int>();
 
+        //rollback
+        internal static Action<UInt32, UInt16, IntPtr> _rollbackAddRigidbodyCallback;
+        internal static Action<UInt32, UInt16> _rollbackRemoveRigidbodyCallback;
+
         //common
         public static void Initialize()
         {
@@ -215,7 +221,7 @@ namespace Parallel
                                         Fix64.zero,
                                         Fix64.zero,
                                         false,
-                                        Fix64.zero, ref bodyID);
+                                        Fix64.zero, 0, ref bodyID);
             initialized = true;
         }
 
@@ -385,7 +391,15 @@ namespace Parallel
         //2D
         static PWorld2D CreateWorld(Fix64Vec2 gravity, bool allowSleep, bool warmStart)
         {
-            IntPtr m_NativeObject = NativeParallel2D.CreateWorld(gravity, allowSleep, warmStart, OnContactEnterCallback, OnContactExitCallBack);
+            IntPtr m_NativeObject = NativeParallel2D.CreateWorld(
+                gravity, 
+                allowSleep, 
+                warmStart, 
+                OnContactEnterCallback, 
+                OnContactExitCallBack, 
+                OnRollbackAddRigidbodyCallback,
+                OnRollbackRemoveRigidbodyCallback);
+
             return new PWorld2D(m_NativeObject);
         }
 
@@ -409,6 +423,18 @@ namespace Parallel
                 PBody2D body = pair.Value;
                 body.ReadNative();
             }
+        }
+
+        [MonoPInvokeCallback(typeof(RollbackAddRigidbodyCallback))]
+        public static void OnRollbackAddRigidbodyCallback(UInt32 externalID, UInt16 bodyID, IntPtr previousBody, IntPtr world)
+        {
+            _rollbackAddRigidbodyCallback(externalID, bodyID, previousBody);
+        }
+
+        [MonoPInvokeCallback(typeof(RollbackRemoveRigidbodyCallback))]
+        public static void OnRollbackRemoveRigidbodyCallback(UInt32 externalID, UInt16 bodyID, IntPtr body, IntPtr world)
+        {
+            _rollbackRemoveRigidbodyCallback(externalID, bodyID);
         }
 
         public static void DestroySnapshot(PSnapshot2D snapshot)
@@ -587,7 +613,8 @@ namespace Parallel
             Fix64 angularDamping,
             bool fixedRotation,
             Fix64 gravityScale,
-            IParallelRigidbody2D rigidBody2D)
+            IParallelRigidbody2D rigidBody2D,
+            UInt32 externalID)
         {
             if (!initialized)
             {
@@ -605,9 +632,49 @@ namespace Parallel
                 angularDamping,
                 fixedRotation,
                 gravityScale,
+                externalID,
                 ref bodyID);
 
-            PBody2D body2D = new PBody2D(m_NativeObject, bodyID, rigidBody2D as ParallelRigidbody2D);
+            PBody2D body2D = new PBody2D(m_NativeObject, bodyID, externalID, rigidBody2D as ParallelRigidbody2D);
+            bodySortedList[bodyID] = body2D;
+
+            ReadNativeBody(body2D);
+
+            return body2D;
+        }
+
+        public static PBody2D InsertBody
+            (int bodyType,
+            Fix64Vec2 position,
+            Fix64 angle,
+            Fix64 linearDamping,
+            Fix64 angularDamping,
+            bool fixedRotation,
+            Fix64 gravityScale,
+            IParallelRigidbody2D rigidBody2D,
+            UInt16 bodyID,
+            UInt32 externalID,
+            IntPtr previousBody)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            IntPtr m_NativeObject = NativeParallel2D.InsertBody(
+                internalWorld.IntPointer,
+                bodyType,
+                position,
+                angle,
+                linearDamping,
+                angularDamping,
+                fixedRotation,
+                gravityScale,
+                externalID,
+                bodyID,
+                previousBody);
+
+            PBody2D body2D = new PBody2D(m_NativeObject, bodyID, externalID, rigidBody2D as ParallelRigidbody2D);
             bodySortedList[bodyID] = body2D;
 
             ReadNativeBody(body2D);

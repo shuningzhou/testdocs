@@ -11,12 +11,12 @@ namespace Parallel
     {
         public static Fix64Vec3 zero    { get { return new Fix64Vec3(Fix64.zero, Fix64.zero, Fix64.zero); } }
         public static Fix64Vec3 one     { get { return new Fix64Vec3(Fix64.one, Fix64.one, Fix64.one); } }
-        public static Fix64Vec3 down    { get { return new Fix64Vec3(Fix64.zero, Fix64.NegOne, Fix64.zero); } }
+        public static Fix64Vec3 down    { get { return new Fix64Vec3(Fix64.zero, Fix64.negOne, Fix64.zero); } }
         public static Fix64Vec3 up      { get { return new Fix64Vec3(Fix64.zero, Fix64.one, Fix64.zero); } }
-        public static Fix64Vec3 left    { get { return new Fix64Vec3(Fix64.NegOne, Fix64.zero, Fix64.zero); } }
+        public static Fix64Vec3 left    { get { return new Fix64Vec3(Fix64.negOne, Fix64.zero, Fix64.zero); } }
         public static Fix64Vec3 right   { get { return new Fix64Vec3(Fix64.one, Fix64.zero, Fix64.zero); } }
         public static Fix64Vec3 forward { get { return new Fix64Vec3(Fix64.zero, Fix64.zero, Fix64.one); } }
-        public static Fix64Vec3 back    { get { return new Fix64Vec3(Fix64.zero, Fix64.zero, Fix64.NegOne); } }
+        public static Fix64Vec3 back    { get { return new Fix64Vec3(Fix64.zero, Fix64.zero, Fix64.negOne); } }
         public static Fix64Vec3 axisX   { get { return new Fix64Vec3(Fix64.one, Fix64.zero, Fix64.zero); } }
         public static Fix64Vec3 axisY   { get { return new Fix64Vec3(Fix64.zero, Fix64.one, Fix64.zero); } }
         public static Fix64Vec3 axisZ   { get { return new Fix64Vec3(Fix64.zero, Fix64.zero, Fix64.one); } }
@@ -221,6 +221,12 @@ namespace Parallel
             Fix64 clamped = Fix64Math.Clamp(dot, -Fix64.one, Fix64.one);
             Fix64 rad = Fix64.FromRaw(NativeFixedMath.Acos64(clamped.Raw));
             return rad * Fix64Math.RadToDegree;
+        }
+
+
+        public static Fix64Vec3 Lerp(Fix64Vec3 a, Fix64Vec3 b, Fix64 t)
+        {
+            return a + (b - a) * t;
         }
 
         public override bool Equals(object obj)

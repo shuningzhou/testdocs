@@ -844,7 +844,7 @@ namespace Parallel
 
             result.M31 = result.M32 = Fix64.zero;
             result.M33 = farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
-            result.M34 = Fix64.NegOne;
+            result.M34 = Fix64.negOne;
 
             result.M41 = result.M42 = result.M44 = Fix64.zero;
             result.M43 = nearPlaneDistance * farPlaneDistance / (nearPlaneDistance - farPlaneDistance);

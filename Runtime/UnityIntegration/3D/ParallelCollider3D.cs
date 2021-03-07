@@ -8,6 +8,7 @@ namespace Parallel
         protected PShape3D _shape;
         protected PFixture3D _fixture;
         protected ParallelTransform _pTransform;
+        protected ParallelRigidbody3D _attachedBody;
 
         [SerializeField]
         internal int _shapeID;
@@ -22,6 +23,15 @@ namespace Parallel
         Fix64 _bounciness = Fix64.FromDivision(2, 10);
 
         public bool ShapeDirty { get; set; }
+
+        public ParallelRigidbody3D attachedBody
+        {
+            get
+            {
+                return _attachedBody;
+            }
+            
+        }
 
         public Fix64 friction
         {
@@ -63,8 +73,9 @@ namespace Parallel
         public abstract void UpdateShape(GameObject root);
         public abstract PShape3D CreateShape(GameObject root);
 
-        public void ReceiveFixture(PFixture3D fixture)
+        public void ReceiveFixture(PFixture3D fixture, ParallelRigidbody3D parallelRigidbody3D)
         {
+            _attachedBody = parallelRigidbody3D;
             _fixture = fixture;
             _shapeID = fixture.shapeID;
             _shape = Parallel3D.GetShapeOfFixture(fixture);
