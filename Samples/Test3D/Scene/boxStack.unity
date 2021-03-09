@@ -179,8 +179,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childrenRigidbodies: []
+  parent: {fileID: 0}
   _bodyId: 0
   sceneIndex: 10
+  parentTransform: {fileID: 0}
   externalId: 0
   _awake: 0
   _bodyType: 2
@@ -358,8 +361,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childrenRigidbodies: []
+  parent: {fileID: 0}
   _bodyId: 0
   sceneIndex: 7
+  parentTransform: {fileID: 0}
   externalId: 0
   _awake: 0
   _bodyType: 2
@@ -537,8 +543,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childrenRigidbodies: []
+  parent: {fileID: 0}
   _bodyId: 0
   sceneIndex: 8
+  parentTransform: {fileID: 0}
   externalId: 0
   _awake: 0
   _bodyType: 2
@@ -716,8 +725,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childrenRigidbodies: []
+  parent: {fileID: 0}
   _bodyId: 0
   sceneIndex: 6
+  parentTransform: {fileID: 0}
   externalId: 0
   _awake: 0
   _bodyType: 2
@@ -978,8 +990,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childrenRigidbodies: []
+  parent: {fileID: 0}
   _bodyId: 0
   sceneIndex: 9
+  parentTransform: {fileID: 0}
   externalId: 0
   _awake: 0
   _bodyType: 2
@@ -1212,8 +1227,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childrenRigidbodies: []
+  parent: {fileID: 0}
   _bodyId: 0
   sceneIndex: 4
+  parentTransform: {fileID: 0}
   externalId: 0
   _awake: 0
   _bodyType: 2
@@ -1495,8 +1513,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childrenRigidbodies: []
+  parent: {fileID: 0}
   _bodyId: 0
   sceneIndex: 5
+  parentTransform: {fileID: 0}
   externalId: 0
   _awake: 0
   _bodyType: 2

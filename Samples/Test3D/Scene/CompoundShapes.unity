@@ -284,12 +284,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: -975175
     RawY: 734003
     RawZ: 0
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -403,8 +407,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childrenRigidbodies: []
+  parent: {fileID: 0}
   _bodyId: 0
   sceneIndex: 4
+  parentTransform: {fileID: 0}
   externalId: 0
   _awake: 0
   _bodyType: 2
@@ -423,6 +430,9 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
   _customMass:
     Raw: 1048576
@@ -442,12 +452,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: 3145728
     RawZ: 0
+  _localRotation:
+    RawX: -227476
+    RawY: -81633
+    RawZ: -18202
+    RawW: 1020181
   _localEularAngles:
     RawX: 351126144
     RawY: 367892896
@@ -746,12 +760,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: -660602
     RawY: 6889144
     RawZ: -5075108
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -962,9 +980,8 @@ MonoBehaviour:
   - {x: 0, y: 0, z: -1}
   - {x: 1, y: 0.4994887, z: -1}
   vertsCount: 62
-  simplified: 0
-  angle: 45
-  Limit: 12
+  UpdateConvexData: 0
+  limit: 24
   convexData:
     vertexCount: 10
     vertices:
@@ -1316,6 +1333,7 @@ MonoBehaviour:
     - {x: 1, y: 0, z: -1}
     - {x: 0, y: 0, z: -1}
     - {x: 1, y: 0.4994887, z: -1}
+  draw2: 0
 --- !u!114 &1063655984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1328,12 +1346,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 4928307
     RawY: 2527068
     RawZ: 3796139
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -1369,8 +1391,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childrenRigidbodies: []
+  parent: {fileID: 0}
   _bodyId: 0
   sceneIndex: 5
+  parentTransform: {fileID: 0}
   externalId: 0
   _awake: 0
   _bodyType: 2
@@ -1389,6 +1414,9 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
   _customMass:
     Raw: 1048576
@@ -1512,12 +1540,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 1782579
     RawY: 716177
     RawZ: 0
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -1880,9 +1912,8 @@ MonoBehaviour:
   - {x: 0.44960272, y: 1, z: 0}
   - {x: 0.18826309, y: 1, z: 0}
   vertsCount: 156
-  simplified: 0
-  angle: 45
-  Limit: 12
+  UpdateConvexData: 0
+  limit: 24
   convexData:
     vertexCount: 12
     vertices:
@@ -2502,6 +2533,7 @@ MonoBehaviour:
     - {x: 0.53974104, y: 1, z: 0.061737593}
     - {x: 0.44960272, y: 1, z: 0}
     - {x: 0.18826309, y: 1, z: 0}
+  draw2: 0
 --- !u!114 &1375780347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2514,12 +2546,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 0
     RawY: 492830
     RawZ: 650117
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -2605,9 +2641,8 @@ MonoBehaviour:
   - {x: 1, y: 0.4662552, z: 0}
   - {x: 1, y: 0, z: 1}
   vertsCount: 22
-  simplified: 0
-  angle: 45
-  Limit: 12
+  UpdateConvexData: 0
+  limit: 24
   convexData:
     vertexCount: 6
     vertices:
@@ -2809,6 +2844,7 @@ MonoBehaviour:
     - {x: 1, y: 0, z: 0}
     - {x: 1, y: 0.4662552, z: 0}
     - {x: 1, y: 0, z: 1}
+  draw2: 0
 --- !u!114 &1553826714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2821,12 +2857,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: 1218445
     RawY: 0
     RawZ: 0
+  _localRotation:
+    RawX: 442317
+    RawY: 0
+    RawZ: 0
+    RawW: -950719
   _localEularAngles:
     RawX: 325163424
     RawY: 0
@@ -2940,8 +2980,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childrenRigidbodies: []
+  parent: {fileID: 0}
   _bodyId: 0
   sceneIndex: 6
+  parentTransform: {fileID: 0}
   externalId: 0
   _awake: 0
   _bodyType: 2
@@ -2960,6 +3003,9 @@ MonoBehaviour:
   _fixedRotationX: 0
   _fixedRotationY: 0
   _fixedRotationZ: 0
+  _fixedPositionX: 0
+  _fixedPositionY: 0
+  _fixedPositionZ: 0
   _overideMassData: 0
   _customMass:
     Raw: 1048576
@@ -2979,12 +3025,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: -9898557
     RawY: 2097152
     RawZ: -5630853
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0
@@ -3236,12 +3286,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolateMethod: 0
-  lerp: 0.2
+  Interpolate: 0
   _localPosition:
     RawX: -660602
     RawY: 4141875
     RawZ: -5075108
+  _localRotation:
+    RawX: 0
+    RawY: 0
+    RawZ: 0
+    RawW: 1048576
   _localEularAngles:
     RawX: 0
     RawY: 0

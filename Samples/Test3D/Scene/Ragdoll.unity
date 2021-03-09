@@ -178,6 +178,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &447972826 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7803711581732513754, guid: 383d1ffe5e6aa674fafc2f946e87c0f3,
+    type: 3}
+  m_PrefabInstance: {fileID: 7803711580218715164}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &508841134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -526,6 +532,51 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7803711580049961450, guid: 383d1ffe5e6aa674fafc2f946e87c0f3,
+        type: 3}
+      propertyPath: parentTransform
+      value: 
+      objectReference: {fileID: 447972826}
+    - target: {fileID: 7803711580449811706, guid: 383d1ffe5e6aa674fafc2f946e87c0f3,
+        type: 3}
+      propertyPath: parentTransform
+      value: 
+      objectReference: {fileID: 447972826}
+    - target: {fileID: 7803711580478460156, guid: 383d1ffe5e6aa674fafc2f946e87c0f3,
+        type: 3}
+      propertyPath: parentTransform
+      value: 
+      objectReference: {fileID: 447972826}
+    - target: {fileID: 7803711580557510506, guid: 383d1ffe5e6aa674fafc2f946e87c0f3,
+        type: 3}
+      propertyPath: parentTransform
+      value: 
+      objectReference: {fileID: 447972826}
+    - target: {fileID: 7803711580808006906, guid: 383d1ffe5e6aa674fafc2f946e87c0f3,
+        type: 3}
+      propertyPath: parentTransform
+      value: 
+      objectReference: {fileID: 447972826}
+    - target: {fileID: 7803711580975843690, guid: 383d1ffe5e6aa674fafc2f946e87c0f3,
+        type: 3}
+      propertyPath: parentTransform
+      value: 
+      objectReference: {fileID: 447972826}
+    - target: {fileID: 7803711581297309391, guid: 383d1ffe5e6aa674fafc2f946e87c0f3,
+        type: 3}
+      propertyPath: parentTransform
+      value: 
+      objectReference: {fileID: 447972826}
+    - target: {fileID: 7803711581533252818, guid: 383d1ffe5e6aa674fafc2f946e87c0f3,
+        type: 3}
+      propertyPath: parentTransform
+      value: 
+      objectReference: {fileID: 447972826}
+    - target: {fileID: 7803711581563994764, guid: 383d1ffe5e6aa674fafc2f946e87c0f3,
+        type: 3}
+      propertyPath: parentTransform
+      value: 
+      objectReference: {fileID: 447972826}
     - target: {fileID: 7803711581732513753, guid: 383d1ffe5e6aa674fafc2f946e87c0f3,
         type: 3}
       propertyPath: m_Name

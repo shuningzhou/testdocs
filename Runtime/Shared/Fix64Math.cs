@@ -46,6 +46,9 @@ namespace Parallel
 
         public static Fix64 Pow(Fix64 a, Fix64 b) { return Fix64.FromRaw(NativeFixedMath.Pow64(a.Raw, b.Raw)); }
 
+        public static Fix64 Log(Fix64 a) { return Fix64.FromRaw(NativeFixedMath.Log64(a.Raw)); }
+        public static Fix64 Log2(Fix64 a) { return Fix64.FromRaw(NativeFixedMath.Log264(a.Raw)); }
+
         public static Fix64 Max(Fix64 a, Fix64 b)
         {
             return a > b ? a : b;

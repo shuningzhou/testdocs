@@ -271,8 +271,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childrenRigidbodies: []
+  parent: {fileID: 0}
   _bodyId: 0
   sceneIndex: 4
+  parentTransform: {fileID: 0}
   externalId: 0
   _awake: 0
   _bodyType: 2
@@ -313,7 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0dd065684c8da429b0d51808b4a9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Interpolate: 0
+  Interpolate: 1
   _localPosition:
     RawX: 0
     RawY: 8904507
@@ -519,8 +522,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childrenRigidbodies: []
+  parent: {fileID: 0}
   _bodyId: 0
   sceneIndex: 3
+  parentTransform: {fileID: 0}
   externalId: 0
   _awake: 0
   _bodyType: 0
