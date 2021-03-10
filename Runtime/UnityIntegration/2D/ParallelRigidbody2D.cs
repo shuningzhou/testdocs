@@ -52,6 +52,9 @@ namespace Parallel
         [SerializeField]
         bool _fixedRotation = false;
 
+        [SerializeField]
+        Fix64 _mass = Fix64.zero;
+
         public int bodyId
         {
             get
@@ -389,7 +392,14 @@ namespace Parallel
                     continue;
                 }
 
-                PFixture2D fixture2D = Parallel2D.AddFixture(_body2D, shape, collider.density);
+                Fix64 mass = Fix64.zero;
+
+                if (collider._overideMass)
+                {
+                    mass = collider._customMass;
+                }
+
+                PFixture2D fixture2D = Parallel2D.AddFixture(_body2D, shape, collider.density, mass);
 
                 collider.ReceiveFixture(fixture2D, this);
             }
@@ -400,6 +410,8 @@ namespace Parallel
             }
 
             Parallel2D.ReadBodyMassInfo(_body2D);
+
+            _mass = _body2D.mass;
         }
 
         internal PBody2D Insert(UInt16 bId, UInt32 exId, IntPtr previousBody)
@@ -458,7 +470,14 @@ namespace Parallel
                     continue;
                 }
 
-                PFixture2D fixture2D = Parallel2D.AddFixture(_body2D, shape, collider.density);
+                Fix64 mass = Fix64.zero;
+
+                if (collider._overideMass)
+                {
+                    mass = collider._customMass;
+                }
+
+                PFixture2D fixture2D = Parallel2D.AddFixture(_body2D, shape, collider.density, mass);
 
                 collider.ReceiveFixture(fixture2D, this);
             }
@@ -468,8 +487,9 @@ namespace Parallel
                 return lastInsertedBody;
             }
 
-
             Parallel2D.ReadBodyMassInfo(_body2D);
+
+            _mass = _body2D.mass;
 
             return lastInsertedBody;
         }

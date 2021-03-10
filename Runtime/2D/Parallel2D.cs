@@ -465,14 +465,14 @@ namespace Parallel
         }
 
         //2D fixture
-        public static PFixture2D AddFixture(PBody2D body2D, PShape2D shape2D, Fix64 density)
+        public static PFixture2D AddFixture(PBody2D body2D, PShape2D shape2D, Fix64 density, Fix64 mass)
         {
             if (!initialized)
             {
                 Initialize();
             }
 
-            IntPtr m_NativeObject = NativeParallel2D.AddFixtureToBody(body2D.IntPointer, shape2D.IntPointer, density);
+            IntPtr m_NativeObject = NativeParallel2D.AddFixtureToBody(body2D.IntPointer, shape2D.IntPointer, density, mass);
             return new PFixture2D(m_NativeObject);
         }
 

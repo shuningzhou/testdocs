@@ -22,6 +22,15 @@ namespace Parallel
         [SerializeField]
         Fix64 _bounciness = Fix64.FromDivision(2, 10);
 
+        [SerializeField]
+        internal Fix64 _density = Fix64.FromDivision(1, 1);
+
+        [SerializeField]
+        internal bool _overideMass = false;
+
+        [SerializeField]
+        internal Fix64 _customMass = Fix64.zero;
+
         public bool ShapeDirty { get; set; }
 
         public ParallelRigidbody3D attachedBody

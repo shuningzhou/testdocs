@@ -161,14 +161,14 @@ namespace Parallel
         internal static extern void GetPointVelocity3D(IntPtr bodyHandle, Fix64Vec3 point, ref Fix64Vec3 v);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateMassData3D(IntPtr bodyHandle, Fix64 mass, Fix64Vec3 centerOfMass);
+        internal static extern void UpdateCOM3D(IntPtr bodyHandle, Fix64Vec3 centerOfMass);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void UpdateMass3D(IntPtr bodyHandle, Fix64 mass);
 
         //3D fixture
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr AddFixtureToBody3D(IntPtr bodyHandle, IntPtr shapeHandle, Fix64 density, ref byte shapeID);
+        internal static extern IntPtr AddFixtureToBody3D(IntPtr bodyHandle, IntPtr shapeHandle, Fix64 density, Fix64 mass, ref byte shapeID);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void SetLayer3D(IntPtr fixtureHandle, int layer, int layerMask, bool refilter);
@@ -177,6 +177,9 @@ namespace Parallel
         internal static extern void SetFixtureProperties3D(IntPtr fixtureHandle, bool isTrigger, Fix64 friction, Fix64 bounciness);
 
         //3D shapes
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void DestroyShape3D(IntPtr shapeHandle);
+
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr CreateCube3D(Fix64 x, Fix64 y, Fix64 z, Fix64Vec3 center, Fix64Quat rotation);
 
@@ -234,6 +237,22 @@ namespace Parallel
                             ref Fix64 fraction,
                             ref UInt16 bodyID,
                             UInt16 ignoreBodyID);
+
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern bool ShapeCast3D(
+                    IntPtr worldHandle,
+                    int mask,
+                    IntPtr shapeHandle,
+                    Fix64Vec3 pos,
+                    Fix64Quat rot,
+                    Fix64Vec3 t,
+                    ref Fix64Vec3 point,
+                    ref Fix64Vec3 normal,
+                    ref Fix64 fraction,
+                    ref UInt16 bodyID,
+                    UInt16 ignoreBodyID);
+
 
         //overlap
         [DllImport(PLUGIN_NAME)]

@@ -639,6 +639,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Veh_Plane_Stunt_01 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1422418444, guid: f2864539f234fcb4caf0f5a263787a1e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1422418445, guid: f2864539f234fcb4caf0f5a263787a1e, type: 3}
       propertyPath: _localPosition.RawY
       value: 14826865
@@ -8186,7 +8190,22 @@ PrefabInstance:
     - target: {fileID: 2312638363782049662, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3175535036113917119, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: _density.Raw
+      value: 1048576
+      objectReference: {fileID: 0}
+    - target: {fileID: 3175535036113917119, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: _overideMass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3175535036113917119, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: _customMass.Raw
+      value: 1048576
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7a8e57687c4fd94694608c37d973ced, type: 3}

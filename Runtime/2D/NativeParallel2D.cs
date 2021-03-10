@@ -125,7 +125,7 @@ namespace Parallel
 
         //2D fixture
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr AddFixtureToBody(IntPtr bodyHandle, IntPtr shapeHandle, Fix64 density);
+        internal static extern IntPtr AddFixtureToBody(IntPtr bodyHandle, IntPtr shapeHandle, Fix64 density, Fix64 mass);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr GetShapeOfFixture(IntPtr fixtureHandle);
@@ -167,6 +167,9 @@ namespace Parallel
 
         [DllImport(PLUGIN_NAME)]
         internal static extern bool CircleCast(Fix64Vec2 center, Fix64 radius, int mask, Fix64Vec2 translation, ref Fix64Vec2 point, ref Fix64Vec2 normal, ref Fix64 fraction, out UInt16 bodyID, IntPtr worldHandle);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern bool ShapeCast(IntPtr shapeHandle, Fix64Vec3 pos, Fix64 rot, int mask, Fix64Vec2 translation, ref Fix64Vec2 point, ref Fix64Vec2 normal, ref Fix64 fraction, out UInt16 bodyID, IntPtr worldHandle);
 
         //overlap
         [DllImport(PLUGIN_NAME)]

@@ -37,6 +37,9 @@ namespace Parallel
         int _bodyId;
 
         [SerializeField]
+        Fix64 _mass;
+
+        [SerializeField]
         internal int sceneIndex;
         public Transform parentTransform;
         public uint externalId;
@@ -75,9 +78,7 @@ namespace Parallel
 
         //only used when creating the body
         [SerializeField]
-        bool _overideMassData = false;
-        [SerializeField]
-        Fix64 _customMass = Fix64.one;
+        bool _overideCenterOfMass = false;
         [SerializeField]
         Fix64Vec3 _customCenterOfMass = Fix64Vec3.zero;
 
@@ -572,7 +573,14 @@ namespace Parallel
                     continue;
                 }
 
-                PFixture3D fixture = Parallel3D.AddFixture(_body3D, shape, (Fix64)1);
+                Fix64 mass = Fix64.zero;
+
+                if(collider._overideMass)
+                {
+                    mass = collider._customMass;
+                }
+
+                PFixture3D fixture = Parallel3D.AddFixture(_body3D, shape, collider._density, mass);
 
                 collider.ReceiveFixture(fixture, this);
             }
@@ -582,23 +590,14 @@ namespace Parallel
                 return;
             }
 
-            if(_overideMassData)
+            if(_overideCenterOfMass)
             {
-                if (_customCenterOfMass != null)
-                {
-                    Fix64Vec3 com = _customCenterOfMass;
-                    //Debug.Log(com);
-                    Parallel3D.UpdateMassData(_body3D, _customMass, com);
-
-
-                }
-                else
-                {
-                    Parallel3D.UpdateMass(_body3D, _customMass);
-                }
+                Parallel3D.UpdateCOM(_body3D, _customCenterOfMass);
             }
 
             Parallel3D.ReadBodyMassInfo(_body3D);
+
+            _mass = _body3D.mass;
         }
 
         internal PBody3D Insert(UInt16 bId, UInt32 exId, IntPtr previousBody)
@@ -660,7 +659,14 @@ namespace Parallel
                     continue;
                 }
 
-                PFixture3D fixture = Parallel3D.AddFixture(_body3D, shape, (Fix64)1);
+                Fix64 mass = Fix64.zero;
+
+                if (collider._overideMass)
+                {
+                    mass = collider._customMass;
+                }
+
+                PFixture3D fixture = Parallel3D.AddFixture(_body3D, shape, collider._density, mass);
 
                 collider.ReceiveFixture(fixture, this);
             }
@@ -670,23 +676,14 @@ namespace Parallel
                 return lastInsertedBody;
             }
 
-            if (_overideMassData)
+            if (_overideCenterOfMass)
             {
-                if (_customCenterOfMass != null)
-                {
-                    Fix64Vec3 com = _customCenterOfMass;
-                    //Debug.Log(com);
-                    Parallel3D.UpdateMassData(_body3D, _customMass, com);
-
-
-                }
-                else
-                {
-                    Parallel3D.UpdateMass(_body3D, _customMass);
-                }
+                Parallel3D.UpdateCOM(_body3D, _customCenterOfMass);
             }
 
             Parallel3D.ReadBodyMassInfo(_body3D);
+
+            _mass = _body3D.mass;
 
             return lastInsertedBody;
         }
@@ -743,10 +740,8 @@ namespace Parallel
                     continue;
                 }
 
-                Parallel3D.AddFixture(body, shape, (Fix64)1);
+                Parallel3D.AddFixture(body, shape, (Fix64)1, Fix64.zero);
             }
-
-            Parallel3D.ReadBodyMassInfo(_body3D);
         }
 
         internal void Destroy()
