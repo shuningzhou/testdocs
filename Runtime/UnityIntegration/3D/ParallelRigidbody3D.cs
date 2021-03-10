@@ -79,6 +79,7 @@ namespace Parallel
         //only used when creating the body
         [SerializeField]
         bool _overideCenterOfMass = false;
+
         [SerializeField]
         Fix64Vec3 _customCenterOfMass = Fix64Vec3.zero;
 
