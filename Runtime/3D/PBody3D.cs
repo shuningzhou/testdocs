@@ -3,26 +3,26 @@ namespace Parallel
 {
     public struct PBodyExport3D
     {
-        public Fix64Vec3 linearVelocity;
-        public Fix64Vec3 angularVelocity;
+        public FVector3 linearVelocity;
+        public FVector3 angularVelocity;
 
-        public Fix64Vec3 position;
-        public Fix64Quat orientation;
-        public Fix64Quat orientation0;
+        public FVector3 position;
+        public FQuaternion orientation;
+        public FQuaternion orientation0;
     }
 
     public class PBody3D : NativeObject
     {
         public bool awake;
-        public Fix64 sleepTime;
-        public Fix64Vec3 position;
-        public Fix64Quat orientation;
-        public Fix64Quat orientation0;
+        public FFloat sleepTime;
+        public FVector3 position;
+        public FQuaternion orientation;
+        public FQuaternion orientation0;
 
-        public Fix64Vec3 linearVelocity;
-        public Fix64Vec3 angularVelocity;
+        public FVector3 linearVelocity;
+        public FVector3 angularVelocity;
 
-        public Fix64 mass;
+        public FFloat mass;
 
         public UInt16 BodyID { get; private set; }
         public UInt32 ExternalID { get; private set; }
@@ -51,7 +51,7 @@ namespace Parallel
             RigidBody.OnTransformUpdated();
         }
 
-        public void Step(Fix64 time)
+        public void Step(FFloat time)
         {
             RigidBody.Step(time);
         }

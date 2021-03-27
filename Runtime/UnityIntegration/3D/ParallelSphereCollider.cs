@@ -7,9 +7,9 @@ namespace Parallel
     public class ParallelSphereCollider : ParallelCollider3D
     {
         [SerializeField]
-        Fix64 _radius = Fix64.FromDivision(1, 2);
+        FFloat _radius = FFloat.FromDivision(1, 2);
 
-        public Fix64 radius
+        public FFloat radius
         {
             get
             {
@@ -23,9 +23,9 @@ namespace Parallel
 
         void OnDrawGizmosSelected()
         {
-            Fix64 r = CalculateRadius();
+            FFloat r = CalculateRadius();
 
-            if (r > Fix64.zero)
+            if (r > FFloat.zero)
             {
                 Gizmos.color = ParallelUtil.ColliderOutlineColor;
                 Gizmos.matrix = Matrix4x4.TRS(transform.position, Quaternion.identity, new Vector3(1, 1, 1));
@@ -39,20 +39,20 @@ namespace Parallel
             }
         }
 
-        Fix64 CalculateRadius()
+        FFloat CalculateRadius()
         {
-            Fix64 maxScale = Fix64Math.Max(Fix64Math.Abs(pTransform.localScale.x), Fix64Math.Abs(pTransform.localScale.y), Fix64Math.Abs(pTransform.localScale.z));
-            Fix64 result = maxScale * _radius;
+            FFloat maxScale = FMath.Max(FMath.Abs(pTransform.localScale.x), FMath.Abs(pTransform.localScale.y), FMath.Abs(pTransform.localScale.z));
+            FFloat result = maxScale * _radius;
             return result;
         }
 
         public override void UpdateShape(GameObject root)
         {
-            Fix64 r = CalculateRadius();
+            FFloat r = CalculateRadius();
 
-            if (r > Fix64.zero)
+            if (r > FFloat.zero)
             {
-                Fix64Vec3 center = Fix64Vec3.zero;
+                FVector3 center = FVector3.zero;
 
                 if (gameObject != root)
                 {
@@ -65,11 +65,11 @@ namespace Parallel
 
         public override PShape3D CreateShape(GameObject root)
         {
-            Fix64 r = CalculateRadius();
+            FFloat r = CalculateRadius();
 
-            if (r > Fix64.zero)
+            if (r > FFloat.zero)
             {
-                Fix64Vec3 center = Fix64Vec3.zero;
+                FVector3 center = FVector3.zero;
 
                 if (gameObject != root)
                 {
@@ -104,7 +104,7 @@ namespace Parallel
 //        PShape3D _shape;
 //        PFixture3D _fixture;
 
-//        public Fix64 Radius = Fix64.FromDivision(1, 2);
+//        public FFloat Radius = FFloat.FromDivision(1, 2);
 
 //        ParallelTransform _pTransform;
 
@@ -130,15 +130,15 @@ namespace Parallel
 //            //only import from unity in editing mode
 //            if (!Deterministic || !Application.isPlaying)
 //            {
-//                //size = (Fix64Vec3)editorSize;
+//                //size = (FVector3)editorSize;
 //            }
 //        }
 
 //        void OnDrawGizmosSelected()
 //        {
-//            Fix64 r = CalculateRadius();
+//            FFloat r = CalculateRadius();
 
-//            if (r > Fix64.zero)
+//            if (r > FFloat.zero)
 //            {
 //                Gizmos.color = DebugSettings.ColliderOutlineColor;
 //                Gizmos.matrix = Matrix4x4.TRS(transform.position, Quaternion.identity, new Vector3(1, 1, 1));
@@ -152,18 +152,18 @@ namespace Parallel
 //            }
 //        }
 
-//        Fix64 CalculateRadius()
+//        FFloat CalculateRadius()
 //        {
-//            Fix64 maxScale = Fix64Math.Max(pTransform.localScale.x, pTransform.localScale.y, pTransform.localScale.z);
-//            Fix64 result = maxScale * Radius;
+//            FFloat maxScale = FMath.Max(pTransform.localScale.x, pTransform.localScale.y, pTransform.localScale.z);
+//            FFloat result = maxScale * Radius;
 //            return result;
 //        }
 
 //        public PShape3D CreateShape()
 //        {
-//            Fix64 r = CalculateRadius();
+//            FFloat r = CalculateRadius();
 
-//            if (r > Fix64.zero)
+//            if (r > FFloat.zero)
 //            {
 //                _shape = Parallel3D.CreateSphere(r);
 //                return _shape;
@@ -187,9 +187,9 @@ namespace Parallel
 //                return;
 //            }
 
-//            Fix64 r = CalculateRadius();
+//            FFloat r = CalculateRadius();
 
-//            if (r > Fix64.zero)
+//            if (r > FFloat.zero)
 //            {
 //                Parallel3D.UpdateSphere(_shape, _fixture, r);
 //                ShapeDirty = false;

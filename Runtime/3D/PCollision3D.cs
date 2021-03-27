@@ -5,7 +5,7 @@ namespace Parallel
     {
         public IParallelRigidbody3D otherRigidbody { get; private set; }
 
-        public Fix64Vec3 relativeVelocity
+        public FVector3 relativeVelocity
         {
             get
             {

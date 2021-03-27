@@ -15,8 +15,8 @@ namespace Parallel
         public PCapsuleDirection2D Direction = PCapsuleDirection2D.Vertical;
 
         [SerializeField]
-        Fix64 _radius = Fix64.FromDivision(25, 100);
-        public Fix64 radius
+        FFloat _radius = FFloat.FromDivision(25, 100);
+        public FFloat radius
         {
             get
             {
@@ -25,8 +25,8 @@ namespace Parallel
         }
 
         [SerializeField]
-        Fix64 _height = Fix64.FromDivision(1, 1);
-        public Fix64 height
+        FFloat _height = FFloat.FromDivision(1, 1);
+        public FFloat height
         {
             get
             {
@@ -34,29 +34,29 @@ namespace Parallel
             }
         }
 
-        public void UpdateShape(Fix64 radius, Fix64 height)
+        public void UpdateShape(FFloat radius, FFloat height)
         {
             _radius = radius;
             _height = height;
             UpdateShape(_root);
         }
 
-        Fix64Vec2 v1;
-        Fix64Vec2 v2;
+        FVector2 v1;
+        FVector2 v2;
 
         void OnDrawGizmosSelected()
         {
-            Fix64 radius = CalculateRadius();
-            Fix64 height = CalculateHeight();
+            FFloat radius = CalculateRadius();
+            FFloat height = CalculateHeight();
 
-            if (radius > Fix64.zero && height > Fix64.zero)
+            if (radius > FFloat.zero && height > FFloat.zero)
             {
-                Fix64Vec2 p1 = Fix64Vec2.zero;
-                Fix64Vec2 p2 = Fix64Vec2.zero;
+                FVector2 p1 = FVector2.zero;
+                FVector2 p2 = FVector2.zero;
 
                 CalculatePoints(height, radius, ref p1, ref p2);
 
-                if (p1 == Fix64Vec2.zero || p2 == Fix64Vec2.zero)
+                if (p1 == FVector2.zero || p2 == FVector2.zero)
                 {
                     return;
                 }
@@ -72,14 +72,14 @@ namespace Parallel
             }
         }
 
-        void CalculatePoints(Fix64 height, Fix64 radius, ref Fix64Vec2 point1, ref Fix64Vec2 point2)
+        void CalculatePoints(FFloat height, FFloat radius, ref FVector2 point1, ref FVector2 point2)
         {
-            point1 = Fix64Vec2.zero;
-            point2 = Fix64Vec2.zero;
+            point1 = FVector2.zero;
+            point2 = FVector2.zero;
 
-            Fix64 pointDistance = height - Fix64.FromDivision(2, 1) * radius;
+            FFloat pointDistance = height - FFloat.FromDivision(2, 1) * radius;
 
-            if (pointDistance <= Fix64.zero)
+            if (pointDistance <= FFloat.zero)
             {
                 Debug.LogError("Invalid size");
                 return;
@@ -87,22 +87,22 @@ namespace Parallel
 
             if (Direction == PCapsuleDirection2D.Horizontal)
             {
-                point1 = new Fix64Vec2(Fix64.one, Fix64.zero);
-                point2 = new Fix64Vec2(-Fix64.one, Fix64.zero);
+                point1 = new FVector2(FFloat.one, FFloat.zero);
+                point2 = new FVector2(-FFloat.one, FFloat.zero);
             }
             else
             {
-                point1 = new Fix64Vec2(Fix64.zero, Fix64.one);
-                point2 = new Fix64Vec2(Fix64.zero, -Fix64.one);
+                point1 = new FVector2(FFloat.zero, FFloat.one);
+                point2 = new FVector2(FFloat.zero, -FFloat.one);
             }
 
-            point1 = point1 * (pointDistance / Fix64.FromDivision(2, 1));
-            point2 = point2 * (pointDistance / Fix64.FromDivision(2, 1));
+            point1 = point1 * (pointDistance / FFloat.FromDivision(2, 1));
+            point2 = point2 * (pointDistance / FFloat.FromDivision(2, 1));
         }
 
-        Fix64 CalculateRadius()
+        FFloat CalculateRadius()
         {
-            Fix64 maxScale = Fix64.one;
+            FFloat maxScale = FFloat.one;
 
             if (Direction == PCapsuleDirection2D.Horizontal)
             {
@@ -114,13 +114,13 @@ namespace Parallel
             }
 
 
-            Fix64 result = maxScale * _radius;
-            return Fix64Math.Abs(result);
+            FFloat result = maxScale * _radius;
+            return FMath.Abs(result);
         }
 
-        Fix64 CalculateHeight()
+        FFloat CalculateHeight()
         {
-            Fix64 maxScale = Fix64.one;
+            FFloat maxScale = FFloat.one;
 
             if (Direction == PCapsuleDirection2D.Horizontal)
             {
@@ -131,27 +131,27 @@ namespace Parallel
                 maxScale = colliderScale.y;
             }
 
-            Fix64 result = maxScale * _height;
+            FFloat result = maxScale * _height;
 
-            return Fix64Math.Abs(result);
+            return FMath.Abs(result);
         }
 
         protected override void UpdateShape(GameObject root)
         {
-            Fix64 radius = CalculateRadius();
-            Fix64 height = CalculateHeight();
+            FFloat radius = CalculateRadius();
+            FFloat height = CalculateHeight();
 
             CalculatePoints(height, radius, ref v1, ref v2);
 
-            if (v1 != Fix64Vec2.zero && v2 != Fix64Vec2.zero)
+            if (v1 != FVector2.zero && v2 != FVector2.zero)
             {
-                Fix64 angle = Fix64.zero;
-                Fix64Vec2 center = Fix64Vec2.zero;
+                FFloat angle = FFloat.zero;
+                FVector2 center = FVector2.zero;
 
                 if (gameObject != root)
                 {
-                    angle = Fix64.DegToRad(_pTransform.localEulerAngles.z);
-                    center = (Fix64Vec2)_pTransform.localPosition;
+                    angle = FFloat.DegToRad(_pTransform.localEulerAngles.z);
+                    center = (FVector2)_pTransform.localPosition;
                 }
 
                 Parallel2D.UpdateCapsule(_shape, _fixture, v1, v2, radius, center, angle);
@@ -160,24 +160,24 @@ namespace Parallel
 
         public override PShape2D CreateShape(GameObject root)
         {
-            Fix64 radius = CalculateRadius();
-            Fix64 height = CalculateHeight();
+            FFloat radius = CalculateRadius();
+            FFloat height = CalculateHeight();
 
             CalculatePoints(height, radius, ref v1, ref v2);
 
-            if (v1 == Fix64Vec2.zero || v2 == Fix64Vec2.zero)
+            if (v1 == FVector2.zero || v2 == FVector2.zero)
             {
                 return null;
             }
             else
             {
-                Fix64 angle = Fix64.zero;
-                Fix64Vec2 center = Fix64Vec2.zero;
+                FFloat angle = FFloat.zero;
+                FVector2 center = FVector2.zero;
 
                 if (gameObject != root)
                 {
-                    angle = Fix64.DegToRad(_pTransform.localEulerAngles.z);
-                    center = (Fix64Vec2)_pTransform.localPosition;
+                    angle = FFloat.DegToRad(_pTransform.localEulerAngles.z);
+                    center = (FVector2)_pTransform.localPosition;
                 }
 
                 return Parallel2D.CreateCapsule(v1, v2, radius, center, angle);

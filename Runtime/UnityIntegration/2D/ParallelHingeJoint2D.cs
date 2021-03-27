@@ -6,21 +6,21 @@ namespace Parallel
     {
         public bool collideConnected;
         public ParallelRigidbody2D connectedRigidBody;
-        public Fix64Vec2 worldAnchor;
+        public FVector2 worldAnchor;
 
         public bool useMotor;
-        public Fix64 motorSpeed;
-        public Fix64 motorTorque;
+        public FFloat motorSpeed;
+        public FFloat motorTorque;
 
         public bool useLimites;
-        public Fix64 lowerAngle;
-        public Fix64 upperAngle;
+        public FFloat lowerAngle;
+        public FFloat upperAngle;
 
         protected override PJoint2D CreateJoint()
         {
             ParallelRigidbody2D self = GetComponent<ParallelRigidbody2D>();
 
-            return Parallel2D.CreateHingeJoint(self, connectedRigidBody, worldAnchor, collideConnected, useLimites, Fix64.DegToRad(lowerAngle), Fix64.DegToRad(upperAngle), useMotor, Fix64.DegToRad(motorSpeed), motorTorque);
+            return Parallel2D.CreateHingeJoint(self, connectedRigidBody, worldAnchor, collideConnected, useLimites, FFloat.DegToRad(lowerAngle), FFloat.DegToRad(upperAngle), useMotor, FFloat.DegToRad(motorSpeed), motorTorque);
         }
     }
 }

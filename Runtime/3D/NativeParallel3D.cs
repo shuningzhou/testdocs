@@ -24,25 +24,24 @@ namespace Parallel
         //3D world
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr CreateWorld3D(
-            Fix64Vec3 gravity, 
-            bool allowSleep, 
-            bool warmStart, 
+            FVector3 gravity, 
+            int simulationMode,
             ContactEnterCallBack3D enterCallback, 
             ContactExitCallBack3D exitCallback,
             RollbackAddRigidbodyCallback3D rollbackAddRigidbodyCallback,
             RollbackRemoveRigidbodyCallback3D rollbackRemoveRigidbodyCallback);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void GetWorldSize3D(IntPtr worldHandle, ref Fix64Vec3 lower, ref Fix64Vec3 upper);
+        internal static extern void GetWorldSize3D(IntPtr worldHandle, ref FVector3 lower, ref FVector3 upper);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr SetGravity3D(IntPtr worldHandle, Fix64Vec3 gravity);
+        internal static extern IntPtr SetGravity3D(IntPtr worldHandle, FVector3 gravity);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void DestroyWorld3D(IntPtr worldHandle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void Step3D(IntPtr worldHandle, Fix64 time, int velocityIterations, int positionIterations);
+        internal static extern void Step3D(IntPtr worldHandle, FFloat time, int velocityIterations, int positionIterations);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr Snapshot3D(IntPtr worldHandle);
@@ -53,15 +52,21 @@ namespace Parallel
         [DllImport(PLUGIN_NAME)]
         internal static extern void DestroySnapshot3D(IntPtr snapshotHandle);
 
+        [DllImport(PLUGIN_NAME)]
+        internal static extern int ExportSnapshot3D(IntPtr worldHandle, IntPtr snapshotHandle, byte[] buffer, int size);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern IntPtr ImportSnapshot3D(IntPtr worldHandle, byte[] buffer, int size);
+
         //3D body
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr CreateBody3D(IntPtr worldHandle, 
             int bodyType, 
-            Fix64Vec3 position, 
-            Fix64Quat orientation,
-            Fix64Vec3 linearDamping,
-            Fix64Vec3 angularDamping,
-            Fix64Vec3 gravityScale,
+            FVector3 position, 
+            FQuaternion orientation,
+            FVector3 linearDamping,
+            FVector3 angularDamping,
+            FVector3 gravityScale,
             bool fixedRotationX,
             bool fixedRotationY,
             bool fixedRotationZ,
@@ -75,11 +80,11 @@ namespace Parallel
         internal static extern IntPtr InsertBody3D(
             IntPtr worldHandle,
             int bodyType,
-            Fix64Vec3 position,
-            Fix64Quat orientation,
-            Fix64Vec3 linearDamping,
-            Fix64Vec3 angularDamping,
-            Fix64Vec3 gravityScale,
+            FVector3 position,
+            FQuaternion orientation,
+            FVector3 linearDamping,
+            FVector3 angularDamping,
+            FVector3 gravityScale,
             bool fixedRotationX,
             bool fixedRotationY,
             bool fixedRotationZ,
@@ -91,56 +96,56 @@ namespace Parallel
             IntPtr previousBody);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateBodyTransform3D(IntPtr bodyHandle, Fix64Vec3 position, Fix64Quat orientation);
+        internal static extern void UpdateBodyTransform3D(IntPtr bodyHandle, FVector3 position, FQuaternion orientation);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateBodyTransformForRollback3D(IntPtr bodyHandle, Fix64Vec3 position, Fix64Quat orientation, Fix64Quat orientation0);
+        internal static extern void UpdateBodyTransformForRollback3D(IntPtr bodyHandle, FVector3 position, FQuaternion orientation, FQuaternion orientation0);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateBodyVelocity3D(IntPtr bodyHandle, Fix64Vec3 linearVelocity, Fix64Vec3 angularVelocity);
+        internal static extern void UpdateBodyVelocity3D(IntPtr bodyHandle, FVector3 linearVelocity, FVector3 angularVelocity);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void UpdateBodyProperties3D(IntPtr bodyHandle,
             int bodyType,
-            Fix64Vec3 linearDamping,
-            Fix64Vec3 angularDamping,
-            Fix64Vec3 gravityScale,
+            FVector3 linearDamping,
+            FVector3 angularDamping,
+            FVector3 gravityScale,
             bool fixedRotationX,
             bool fixedRotationY,
             bool fixedRotationZ);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void ApplyForce3D(IntPtr bodyHandle, Fix64Vec3 point, Fix64Vec3 force);
+        internal static extern void ApplyForce3D(IntPtr bodyHandle, FVector3 point, FVector3 force);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void ApplyForceToCenter3D(IntPtr bodyHandle, Fix64Vec3 force);
+        internal static extern void ApplyForceToCenter3D(IntPtr bodyHandle, FVector3 force);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void ApplyTorque3D(IntPtr bodyHandle, Fix64Vec3 torque);
+        internal static extern void ApplyTorque3D(IntPtr bodyHandle, FVector3 torque);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void ApplyLinearImpulse3D(IntPtr bodyHandle, Fix64Vec3 point, Fix64Vec3 impulse);
+        internal static extern void ApplyLinearImpulse3D(IntPtr bodyHandle, FVector3 point, FVector3 impulse);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void ApplyLinearImpulseToCenter3D(IntPtr bodyHandle, Fix64Vec3 impulse);
+        internal static extern void ApplyLinearImpulseToCenter3D(IntPtr bodyHandle, FVector3 impulse);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void ApplyAngularImpulse3D(IntPtr bodyHandle, Fix64Vec3 impulse);
+        internal static extern void ApplyAngularImpulse3D(IntPtr bodyHandle, FVector3 impulse);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void DestroyBody3D(IntPtr worldHandle, IntPtr bodyHandle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void GetTransform3D(IntPtr bodyHandle, ref Fix64Vec3 pos, ref Fix64Quat orientation, ref Fix64Quat orientation0);
+        internal static extern void GetTransform3D(IntPtr bodyHandle, ref FVector3 pos, ref FQuaternion orientation, ref FQuaternion orientation0);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void GetVelocity3D(IntPtr bodyHandle, ref Fix64Vec3 linearVelocity, ref Fix64Vec3 rz);
+        internal static extern void GetVelocity3D(IntPtr bodyHandle, ref FVector3 linearVelocity, ref FVector3 rz);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern bool IsAwake3D(IntPtr bodyHandle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void GetBodyMassInfo3D(IntPtr bodyHandle, ref Fix64 mass);
+        internal static extern void GetBodyMassInfo3D(IntPtr bodyHandle, ref FFloat mass);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void SetAwake3D(IntPtr bodyHandle, bool awake);
@@ -152,76 +157,80 @@ namespace Parallel
         internal static extern void SetEnabled3D(IntPtr bodyHandle, bool enabled);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void GetSleepTime3D(IntPtr bodyHandle, ref Fix64 sleepTime);
+        internal static extern void GetSleepTime3D(IntPtr bodyHandle, ref FFloat sleepTime);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void SetAwakeForRollback3D(IntPtr bodyHandle, bool awake, Fix64 sleepTime);
+        internal static extern void SetAwakeForRollback3D(IntPtr bodyHandle, bool awake, FFloat sleepTime);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void GetPointVelocity3D(IntPtr bodyHandle, Fix64Vec3 point, ref Fix64Vec3 v);
+        internal static extern void GetPointVelocity3D(IntPtr bodyHandle, FVector3 point, ref FVector3 v);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateCOM3D(IntPtr bodyHandle, Fix64Vec3 centerOfMass);
+        internal static extern void UpdateCOM3D(IntPtr bodyHandle, FVector3 centerOfMass);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateMass3D(IntPtr bodyHandle, Fix64 mass);
+        internal static extern void UpdateMass3D(IntPtr bodyHandle, FFloat mass);
 
         //3D fixture
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr AddFixtureToBody3D(IntPtr bodyHandle, IntPtr shapeHandle, Fix64 density, Fix64 mass, ref byte shapeID);
+        internal static extern IntPtr AddFixtureToBody3D(IntPtr bodyHandle, IntPtr shapeHandle, FFloat density, FFloat mass, ref byte shapeID);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void SetLayer3D(IntPtr fixtureHandle, int layer, int layerMask, bool refilter);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void SetFixtureProperties3D(IntPtr fixtureHandle, bool isTrigger, Fix64 friction, Fix64 bounciness);
+        internal static extern void SetFixtureProperties3D(IntPtr fixtureHandle, bool isTrigger, FFloat friction, FFloat bounciness);
 
         //3D shapes
         [DllImport(PLUGIN_NAME)]
         internal static extern void DestroyShape3D(IntPtr shapeHandle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateCube3D(Fix64 x, Fix64 y, Fix64 z, Fix64Vec3 center, Fix64Quat rotation);
+        internal static extern IntPtr CreateCube3D(FFloat x, FFloat y, FFloat z, FVector3 center, FQuaternion rotation);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateCube3D(IntPtr shapeHandle, IntPtr fixtureHandle, Fix64 x, Fix64 y, Fix64 z, Fix64Vec3 center, Fix64Quat rotation);
+        internal static extern void UpdateCube3D(IntPtr shapeHandle, IntPtr fixtureHandle, FFloat x, FFloat y, FFloat z, FVector3 center, FQuaternion rotation);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateSphere3D(Fix64 radius, Fix64Vec3 center);
+        internal static extern IntPtr CreateSphere3D(FFloat radius, FVector3 center);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateSphere3D(IntPtr shapeHandle, IntPtr fixtureHandle, Fix64 radius, Fix64Vec3 center);
+        internal static extern void UpdateSphere3D(IntPtr shapeHandle, IntPtr fixtureHandle, FFloat radius, FVector3 center);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateCapsule3D(Fix64Vec3 v1, Fix64Vec3 v2, Fix64 radius, Fix64Vec3 center, Fix64Quat rotation);
+        internal static extern IntPtr CreateCapsule3D(FVector3 v1, FVector3 v2, FFloat radius, FVector3 center, FQuaternion rotation);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateCapsule3D(IntPtr shapeHandle, IntPtr fixtureHandle, Fix64Vec3 v1, Fix64Vec3 v2, Fix64 radius, Fix64Vec3 center, Fix64Quat rotation);
+        internal static extern void UpdateCapsule3D(IntPtr shapeHandle, IntPtr fixtureHandle, FVector3 v1, FVector3 v2, FFloat radius, FVector3 center, FQuaternion rotation);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateConvexPolyhedron3D(Fix64Vec3[] verts, UInt32 vertsCount, Fix64Vec3 scale, Fix64Vec3 center, Fix64Quat rotation);
+        internal static extern IntPtr CreateConvexPolyhedron3D(FVector3[] verts, UInt32 vertsCount, FVector3 scale, FVector3 center, FQuaternion rotation);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateConvex3D(Fix64Vec3[] verts, UInt32 vertsCount, ParallelEdge[] edges, UInt32 edgesCount, ParallelFace[] faces, UInt32 faceCount, ParallelPlane[] planes, Fix64Vec3 scale, Fix64Vec3 center, Fix64Quat rotation);
+        internal static extern IntPtr CreateConvex3D(FVector3[] verts, UInt32 vertsCount, ParallelEdge[] edges, UInt32 edgesCount, ParallelFace[] faces, UInt32 faceCount, ParallelPlane[] planes, FVector3 scale, FVector3 center, FQuaternion rotation);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateConvex3D(IntPtr shapeHandle, IntPtr fixtureHandle, Fix64Vec3 scale);
+        internal static extern void UpdateConvex3D(IntPtr shapeHandle, IntPtr fixtureHandle, FVector3 scale);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateMesh3D(Fix64Vec3[] verts, UInt32 vertsCount, ParallelTriangle[] triangles, UInt32 triangleCount, Fix64Vec3 scale);
+        internal static extern IntPtr CreateMesh3D(FVector3[] verts, UInt32 vertsCount, ParallelTriangle[] triangles, UInt32 triangleCount, FVector3 scale);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateMesh3D(IntPtr shapeHandle, IntPtr fixtureHandle, Fix64Vec3 scale);
+        internal static extern void UpdateMesh3D(IntPtr shapeHandle, IntPtr fixtureHandle, FVector3 scale);
+
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern IntPtr CreateTerrian3D(FFloat[] verts, UInt32 vertsCount, UInt32 xCount, UInt32 zCount, FFloat resolution);
 
         //cast
         [DllImport(PLUGIN_NAME)]
         internal static extern bool RayCast3D(
-                            Fix64Vec3 point1, 
-                            Fix64Vec3 point2, 
+                            FVector3 point1, 
+                            FVector3 point2, 
                             int mask,
-                            ref Fix64Vec3 point, 
-                            ref Fix64Vec3 normal, 
-                            ref Fix64 fraction, 
+                            ref FVector3 point, 
+                            ref FVector3 normal, 
+                            ref FFloat fraction, 
                             ref UInt16 bodyID, 
                             IntPtr worldHandle);
 
@@ -229,12 +238,12 @@ namespace Parallel
         internal static extern bool SphereCast3D(
                             IntPtr worldHandle,
                             int mask,
-                            Fix64Vec3 center,
-                            Fix64 radius,
-                            Fix64Vec3 t,
-                            ref Fix64Vec3 point,
-                            ref Fix64Vec3 normal,
-                            ref Fix64 fraction,
+                            FVector3 center,
+                            FFloat radius,
+                            FVector3 t,
+                            ref FVector3 point,
+                            ref FVector3 normal,
+                            ref FFloat fraction,
                             ref UInt16 bodyID,
                             UInt16 ignoreBodyID);
 
@@ -244,22 +253,22 @@ namespace Parallel
                     IntPtr worldHandle,
                     int mask,
                     IntPtr shapeHandle,
-                    Fix64Vec3 pos,
-                    Fix64Quat rot,
-                    Fix64Vec3 t,
-                    ref Fix64Vec3 point,
-                    ref Fix64Vec3 normal,
-                    ref Fix64 fraction,
+                    FVector3 pos,
+                    FQuaternion rot,
+                    FVector3 t,
+                    ref FVector3 point,
+                    ref FVector3 normal,
+                    ref FFloat fraction,
                     ref UInt16 bodyID,
                     UInt16 ignoreBodyID);
 
 
         //overlap
         [DllImport(PLUGIN_NAME)]
-        internal static extern bool SphereOverlap3D(IntPtr worldHandle, int mask, Fix64Vec3 center, Fix64 radius, UInt16[] bodyIDs, ref int count);
+        internal static extern bool SphereOverlap3D(IntPtr worldHandle, int mask, FVector3 center, FFloat radius, UInt16[] bodyIDs, ref int count);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern bool CubeOverlap3D(IntPtr worldHandle, int mask, Fix64Vec3 center, Fix64Quat rot, Fix64 x, Fix64 y, Fix64 z, UInt16[] bodyIDs, ref int count);
+        internal static extern bool CubeOverlap3D(IntPtr worldHandle, int mask, FVector3 center, FQuaternion rot, FFloat x, FFloat y, FFloat z, UInt16[] bodyIDs, ref int count);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr GetContactList3D(IntPtr worldHandle);
@@ -271,7 +280,7 @@ namespace Parallel
 
         //convex
         [DllImport(PLUGIN_NAME)]
-        internal static extern void ConvexHull3D(Fix64Vec3[] verts, UInt32 vertsCount, Fix64Vec3[] vertsOut, ref UInt32 vertsOutCount, ParallelEdge[] edgesOut, ref UInt32 edgesOutCount, ParallelFace[] faceOut, ref UInt32 facesOutCount, ParallelPlane[] planesOut, bool simplify, Fix64 angle);
+        internal static extern void ConvexHull3D(FVector3[] verts, UInt32 vertsCount, FVector3[] vertsOut, ref UInt32 vertsOutCount, ParallelEdge[] edgesOut, ref UInt32 edgesOutCount, ParallelFace[] faceOut, ref UInt32 facesOutCount, ParallelPlane[] planesOut, bool simplify, FFloat angle);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void ConvexHull3D1(Vector3[] verts, UInt32 vertsCount);
@@ -281,22 +290,22 @@ namespace Parallel
 
         //transform
         [DllImport(PLUGIN_NAME)]
-        internal static extern Fix64Vec3 Mul(Fix64Vec3 pos, Fix64Quat rot, Fix64Vec3 point, ref Fix64Vec3 output);
+        internal static extern FVector3 Mul(FVector3 pos, FQuaternion rot, FVector3 point, ref FVector3 output);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern Fix64Vec3 MulT(Fix64Vec3 pos, Fix64Quat rot, Fix64Vec3 point, ref Fix64Vec3 output);
+        internal static extern FVector3 MulT(FVector3 pos, FQuaternion rot, FVector3 point, ref FVector3 output);
 
         //vector
         [DllImport(PLUGIN_NAME)]
-        internal static extern void Vec3Normalize64(Fix64Vec3 a, ref Fix64Vec3 result);
+        internal static extern void Vec3Normalize64(FVector3 a, ref FVector3 result);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void Vec3Length64(Fix64Vec3 a, ref Fix64 result);
+        internal static extern void Vec3Length64(FVector3 a, ref FFloat result);
 
         //triangulation
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr CreatePolyIsland(
-                                        Fix64Vec2[] verts, 
+                                        FVector2[] verts, 
                                         int[] indexes, 
                                         int vertsCount);
 
@@ -305,7 +314,7 @@ namespace Parallel
 
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr AddHolePolyIsland(
-                                        Fix64Vec2[] verts, 
+                                        FVector2[] verts, 
                                         int[] indexes, 
                                         int vertsCount, 
                                         IntPtr PolyIslandHandle);
@@ -325,42 +334,42 @@ namespace Parallel
 
         //mouse joint
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateMouseJoint3D(IntPtr worldHandle, IntPtr bodyHandleA, IntPtr bodyHandleB, Fix64Vec3 position, Fix64 maxForce);
+        internal static extern IntPtr CreateMouseJoint3D(IntPtr worldHandle, IntPtr bodyHandleA, IntPtr bodyHandleB, FVector3 position, FFloat maxForce);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void MoveMouseJoint3D(IntPtr MoveMouseJoint, Fix64Vec3 position);
+        internal static extern void MoveMouseJoint3D(IntPtr MoveMouseJoint, FVector3 position);
 
         //spring joint
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr CreateDistanceJoint3D(IntPtr worldHandle,
                                                             IntPtr bodyHandleA,
                                                             IntPtr bodyHandleB,
-                                                            Fix64Vec3 anchorA,
-                                                            Fix64Vec3 anchorB,
+                                                            FVector3 anchorA,
+                                                            FVector3 anchorB,
                                                             bool collide,
-                                                            Fix64 frequency,
-                                                            Fix64 damp);
+                                                            FFloat frequency,
+                                                            FFloat damp);
 
         //hinge joint
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr CreateHingeJoint3D(IntPtr worldHandle,
                                                          IntPtr bodyHandleA,
                                                          IntPtr bodyHandleB,
-                                                         Fix64Vec3 anchor,
-                                                         Fix64Vec3 axis,
+                                                         FVector3 anchor,
+                                                         FVector3 axis,
                                                          bool collide,
-                                                         bool limit, Fix64 lowerAngle, Fix64 upperAngle,
-                                                         bool motor, Fix64 motorSpeed, Fix64 motorTorque);
+                                                         bool limit, FFloat lowerAngle, FFloat upperAngle,
+                                                         bool motor, FFloat motorSpeed, FFloat motorTorque);
 
         //cone joint
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr CreateConeJoint3D(IntPtr worldHandle,
                                                          IntPtr bodyHandleA,
                                                          IntPtr bodyHandleB,
-                                                         Fix64Vec3 anchor,
-                                                         Fix64Vec3 axis,
+                                                         FVector3 anchor,
+                                                         FVector3 axis,
                                                          bool collide,
-                                                         bool limit, Fix64 angle,
-                                                         bool twist, Fix64 lowerAngle, Fix64 upperAngle);
+                                                         bool limit, FFloat angle,
+                                                         bool twist, FFloat lowerAngle, FFloat upperAngle);
     }
 }

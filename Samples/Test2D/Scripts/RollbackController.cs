@@ -44,7 +44,7 @@ public class RollbackController : MonoBehaviour
     public float fullTestFixedUpdateTime = 0.001f;
 
     public Vector3 mousePosition;
-    public Fix64Vec2 fixedMousePosition;
+    public FVector2 fixedMousePosition;
 
     PSnapshot2D[] snapshots;
 
@@ -86,13 +86,13 @@ public class RollbackController : MonoBehaviour
     {
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
-        fixedMousePosition = (Fix64Vec2)mousePosition;
+        fixedMousePosition = (FVector2)mousePosition;
 
         if (Input.GetMouseButtonUp(0))
         {
             if(!EventSystem.current.IsPointerOverGameObject())
             {
-                bool hit = Parallel2D.OverlapCircle(fixedMousePosition, Fix64.FromDivision(1, 10), result);
+                bool hit = Parallel2D.OverlapCircle(fixedMousePosition, FFloat.FromDivision(1, 10), result);
                 if (hit)
                 {
                     ParallelRigidbody2D rb = (ParallelRigidbody2D)result.rigidbodies[0];
@@ -158,7 +158,7 @@ public class RollbackController : MonoBehaviour
 
         GameObject prefab = prefabs[index];
 
-        ParallelPhysicsController2D.InstantiateParallelObject(prefab, (Fix64Vec3)transform.position, (Fix64Quat)Quaternion.identity);
+        ParallelPhysicsController2D.InstantiateParallelObject(prefab, (FVector3)transform.position, (FQuaternion)Quaternion.identity);
     }
 
     private void OnDestroy()
@@ -290,13 +290,13 @@ public class RollbackController : MonoBehaviour
         {
             foreach (ParallelRigidbody2D rigidbody in physicsEngine.rigidbodies)
             {
-                Fix64Vec2 linearVelocity = rigidbody.LinearVelocity;
-                Fix64 angularVelocity = rigidbody.AngularVelocity;
+                FVector2 linearVelocity = rigidbody.LinearVelocity;
+                FFloat angularVelocity = rigidbody.AngularVelocity;
 
                 ParallelTransform pTransform = rigidbody.pTransform;
 
-                Fix64Vec2 pos = (Fix64Vec2)pTransform.position;
-                Fix64 rot = pTransform.eulerAngles.z;
+                FVector2 pos = (FVector2)pTransform.position;
+                FFloat rot = pTransform.eulerAngles.z;
 
                 buffer.Push(linearVelocity);
                 buffer.Push(angularVelocity);

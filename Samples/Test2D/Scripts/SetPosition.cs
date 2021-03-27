@@ -8,18 +8,18 @@ namespace Parallel.Sample
     public class SetPosition : MonoBehaviour, IParallelFixedUpdate
     {
         public float speed = 2.0f;
-        Fix64 _speed = Fix64.FromDivision(2, 1);
-        public Fix64 hortizontal = Fix64.zero;
-        public Fix64 vertical = Fix64.zero;
+        FFloat _speed = FFloat.FromDivision(2, 1);
+        public FFloat hortizontal = FFloat.zero;
+        public FFloat vertical = FFloat.zero;
 
         ParallelTransform _pTransform;
 
-        public void ParallelFixedUpdate(Fix64 deltaTime)
+        public void ParallelFixedUpdate(FFloat deltaTime)
         {
-            Fix64Vec3 delta = new Fix64Vec3(
+            FVector3 delta = new FVector3(
                                     _speed * deltaTime * hortizontal, 
                                     _speed * deltaTime * vertical, 
-                                    Fix64.zero);
+                                    FFloat.zero);
 
             _pTransform.position += delta;
 
@@ -29,15 +29,15 @@ namespace Parallel.Sample
         void Start()
         {
             _pTransform = GetComponent<ParallelTransform>();
-            _speed = (Fix64)speed;
+            _speed = (FFloat)speed;
         }
 
         // Update is called once per frame
         void Update()
         {
-            _speed = (Fix64)speed;
-            hortizontal = (Fix64)Input.GetAxis("Horizontal");
-            vertical = (Fix64)Input.GetAxis("Vertical");
+            _speed = (FFloat)speed;
+            hortizontal = (FFloat)Input.GetAxis("Horizontal");
+            vertical = (FFloat)Input.GetAxis("Vertical");
         }
     }
 }

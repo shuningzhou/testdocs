@@ -44,16 +44,16 @@ namespace Parallel
         [SerializeField]
         BodyType _bodyType = Parallel.BodyType.Dynamic;
         [SerializeField]
-        Fix64 _linearDampling = Fix64.zero;
+        FFloat _linearDampling = FFloat.zero;
         [SerializeField]
-        Fix64 _angularDamping = Fix64.FromDivision(5, 100);
+        FFloat _angularDamping = FFloat.FromDivision(5, 100);
         [SerializeField]
-        Fix64 _gravityScale = Fix64.one;
+        FFloat _gravityScale = FFloat.one;
         [SerializeField]
         bool _fixedRotation = false;
 
         [SerializeField]
-        Fix64 _mass = Fix64.zero;
+        FFloat _mass = FFloat.zero;
 
         public int bodyId
         {
@@ -63,7 +63,7 @@ namespace Parallel
             }
         }
 
-        public Fix64 mass
+        public FFloat mass
         {
             get
             {
@@ -83,7 +83,7 @@ namespace Parallel
             }
         }
 
-        public Fix64 linearDampling
+        public FFloat linearDampling
         {
             get
             {
@@ -95,7 +95,7 @@ namespace Parallel
             }
         }
 
-        public Fix64 angularDamping
+        public FFloat angularDamping
         {
             get
             {
@@ -107,7 +107,7 @@ namespace Parallel
             }
         }
 
-        public Fix64 gravityScale
+        public FFloat gravityScale
         {
             get
             {
@@ -137,7 +137,7 @@ namespace Parallel
         }
 
         //============================== Velocity ==============================
-        public Fix64Vec2 LinearVelocity
+        public FVector2 LinearVelocity
         {
             get
             {
@@ -151,7 +151,7 @@ namespace Parallel
         }
 
         // rad/sec, z-axis (out of the screen)
-        public Fix64 AngularVelocity
+        public FFloat AngularVelocity
         {
             get
             {
@@ -166,19 +166,19 @@ namespace Parallel
 
         //============================== Force and Torque ==============================
         //Apply a force to the center of mass
-        public void ApplyForce(Fix64Vec2 force)
+        public void ApplyForce(FVector2 force)
         {
             Parallel2D.ApplyForceToCenter(_body2D, force);
         }
 
         //Apply a force at a world point
-        public void ApplyForce(Fix64Vec2 force, Fix64Vec2 worldPoint)
+        public void ApplyForce(FVector2 force, FVector2 worldPoint)
         {
             Parallel2D.ApplyForce(_body2D, worldPoint, force);
         }
 
         //Apply an impulse to the center of mass. This immediately modifies the velocity.
-        public void ApplyLinearImpulse(Fix64Vec2 impluse)
+        public void ApplyLinearImpulse(FVector2 impluse)
         {
             Parallel2D.ApplyLinearImpulseToCenter(_body2D, impluse);
         }
@@ -186,7 +186,7 @@ namespace Parallel
         /// Apply an impulse at a point. This immediately modifies the velocity.
         /// It also modifies the angular velocity if the point of application
         /// is not at the center of mass.
-        public void ApplyLinearImpluse(Fix64Vec2 impluse, Fix64Vec2 worldPoint)
+        public void ApplyLinearImpluse(FVector2 impluse, FVector2 worldPoint)
         {
             Parallel2D.ApplyLinearImpulse(_body2D, worldPoint, impluse);
         }
@@ -194,13 +194,13 @@ namespace Parallel
         /// Apply a torque. This affects the angular velocity
         /// without affecting the linear velocity of the center of mass.
         /// z-axis (out of the screen)
-        public void ApplyTorque(Fix64 torque)
+        public void ApplyTorque(FFloat torque)
         {
             Parallel2D.ApplyTorque(_body2D, torque);
         }
 
         /// Apply an angular impulse. This immediately modifies the angular velocity
-        public void ApplyAngularImpulse(Fix64 impulse)
+        public void ApplyAngularImpulse(FFloat impulse)
         {
             Parallel2D.ApplyAngularImpulse(_body2D, impulse);
         }
@@ -261,7 +261,7 @@ namespace Parallel
                 return;
             }
 
-            pTransform._internal_WriteTranform((Fix64Vec3)_body2D.position, new Fix64Vec3(Fix64.zero, Fix64.zero, Fix64.RadToDeg(_body2D.angle)));
+            pTransform._internal_WriteTranform((FVector3)_body2D.position, new FVector3(FFloat.zero, FFloat.zero, FFloat.RadToDeg(_body2D.angle)));
 
             UpdateChildren();
         }
@@ -271,13 +271,13 @@ namespace Parallel
             //update children rigidbodies
             foreach (ParallelRigidbody2D child in childrenRigidbodies)
             {
-                Parallel2D.UpdateBodyTransForm(child._body2D, (Fix64Vec2)child.pTransform.position, Fix64.DegToRad(child.pTransform.eulerAngles.z));
+                Parallel2D.UpdateBodyTransForm(child._body2D, (FVector2)child.pTransform.position, FFloat.DegToRad(child.pTransform.eulerAngles.z));
 
                 child.UpdateChildren();
             }
         }
 
-        public void Step(Fix64 timeStep)
+        public void Step(FFloat timeStep)
         {
             foreach(IParallelFixedUpdate parallelFixedUpdate in parallelFixedUpdates)
             {
@@ -357,7 +357,7 @@ namespace Parallel
 
             _body2D = Parallel2D.AddBody(
                                                 (int)bodyType,
-                                                (Fix64Vec2)pTransform.position,
+                                                (FVector2)pTransform.position,
                                                 pTransform.rotation.GetZAngle(),
                                                 linearDampling,
                                                 angularDamping,
@@ -392,7 +392,7 @@ namespace Parallel
                     continue;
                 }
 
-                Fix64 mass = Fix64.zero;
+                FFloat mass = FFloat.zero;
 
                 if (collider._overideMass)
                 {
@@ -424,7 +424,7 @@ namespace Parallel
 
             _body2D = Parallel2D.InsertBody(
                                                 (int)bodyType,
-                                                (Fix64Vec2)pTransform.position,
+                                                (FVector2)pTransform.position,
                                                 pTransform.rotation.GetZAngle(),
                                                 linearDampling,
                                                 angularDamping,
@@ -470,7 +470,7 @@ namespace Parallel
                     continue;
                 }
 
-                Fix64 mass = Fix64.zero;
+                FFloat mass = FFloat.zero;
 
                 if (collider._overideMass)
                 {

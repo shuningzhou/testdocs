@@ -16,25 +16,25 @@ namespace Parallel
         public ParallelCapsuleDirection3D Direction = ParallelCapsuleDirection3D.YAxis;
 
         [SerializeField]
-        Fix64 _radius = Fix64.FromDivision(1, 2);
+        FFloat _radius = FFloat.FromDivision(1, 2);
         [SerializeField]
-        Fix64 _height = Fix64.FromDivision(2, 1);
+        FFloat _height = FFloat.FromDivision(2, 1);
 
-        public Fix64 height { get; private set; }
-        public Fix64 radius { get; private set; }
+        public FFloat height { get; private set; }
+        public FFloat radius { get; private set; }
 
-        public Fix64Vec3 point1;
-        public Fix64Vec3 point2;
+        public FVector3 point1;
+        public FVector3 point2;
 
         void OnDrawGizmosSelected()
         {
-            Fix64 h = CalculateHeight();
-            Fix64 r = CalculateRadius();
-            Fix64Vec3 p1 = Fix64Vec3.zero;
-            Fix64Vec3 p2 = Fix64Vec3.zero;
+            FFloat h = CalculateHeight();
+            FFloat r = CalculateRadius();
+            FVector3 p1 = FVector3.zero;
+            FVector3 p2 = FVector3.zero;
             CalculatePoints(h, r, ref p1, ref p2);
 
-            if (p1 == Fix64Vec3.zero || p2 == Fix64Vec3.zero)
+            if (p1 == FVector3.zero || p2 == FVector3.zero)
             {
                 Debug.LogError("Invalid Size");
                 return;
@@ -52,14 +52,14 @@ namespace Parallel
             Gizmos.matrix = Matrix4x4.identity;
         }
 
-        void CalculatePoints(Fix64 h, Fix64 r, ref Fix64Vec3 point1, ref Fix64Vec3 point2)
+        void CalculatePoints(FFloat h, FFloat r, ref FVector3 point1, ref FVector3 point2)
         {
-            point1 = Fix64Vec3.zero;
-            point2 = Fix64Vec3.zero;
+            point1 = FVector3.zero;
+            point2 = FVector3.zero;
 
-            Fix64 pointDistance = h - Fix64.FromDivision(2 , 1) * r;
+            FFloat pointDistance = h - FFloat.FromDivision(2 , 1) * r;
 
-            if (pointDistance <= Fix64.zero)
+            if (pointDistance <= FFloat.zero)
             {
                 Debug.LogError("Invalid size");
                 return;
@@ -67,47 +67,47 @@ namespace Parallel
 
             if (Direction == ParallelCapsuleDirection3D.XAxis)
             {
-                point1 = new Fix64Vec3(Fix64.one, Fix64.zero, Fix64.zero);
-                point2 = new Fix64Vec3(-Fix64.one, Fix64.zero, Fix64.zero);
+                point1 = new FVector3(FFloat.one, FFloat.zero, FFloat.zero);
+                point2 = new FVector3(-FFloat.one, FFloat.zero, FFloat.zero);
             }
             else if (Direction == ParallelCapsuleDirection3D.YAxis)
             {
-                point1 = new Fix64Vec3(Fix64.zero, Fix64.one, Fix64.zero);
-                point2 = new Fix64Vec3(Fix64.zero, -Fix64.one, Fix64.zero);
+                point1 = new FVector3(FFloat.zero, FFloat.one, FFloat.zero);
+                point2 = new FVector3(FFloat.zero, -FFloat.one, FFloat.zero);
             }
             else
             {
-                point1 = new Fix64Vec3(Fix64.zero, Fix64.zero, Fix64.one);
-                point2 = new Fix64Vec3(Fix64.zero, Fix64.zero, -Fix64.one);
+                point1 = new FVector3(FFloat.zero, FFloat.zero, FFloat.one);
+                point2 = new FVector3(FFloat.zero, FFloat.zero, -FFloat.one);
             }
 
-            point1 = point1 * (pointDistance / Fix64.FromDivision(2, 1));
-            point2 = point2 * (pointDistance / Fix64.FromDivision(2, 1));
+            point1 = point1 * (pointDistance / FFloat.FromDivision(2, 1));
+            point2 = point2 * (pointDistance / FFloat.FromDivision(2, 1));
         }
 
-        Fix64 CalculateRadius()
+        FFloat CalculateRadius()
         {
-            Fix64 maxScale = Fix64.one;
+            FFloat maxScale = FFloat.one;
 
             if (Direction == ParallelCapsuleDirection3D.XAxis)
             {
-                maxScale = Fix64Math.Max(Fix64Math.Abs(pTransform.localScale.y), Fix64Math.Abs(pTransform.localScale.z));
+                maxScale = FMath.Max(FMath.Abs(pTransform.localScale.y), FMath.Abs(pTransform.localScale.z));
             }
             else if (Direction == ParallelCapsuleDirection3D.YAxis)
             {
-                maxScale = Fix64Math.Max(Fix64Math.Abs(pTransform.localScale.x), Fix64Math.Abs(pTransform.localScale.z));
+                maxScale = FMath.Max(FMath.Abs(pTransform.localScale.x), FMath.Abs(pTransform.localScale.z));
             }
             else
             {
-                maxScale = Fix64Math.Max(Fix64Math.Abs(pTransform.localScale.x), Fix64Math.Abs(pTransform.localScale.y));
+                maxScale = FMath.Max(FMath.Abs(pTransform.localScale.x), FMath.Abs(pTransform.localScale.y));
             }
 
             return maxScale * _radius;
         }
 
-        Fix64 CalculateHeight()
+        FFloat CalculateHeight()
         {
-            Fix64 maxScale = Fix64.one;
+            FFloat maxScale = FFloat.one;
 
             if (Direction == ParallelCapsuleDirection3D.XAxis)
             {
@@ -122,25 +122,25 @@ namespace Parallel
                 maxScale = pTransform.localScale.z;
             }
 
-            return Fix64Math.Abs(maxScale * _height);
+            return FMath.Abs(maxScale * _height);
         }
 
         public override void UpdateShape(GameObject root)
         {
-            Fix64 h = CalculateHeight();
-            Fix64 r = CalculateRadius();
-            Fix64Vec3 p1 = Fix64Vec3.zero;
-            Fix64Vec3 p2 = Fix64Vec3.zero;
+            FFloat h = CalculateHeight();
+            FFloat r = CalculateRadius();
+            FVector3 p1 = FVector3.zero;
+            FVector3 p2 = FVector3.zero;
             CalculatePoints(h, r, ref p1, ref p2);
 
-            if (p1 == Fix64Vec3.zero || p2 == Fix64Vec3.zero)
+            if (p1 == FVector3.zero || p2 == FVector3.zero)
             {
                 Debug.LogError("Invalid Size");
                 return;
             }
 
-            Fix64Vec3 center = Fix64Vec3.zero;
-            Fix64Quat rotation = Fix64Quat.identity;
+            FVector3 center = FVector3.zero;
+            FQuaternion rotation = FQuaternion.identity;
 
             if (gameObject != root)
             {
@@ -157,21 +157,21 @@ namespace Parallel
 
         public override PShape3D CreateShape(GameObject root)
         {
-            Fix64 h = CalculateHeight();
-            Fix64 r = CalculateRadius();
-            Fix64Vec3 p1 = Fix64Vec3.zero;
-            Fix64Vec3 p2 = Fix64Vec3.zero;
+            FFloat h = CalculateHeight();
+            FFloat r = CalculateRadius();
+            FVector3 p1 = FVector3.zero;
+            FVector3 p2 = FVector3.zero;
             CalculatePoints(h, r, ref p1, ref p2);
 
-            if (p1 == Fix64Vec3.zero || p2 == Fix64Vec3.zero)
+            if (p1 == FVector3.zero || p2 == FVector3.zero)
             {
                 Debug.LogError("Invalid Size");
                 return null;
             }
             else
             {
-                Fix64Vec3 center = Fix64Vec3.zero;
-                Fix64Quat rotation = Fix64Quat.identity;
+                FVector3 center = FVector3.zero;
+                FQuaternion rotation = FQuaternion.identity;
 
                 if (gameObject != root)
                 {
@@ -214,13 +214,13 @@ namespace Parallel
 //        PShape3D _shape;
 //        PFixture3D _fixture;
 
-//        public Fix64 Radius = Fix64.FromDivision(1, 2);
-//        public Fix64 Height = Fix64.FromDivision(2, 1);
+//        public FFloat Radius = FFloat.FromDivision(1, 2);
+//        public FFloat Height = FFloat.FromDivision(2, 1);
 
 //        public PCapsuleDirection3D Direction = PCapsuleDirection3D.YAxis;
 
-//        public Fix64Vec3 Point1;
-//        public Fix64Vec3 Point2;
+//        public FVector3 Point1;
+//        public FVector3 Point2;
 
 //        ParallelTransform _pTransform;
 
@@ -246,19 +246,19 @@ namespace Parallel
 //            //only import from unity in editing mode
 //            if (!Deterministic || !Application.isPlaying)
 //            {
-//                //size = (Fix64Vec3)editorSize;
+//                //size = (FVector3)editorSize;
 //            }
 //        }
 
 //        void OnDrawGizmosSelected()
 //        {
-//            Fix64 height = CalculateHeight();
-//            Fix64 radius = CalculateRadius();
-//            Fix64Vec3 p1 = Fix64Vec3.zero;
-//            Fix64Vec3 p2 = Fix64Vec3.zero;
+//            FFloat height = CalculateHeight();
+//            FFloat radius = CalculateRadius();
+//            FVector3 p1 = FVector3.zero;
+//            FVector3 p2 = FVector3.zero;
 //            CalculatePoints(height, radius, ref p1, ref p2);
 
-//            if (p1 == Fix64Vec3.zero || p2 == Fix64Vec3.zero)
+//            if (p1 == FVector3.zero || p2 == FVector3.zero)
 //            {
 //                Debug.LogError("Invalid Size");
 //                return;
@@ -276,14 +276,14 @@ namespace Parallel
 //            Gizmos.matrix = Matrix4x4.identity;
 //        }
 
-//        void CalculatePoints(Fix64 height, Fix64 radius, ref Fix64Vec3 point1, ref Fix64Vec3 point2)
+//        void CalculatePoints(FFloat height, FFloat radius, ref FVector3 point1, ref FVector3 point2)
 //        {
-//            point1 = Fix64Vec3.zero;
-//            point2 = Fix64Vec3.zero;
+//            point1 = FVector3.zero;
+//            point2 = FVector3.zero;
 
-//            Fix64 pointDistance = height - Fix64.FromDivision(2, 1) * radius;
+//            FFloat pointDistance = height - FFloat.FromDivision(2, 1) * radius;
 
-//            if (pointDistance <= Fix64.zero)
+//            if (pointDistance <= FFloat.zero)
 //            {
 //                Debug.LogError("Invalid size");
 //                return;
@@ -291,47 +291,47 @@ namespace Parallel
 
 //            if (Direction == PCapsuleDirection3D.XAxis)
 //            {
-//                point1 = new Fix64Vec3(Fix64.one, Fix64.zero, Fix64.zero);
-//                point2 = new Fix64Vec3(-Fix64.one, Fix64.zero, Fix64.zero);
+//                point1 = new FVector3(FFloat.one, FFloat.zero, FFloat.zero);
+//                point2 = new FVector3(-FFloat.one, FFloat.zero, FFloat.zero);
 //            }
 //            else if (Direction == PCapsuleDirection3D.YAxis)
 //            {
-//                point1 = new Fix64Vec3(Fix64.zero, Fix64.one, Fix64.zero);
-//                point2 = new Fix64Vec3(Fix64.zero, -Fix64.one, Fix64.zero);
+//                point1 = new FVector3(FFloat.zero, FFloat.one, FFloat.zero);
+//                point2 = new FVector3(FFloat.zero, -FFloat.one, FFloat.zero);
 //            }
 //            else
 //            {
-//                point1 = new Fix64Vec3(Fix64.zero, Fix64.zero, Fix64.one);
-//                point2 = new Fix64Vec3(Fix64.zero, Fix64.zero, -Fix64.one);
+//                point1 = new FVector3(FFloat.zero, FFloat.zero, FFloat.one);
+//                point2 = new FVector3(FFloat.zero, FFloat.zero, -FFloat.one);
 //            }
 
-//            point1 = point1 * (pointDistance / Fix64.FromDivision(2, 1));
-//            point2 = point2 * (pointDistance / Fix64.FromDivision(2, 1));
+//            point1 = point1 * (pointDistance / FFloat.FromDivision(2, 1));
+//            point2 = point2 * (pointDistance / FFloat.FromDivision(2, 1));
 //        }
 
-//        Fix64 CalculateRadius()
+//        FFloat CalculateRadius()
 //        {
-//            Fix64 maxScale = Fix64.one;
+//            FFloat maxScale = FFloat.one;
 
 //            if (Direction == PCapsuleDirection3D.XAxis)
 //            {
-//                maxScale = Fix64Math.Max(pTransform.localScale.y, pTransform.localScale.z);
+//                maxScale = FMath.Max(pTransform.localScale.y, pTransform.localScale.z);
 //            }
 //            else if (Direction == PCapsuleDirection3D.YAxis)
 //            {
-//                maxScale = Fix64Math.Max(pTransform.localScale.x, pTransform.localScale.z);
+//                maxScale = FMath.Max(pTransform.localScale.x, pTransform.localScale.z);
 //            }
 //            else
 //            {
-//                maxScale = Fix64Math.Max(pTransform.localScale.x, pTransform.localScale.y);
+//                maxScale = FMath.Max(pTransform.localScale.x, pTransform.localScale.y);
 //            }
 
 //            return maxScale * Radius;
 //        }
 
-//        Fix64 CalculateHeight()
+//        FFloat CalculateHeight()
 //        {
-//            Fix64 maxScale = Fix64.one;
+//            FFloat maxScale = FFloat.one;
 
 //            if (Direction == PCapsuleDirection3D.XAxis)
 //            {
@@ -351,13 +351,13 @@ namespace Parallel
 
 //        public PShape3D CreateShape()
 //        {
-//            Fix64 height = CalculateHeight();
-//            Fix64 radius = CalculateRadius();
-//            Fix64Vec3 p1 = Fix64Vec3.zero;
-//            Fix64Vec3 p2 = Fix64Vec3.zero;
+//            FFloat height = CalculateHeight();
+//            FFloat radius = CalculateRadius();
+//            FVector3 p1 = FVector3.zero;
+//            FVector3 p2 = FVector3.zero;
 //            CalculatePoints(height, radius, ref p1, ref p2);
 
-//            if (p1 == Fix64Vec3.zero || p2 == Fix64Vec3.zero)
+//            if (p1 == FVector3.zero || p2 == FVector3.zero)
 //            {
 //                Debug.LogError("Invalid Size");
 //                return null;
@@ -379,13 +379,13 @@ namespace Parallel
 //                return;
 //            }
 
-//            Fix64 height = CalculateHeight();
-//            Fix64 radius = CalculateRadius();
-//            Fix64Vec3 p1 = Fix64Vec3.zero;
-//            Fix64Vec3 p2 = Fix64Vec3.zero;
+//            FFloat height = CalculateHeight();
+//            FFloat radius = CalculateRadius();
+//            FVector3 p1 = FVector3.zero;
+//            FVector3 p2 = FVector3.zero;
 //            CalculatePoints(height, radius, ref p1, ref p2);
 
-//            if (p1 == Fix64Vec3.zero || p2 == Fix64Vec3.zero)
+//            if (p1 == FVector3.zero || p2 == FVector3.zero)
 //            {
 //                Debug.LogError("Invalid Size");
 //                return;

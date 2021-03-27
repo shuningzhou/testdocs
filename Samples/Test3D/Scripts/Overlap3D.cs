@@ -40,8 +40,8 @@ namespace Parallel.Sample
 
         void Update()
         {
-            Fix64Vec3 center = (Fix64Vec3)transform.position;
-            Fix64 radius = (Fix64)sphereRadius;
+            FVector3 center = (FVector3)transform.position;
+            FFloat radius = (FFloat)sphereRadius;
 
             Parallel3D.OverlapSphere(center, radius, layerMask, result);
         }

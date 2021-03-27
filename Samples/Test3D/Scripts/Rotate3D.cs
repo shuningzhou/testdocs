@@ -8,8 +8,8 @@ public class Rotate3D : MonoBehaviour, IParallelFixedUpdate
     ParallelTransform pTransform;
     ParallelRigidbody3D parallelRigidbody;
 
-    public Fix64Vec3 angularVelocity = new Fix64Vec3(Fix64.zero, Fix64.zero, Fix64.zero);
-    public void ParallelFixedUpdate(Fix64 deltaTime)
+    public FVector3 angularVelocity = new FVector3(FFloat.zero, FFloat.zero, FFloat.zero);
+    public void ParallelFixedUpdate(FFloat deltaTime)
     {
         parallelRigidbody.AngularVelocity = angularVelocity;
     }

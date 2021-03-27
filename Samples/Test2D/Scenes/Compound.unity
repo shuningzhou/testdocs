@@ -315,6 +315,8 @@ MonoBehaviour:
   _gravityScale:
     Raw: 1048576
   _fixedRotation: 0
+  _mass:
+    Raw: 0
 --- !u!114 &531901677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,6 +366,9 @@ MonoBehaviour:
     Raw: 209715
   _density:
     Raw: 1048576
+  _overideMass: 0
+  _customMass:
+    Raw: 0
   _useSpriteRendererSize: 0
   _spriteRendererSize:
     RawX: 1048576
@@ -423,6 +428,9 @@ MonoBehaviour:
     Raw: 209715
   _density:
     Raw: 1048576
+  _overideMass: 0
+  _customMass:
+    Raw: 0
   _useSpriteRendererSize: 0
   _spriteRendererSize:
     RawX: 1048576
@@ -794,6 +802,9 @@ MonoBehaviour:
     Raw: 209715
   _density:
     Raw: 1048576
+  _overideMass: 0
+  _customMass:
+    Raw: 0
   _useSpriteRendererSize: 0
   _spriteRendererSize:
     RawX: 1048576

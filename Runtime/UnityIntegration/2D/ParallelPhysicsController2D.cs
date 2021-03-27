@@ -12,11 +12,11 @@ namespace Parallel
         public bool autoUpdate = true;
         public bool autoInitialization = true;
 
-        public Fix64 fixedUpdateTime = Fix64.FromDivision(2, 100);
+        public FFloat fixedUpdateTime = FFloat.FromDivision(2, 100);
         public int velocityIteration = 4;
         public bool allowSleep = true;
         public bool warmStart = true;
-        public Fix64Vec2 gravity = new Fix64Vec2(Fix64.zero, Fix64.FromDivision(-98, 10));
+        public FVector2 gravity = new FVector2(FFloat.zero, FFloat.FromDivision(-98, 10));
 
         bool _initialized = false;
         Action<ParallelRigidbody2D> _rollbackRemoveCallback;
@@ -109,7 +109,7 @@ namespace Parallel
             }
         }
 
-        public static GameObject InstantiateParallelObject(GameObject original, Fix64Vec3 position, Fix64Quat rotation)
+        public static GameObject InstantiateParallelObject(GameObject original, FVector3 position, FQuaternion rotation)
         {
             GameObject go = Instantiate(original, (Vector3)position, (Quaternion)rotation);
 
@@ -190,17 +190,17 @@ namespace Parallel
             }
         }
 
-        public void Step(Fix64 deltaTime)
+        public void Step(FFloat deltaTime)
         {
             Parallel2D.Step(deltaTime, velocityIteration, 1); 
         }
 
-        public void ExcuteUserCallbacks(Fix64 deltaTime)
+        public void ExcuteUserCallbacks(FFloat deltaTime)
         {
             Parallel2D.ExcuteUserCallbacks(deltaTime);
         }
 
-        public void ExcuteUserFixedUpdate(Fix64 deltaTime)
+        public void ExcuteUserFixedUpdate(FFloat deltaTime)
         {
             Parallel2D.ExcuteUserFixedUpdate(deltaTime);
         }

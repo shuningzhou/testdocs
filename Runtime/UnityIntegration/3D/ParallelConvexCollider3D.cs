@@ -20,7 +20,7 @@ namespace Parallel
 
         public bool draw2;
 
-        Fix64Vec3 _currentSize = Fix64Vec3.one;
+        FVector3 _currentSize = FVector3.one;
 
         public void BuildConvexData()
         {
@@ -59,17 +59,17 @@ namespace Parallel
             convexData2.vertices = convex2Verts;
 
             //new convex hull
-            Fix64Vec3[] vIn = new Fix64Vec3[triVertsIndex.Count];
+            FVector3[] vIn = new FVector3[triVertsIndex.Count];
             for (int i = 0; i < triVertsIndex.Count; i++)
             {
-                vIn[i] = (Fix64Vec3)convexData2.vertices[i];
+                vIn[i] = (FVector3)convexData2.vertices[i];
             }
 
-            ParallelQHullData qhullData = Parallel3D.ConvextHull3D(vIn, (UInt32)triVertsIndex.Count, true, (Fix64)(0.1f));
+            ParallelQHullData qhullData = Parallel3D.ConvextHull3D(vIn, (UInt32)triVertsIndex.Count, true, (FFloat)(0.1f));
 
             convexData = qhullData;
 
-            Fix64Vec3[] v = new Fix64Vec3[convexData.vertexCount];
+            FVector3[] v = new FVector3[convexData.vertexCount];
             Array.Copy(convexData.vertices, 0, v, 0, convexData.vertexCount);
             convexData.vertices = v;
 
@@ -139,7 +139,7 @@ namespace Parallel
                 Gizmos.DrawLine(transform.TransformPoint(v1.x, v1.y, v1.z), transform.TransformPoint(v2.x, v2.y, v2.z));
             }
 
-            foreach (Fix64Vec3 fv in convexData.vertices)
+            foreach (FVector3 fv in convexData.vertices)
             {
                 Vector3 v = (Vector3)fv;
                 Gizmos.DrawWireSphere(transform.TransformPoint(v.x, v.y, v.z), 0.01f);
@@ -160,9 +160,9 @@ namespace Parallel
             }
         }
 
-        Fix64Vec3 CalculateSize()
+        FVector3 CalculateSize()
         {
-            Fix64Vec3 s = pTransform.localScale;
+            FVector3 s = pTransform.localScale;
 
             return s;
         }
@@ -175,9 +175,9 @@ namespace Parallel
 
         public override void UpdateShape(GameObject root)
         {
-            Fix64Vec3 s = CalculateSize();
+            FVector3 s = CalculateSize();
 
-            if (s == Fix64Vec3.zero)
+            if (s == FVector3.zero)
             {
                 return;
             }
@@ -187,7 +187,7 @@ namespace Parallel
                 return;
             }
 
-            Fix64Vec3 scale = s / _currentSize;
+            FVector3 scale = s / _currentSize;
 
             _currentSize = s;
 
@@ -196,14 +196,14 @@ namespace Parallel
 
         public override PShape3D CreateShape(GameObject root)
         {
-            Fix64Vec3 s = CalculateSize();
+            FVector3 s = CalculateSize();
 
-            if (s != Fix64Vec3.zero)
+            if (s != FVector3.zero)
             {
                 _currentSize = s;
 
-                Fix64Vec3 center = Fix64Vec3.zero;
-                Fix64Quat rotation = Fix64Quat.identity;
+                FVector3 center = FVector3.zero;
+                FQuaternion rotation = FQuaternion.identity;
 
                 if (gameObject != root)
                 {

@@ -7,14 +7,14 @@ public class Move3D : MonoBehaviour, IParallelFixedUpdate
 {
     ParallelRigidbody3D rigidbody3D;
 
-    public Fix64Vec3 linearVelocity;
+    public FVector3 linearVelocity;
 
-    public Fix64 time;
+    public FFloat time;
 
-    public Fix64 elapsed;
+    public FFloat elapsed;
 
 
-    public void ParallelFixedUpdate(Fix64 deltaTime)
+    public void ParallelFixedUpdate(FFloat deltaTime)
     {
         rigidbody3D.LinearVelocity = linearVelocity;
         elapsed += deltaTime;
@@ -27,7 +27,7 @@ public class Move3D : MonoBehaviour, IParallelFixedUpdate
 
     void Reverse()
     {
-        elapsed = Fix64.zero;
+        elapsed = FFloat.zero;
 
         linearVelocity = -linearVelocity;
     }

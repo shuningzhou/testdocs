@@ -6,16 +6,16 @@ namespace Parallel
     {
         public bool collideConnected;
         public ParallelRigidbody3D connectedRigidBody;
-        public Fix64Vec3 worldAnchor;
-        public Fix64Vec3 worldAxis;
+        public FVector3 worldAnchor;
+        public FVector3 worldAxis;
 
         public bool useMotor;
-        public Fix64 motorSpeed;
-        public Fix64 motorTorque;
+        public FFloat motorSpeed;
+        public FFloat motorTorque;
 
         public bool useLimit;
-        public Fix64 lowerAngle;
-        public Fix64 upperAngle;
+        public FFloat lowerAngle;
+        public FFloat upperAngle;
 
         protected override PJoint3D CreateJoint()
         {
@@ -29,7 +29,7 @@ namespace Parallel
             {
                 rbB = connectedRigidBody;
             }
-            return Parallel3D.CreateHingeJoint(self, connectedRigidBody, worldAnchor, worldAxis, collideConnected, useLimit, Fix64.DegToRad(lowerAngle), Fix64.DegToRad(upperAngle), useMotor, Fix64.DegToRad(motorSpeed), motorTorque);
+            return Parallel3D.CreateHingeJoint(self, connectedRigidBody, worldAnchor, worldAxis, collideConnected, useLimit, FFloat.DegToRad(lowerAngle), FFloat.DegToRad(upperAngle), useMotor, FFloat.DegToRad(motorSpeed), motorTorque);
         }
     }
 }

@@ -6,19 +6,19 @@ namespace Parallel
     {
         public bool collideConnected = true;
         public ParallelRigidbody3D connectedRigidBody;
-        public Fix64Vec3 worldAnchor;
-        public Fix64Vec3 worldAxis = Fix64Vec3.axisZ;
+        public FVector3 worldAnchor;
+        public FVector3 worldAxis = FVector3.axisZ;
 
         public bool coneLimit;
-        public Fix64 coneAngle;
+        public FFloat coneAngle;
 
         public bool twistLimit;
-        public Fix64 lowerAngle;
-        public Fix64 upperAngle;
+        public FFloat lowerAngle;
+        public FFloat upperAngle;
 
         void Reset()
         {
-            worldAnchor = (Fix64Vec3)transform.position;
+            worldAnchor = (FVector3)transform.position;
         }
 
         private void OnDrawGizmos()
@@ -47,7 +47,7 @@ namespace Parallel
             {
                 rbB = connectedRigidBody;
             }
-            return Parallel3D.CreateConeJoint(self, connectedRigidBody, worldAnchor, worldAxis, collideConnected, coneLimit, Fix64.DegToRad(coneAngle), twistLimit, Fix64.DegToRad(lowerAngle), Fix64.DegToRad(upperAngle));
+            return Parallel3D.CreateConeJoint(self, connectedRigidBody, worldAnchor, worldAxis, collideConnected, coneLimit, FFloat.DegToRad(coneAngle), twistLimit, FFloat.DegToRad(lowerAngle), FFloat.DegToRad(upperAngle));
         }
     }
 }

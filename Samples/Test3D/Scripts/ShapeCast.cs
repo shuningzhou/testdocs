@@ -7,9 +7,9 @@ namespace Parallel.Sample
 {
     public class ShapeCast : MonoBehaviour
     {
-        Fix64Vec3 castPoint;
-        Fix64Vec3 castNormal;
-        Fix64Vec3 sphereHitPosition;
+        FVector3 castPoint;
+        FVector3 castNormal;
+        FVector3 sphereHitPosition;
         PShapecastHit3D hitInfo;
 
         public float rotateSpeed = 30;
@@ -61,11 +61,11 @@ namespace Parallel.Sample
 
             bool hit = false;
 
-            Fix64Vec3 pos = (Fix64Vec3)transform.position;
-            Fix64Quat rot = (Fix64Quat)transform.rotation;
+            FVector3 pos = (FVector3)transform.position;
+            FQuaternion rot = (FQuaternion)transform.rotation;
 
-            Fix64Vec3 movement = (Fix64)castRange * (Fix64Vec3)transform.forward;
-            Fix64Vec3 end = pos + movement;
+            FVector3 movement = (FFloat)castRange * (FVector3)transform.forward;
+            FVector3 end = pos + movement;
 
             hit = Parallel3D.ShapeCast(shape, pos, rot, movement, layerMask, ref hitInfo, null);
 
@@ -78,7 +78,7 @@ namespace Parallel.Sample
             else
             {
                 castPoint = end;
-                castNormal = Fix64Vec3.zero;
+                castNormal = FVector3.zero;
                 sphereHitPosition = end;
             }
         }

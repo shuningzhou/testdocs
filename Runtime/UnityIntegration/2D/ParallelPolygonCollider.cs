@@ -10,12 +10,12 @@ namespace Parallel
         public Vector2[] verts;
         public int vertsCount;
 
-        public Fix64Vec2[] convexVerts;
+        public FVector2[] convexVerts;
         public int convexVertsCount;
 
         [SerializeField]
-        Fix64Vec2 _size = Fix64Vec2.one;
-        public Fix64Vec2 size
+        FVector2 _size = FVector2.one;
+        public FVector2 size
         {
             get
             {
@@ -23,7 +23,7 @@ namespace Parallel
             }
         }
 
-        public void UpdateShape(Fix64Vec2 size)
+        public void UpdateShape(FVector2 size)
         {
             _size = size;
             UpdateShape(_root);
@@ -48,15 +48,15 @@ namespace Parallel
 
         void ConvexHull2D()
         {
-            Fix64Vec2[] fixedVerts = new Fix64Vec2[vertsCount];
+            FVector2[] fixedVerts = new FVector2[vertsCount];
             for (int i = 0; i < vertsCount; i++)
             {
-                fixedVerts[i] = (Fix64Vec2)verts[i];
+                fixedVerts[i] = (FVector2)verts[i];
             }
 
             ParallelVec2List vec2List = Parallel2D.ConvexHull2D(fixedVerts, vertsCount, limit);
 
-            convexVerts = new Fix64Vec2[vec2List.count];
+            convexVerts = new FVector2[vec2List.count];
             for (int i = 0; i < vec2List.count; i++)
             {
                 convexVerts[i] = vec2List.points[i];
@@ -68,39 +68,39 @@ namespace Parallel
         void OnDrawGizmosSelected()
         {
             Gizmos.color = ParallelUtil.ColliderOutlineColor;
-            foreach (Fix64Vec2 v in convexVerts)
+            foreach (FVector2 v in convexVerts)
             {
                 Vector2 vert = (Vector2)v;
                 Gizmos.DrawWireSphere(transform.TransformPoint(vert), 0.1f);
             }
         }
 
-        Fix64Vec2 CalculateSize()
+        FVector2 CalculateSize()
         {
-            Fix64Vec2 s = _size * (Fix64Vec2)colliderScale;
+            FVector2 s = _size * (FVector2)colliderScale;
             return s;
         }
 
         protected override void UpdateShape(GameObject root)
         {
-            Fix64Vec2 s = CalculateSize();
+            FVector2 s = CalculateSize();
 
-            if (s != Fix64Vec2.zero)
+            if (s != FVector2.zero)
             {
-                Fix64Vec2[] scaled = new Fix64Vec2[convexVertsCount];
+                FVector2[] scaled = new FVector2[convexVertsCount];
 
                 for (int i = 0; i < convexVertsCount; i++)
                 {
                     scaled[i] = convexVerts[i] * s;
                 }
 
-                Fix64 angle = Fix64.zero;
-                Fix64Vec2 center = Fix64Vec2.zero;
+                FFloat angle = FFloat.zero;
+                FVector2 center = FVector2.zero;
 
                 if (gameObject != root)
                 {
-                    angle = Fix64.DegToRad(_pTransform.localEulerAngles.z);
-                    center = (Fix64Vec2)_pTransform.localPosition;
+                    angle = FFloat.DegToRad(_pTransform.localEulerAngles.z);
+                    center = (FVector2)_pTransform.localPosition;
                 }
 
                 Parallel2D.UpdatePolygon(_shape, _fixture, scaled, convexVertsCount, center, angle);
@@ -109,27 +109,27 @@ namespace Parallel
 
         public override PShape2D CreateShape(GameObject root)
         {
-            Fix64Vec2 s = CalculateSize();
+            FVector2 s = CalculateSize();
 
-            if (s != Fix64Vec2.zero)
+            if (s != FVector2.zero)
             {
 
-                Fix64 angle = Fix64.zero;
-                Fix64Vec2 center = Fix64Vec2.zero;
+                FFloat angle = FFloat.zero;
+                FVector2 center = FVector2.zero;
 
                 if (gameObject != root)
                 {
-                    angle = Fix64.DegToRad(_pTransform.localEulerAngles.z);
-                    center = (Fix64Vec2)_pTransform.localPosition;
+                    angle = FFloat.DegToRad(_pTransform.localEulerAngles.z);
+                    center = (FVector2)_pTransform.localPosition;
                 }
 
-                if (s == Fix64Vec2.one)
+                if (s == FVector2.one)
                 {
                     return Parallel2D.CreatePolygon(convexVerts, convexVertsCount, center, angle);
                 }
                 else
                 {
-                    Fix64Vec2[] scaled = new Fix64Vec2[convexVertsCount];
+                    FVector2[] scaled = new FVector2[convexVertsCount];
 
                     for (int i = 0; i < convexVertsCount; i++)
                     {

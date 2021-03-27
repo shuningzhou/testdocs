@@ -7,9 +7,9 @@ namespace Parallel.Sample
 {
     public class Circlecast : MonoBehaviour
     {
-        Fix64Vec2 castPoint;
-        Fix64Vec2 castNormal;
-        Fix64Vec2 circleHitPosition;
+        FVector2 castPoint;
+        FVector2 castNormal;
+        FVector2 circleHitPosition;
         PShapecastHit2D hitInfo;
 
         public float rotateSpeed = 30;
@@ -52,23 +52,23 @@ namespace Parallel.Sample
 
             bool hit = false;
 
-            Fix64Vec3 start = (Fix64Vec3)transform.position;
-            Fix64Vec3 movement = (Fix64)castRange * (Fix64Vec3)transform.right;
-            Fix64 radius = (Fix64)circleRadius;
-            Fix64Vec3 end = start + movement;
+            FVector3 start = (FVector3)transform.position;
+            FVector3 movement = (FFloat)castRange * (FVector3)transform.right;
+            FFloat radius = (FFloat)circleRadius;
+            FVector3 end = start + movement;
 
-            hit = Parallel2D.CircleCast((Fix64Vec2)start, radius, (Fix64Vec2)movement, layerMask, ref hitInfo);
+            hit = Parallel2D.CircleCast((FVector2)start, radius, (FVector2)movement, layerMask, ref hitInfo);
 
             if (hit)
             {
                 castPoint = hitInfo.point;
                 castNormal = hitInfo.normal;
-                circleHitPosition = (Fix64Vec2)(start + hitInfo.fraction * movement);
+                circleHitPosition = (FVector2)(start + hitInfo.fraction * movement);
             }
             else
             {
-                castPoint = (Fix64Vec2)end;
-                castNormal = Fix64Vec2.zero;
+                castPoint = (FVector2)end;
+                castNormal = FVector2.zero;
                 circleHitPosition = castPoint;
             }
         }

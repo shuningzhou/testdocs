@@ -10,9 +10,9 @@ namespace Parallel.Sample
         ParallelTransform pTransform;
         public float rotateSpeed;
 
-        public void ParallelFixedUpdate(Fix64 deltaTime)
+        public void ParallelFixedUpdate(FFloat deltaTime)
         {
-            pTransform.RotateInWorldSpace(Fix64Vec3.forward * (Fix64)rotateSpeed * deltaTime);
+            pTransform.RotateInWorldSpace(FVector3.forward * (FFloat)rotateSpeed * deltaTime);
         }
 
         // Start is called before the first frame update

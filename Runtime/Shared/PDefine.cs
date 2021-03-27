@@ -16,7 +16,7 @@ namespace Parallel
         public const int MAX_BODY_CONTACT_COUNT_2D = 8;
         public const int MAX_BODY_CONTACT_COUNT_3D = 16;
 
-        public static Fix64 SMALLEST_RAYCAST_RANGE = Fix64.FromDivision(1, 1000);
+        public static FFloat SMALLEST_RAYCAST_RANGE = FFloat.FromDivision(1, 1000);
     }
 
     public enum LogLevel

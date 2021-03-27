@@ -6,12 +6,12 @@ namespace Parallel
     {
         public bool collideConnected;
         public ParallelRigidbody2D connectedRigidBody;
-        public Fix64Vec2 anchor;
-        public Fix64Vec2 connectedAnchor;
+        public FVector2 anchor;
+        public FVector2 connectedAnchor;
 
-        public Fix64 distance;
-        public Fix64 frequency;
-        public Fix64 dampingRatio;
+        public FFloat distance;
+        public FFloat frequency;
+        public FFloat dampingRatio;
 
         protected override PJoint2D CreateJoint()
         {

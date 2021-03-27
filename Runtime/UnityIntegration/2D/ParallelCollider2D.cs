@@ -17,19 +17,19 @@ namespace Parallel
         bool isTrigger = false;
         
         [SerializeField]
-        Fix64 _friction = Fix64.FromDivision(4, 10);
+        FFloat _friction = FFloat.FromDivision(4, 10);
 
         [SerializeField]
-        Fix64 _bounciness = Fix64.FromDivision(2, 10);
+        FFloat _bounciness = FFloat.FromDivision(2, 10);
 
         [SerializeField]
-        internal Fix64 _density = Fix64.FromDivision(1, 1);
+        internal FFloat _density = FFloat.FromDivision(1, 1);
 
         [SerializeField]
         internal bool _overideMass = false;
 
         [SerializeField]
-        internal Fix64 _customMass = Fix64.zero;
+        internal FFloat _customMass = FFloat.zero;
 
         public ParallelRigidbody2D attachedBody
         {
@@ -44,19 +44,19 @@ namespace Parallel
         bool _useSpriteRendererSize = false;
 
         [SerializeField]
-        Fix64Vec2 _spriteRendererSize = Fix64Vec2.one;
+        FVector2 _spriteRendererSize = FVector2.one;
 
-        protected Fix64Vec3 colliderScale
+        protected FVector3 colliderScale
         {
             get
             {
                 if (_useSpriteRendererSize)
                 {
-                    Fix64 x = pTransform.localScale.x * _spriteRendererSize.x;
-                    Fix64 y = pTransform.localScale.y * _spriteRendererSize.y;
-                    Fix64 z = pTransform.localScale.z;
+                    FFloat x = pTransform.localScale.x * _spriteRendererSize.x;
+                    FFloat y = pTransform.localScale.y * _spriteRendererSize.y;
+                    FFloat z = pTransform.localScale.z;
 
-                    return new Fix64Vec3(x, y, z);
+                    return new FVector3(x, y, z);
                 }
                 else{
                     return pTransform.localScale;
@@ -72,7 +72,7 @@ namespace Parallel
             }
         }
 
-        public Fix64 friction
+        public FFloat friction
         {
             get
             {
@@ -84,7 +84,7 @@ namespace Parallel
             }
         }
 
-        public Fix64 bounciness
+        public FFloat bounciness
         {
             get
             {
@@ -96,7 +96,7 @@ namespace Parallel
             }
         }
 
-        public Fix64 density
+        public FFloat density
         {
             get
             {
@@ -153,9 +153,9 @@ namespace Parallel
                 {
                     if (spriteRenderer.drawMode == SpriteDrawMode.Sliced)
                     {
-                        if(_spriteRendererSize != (Fix64Vec2)spriteRenderer.size)
+                        if(_spriteRendererSize != (FVector2)spriteRenderer.size)
                         {
-                            _spriteRendererSize = (Fix64Vec2)spriteRenderer.size;
+                            _spriteRendererSize = (FVector2)spriteRenderer.size;
                             UnityEditor.EditorUtility.SetDirty(this);
                         }
                     }
@@ -173,13 +173,13 @@ namespace Parallel
 
         void ImportFromUnity()
         {
-            _spriteRendererSize = Fix64Vec2.one;
+            _spriteRendererSize = FVector2.one;
 
             if (spriteRenderer != null)
             {
                 if (spriteRenderer.drawMode == SpriteDrawMode.Sliced)
                 {
-                    _spriteRendererSize = (Fix64Vec2)spriteRenderer.size;
+                    _spriteRendererSize = (FVector2)spriteRenderer.size;
                 }
             }
         }

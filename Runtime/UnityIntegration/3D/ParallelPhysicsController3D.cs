@@ -7,15 +7,16 @@ namespace Parallel
 {
     public class ParallelPhysicsController3D : MonoBehaviour
     {
-        public Parallel.LogLevel LoggingLevel;
+        public SimulationMode simulationMode = SimulationMode.StatefulSleep;
+
+        public LogLevel LoggingLevel = LogLevel.Error;
+
         public bool autoUpdate = true;
         public bool autoInitialization = true;
 
-        public Fix64 fixedUpdateTime = Fix64.FromDivision(2, 100);
+        public FFloat fixedUpdateTime = FFloat.FromDivision(2, 100);
         public int velocityIteration = 4;
-        public bool allowSleep = true;
-        public bool warmStart = true;
-        public Fix64Vec3 gravity = new Fix64Vec3(Fix64.zero, Fix64.FromDivision(-98, 10), Fix64.zero);
+        public FVector3 gravity = new FVector3(FFloat.zero, FFloat.FromDivision(-98, 10), FFloat.zero);
 
         bool _initialized = false;
         Action<ParallelRigidbody3D> _rollbackRemoveCallback;
@@ -27,8 +28,7 @@ namespace Parallel
 
                 _initialized = true;
                 Parallel3D.gravity = gravity;
-                Parallel3D.allowSleep = allowSleep;
-                Parallel3D.warmStart = warmStart;
+                Parallel3D.simulationMode = simulationMode;
                 Parallel3D.SetLoggingLevel(LoggingLevel);
                 Parallel3D._rollbackRemoveRigidbodyCallback3D = RollbackRemoveRigidbody;
                 Time.fixedDeltaTime = (float)fixedUpdateTime;
@@ -65,7 +65,7 @@ namespace Parallel
                 }
             }
         }
-        public void SetRollbackAddRigidbodyCallback(Action<UInt32, UInt16, IntPtr> callback)
+        public void SetRollbackAddRigidbodyCallback(Action<UInt16, UInt16, IntPtr> callback)
         {
             Parallel3D._rollbackAddRigidbodyCallback3D = callback;
         }
@@ -75,7 +75,7 @@ namespace Parallel
             _rollbackRemoveCallback = callback;
         }
 
-        void RollbackRemoveRigidbody(uint externalId, ushort bodyId)
+        void RollbackRemoveRigidbody(UInt16 externalId, UInt16 bodyId)
         {
             Debug.Log($"RollbackRemoveRigidbody {bodyId}");
             PBody3D body = Parallel3D.FindBodyByID(bodyId);
@@ -111,7 +111,7 @@ namespace Parallel
             }
         }
 
-        public static GameObject InstantiateParallelObject(GameObject original, Fix64Vec3 position, Fix64Quat rotation)
+        public static GameObject InstantiateParallelObject(GameObject original, FVector3 position, FQuaternion rotation)
         {
             GameObject go = Instantiate(original, (Vector3)position, (Quaternion)rotation);
 
@@ -145,7 +145,7 @@ namespace Parallel
             return go;
         }
 
-        public static GameObject RestoreParallelObject(GameObject original, uint externalId, ushort bodyId, IntPtr pBody3D)
+        public static GameObject RestoreParallelObject(GameObject original, UInt16 externalId, ushort bodyId, IntPtr pBody3D)
         {
             GameObject go = Instantiate(original, Vector3.zero, Quaternion.identity);
             ParallelRigidbody3D rigidbody3D = go.GetComponent<ParallelRigidbody3D>();
@@ -197,12 +197,12 @@ namespace Parallel
             }
         }
 
-        public void Step(Fix64 deltaTime)
+        public void Step(FFloat deltaTime)
         {
             Parallel3D.Step(deltaTime, velocityIteration, 1);
         }
 
-        public void ExcuteUserCallbacks(Fix64 deltaTime)
+        public void ExcuteUserCallbacks(FFloat deltaTime)
         {
             //using (new SProfiler($"==========ExcuteUserCallbacks========"))
             {
@@ -210,7 +210,7 @@ namespace Parallel
             }
         }
 
-        public void ExcuteUserFixedUpdate(Fix64 deltaTime)
+        public void ExcuteUserFixedUpdate(FFloat deltaTime)
         {
             Parallel3D.ExcuteUserFixedUpdate(deltaTime);
         }

@@ -3,23 +3,23 @@ namespace Parallel
 {
     public struct PBodyExport2D
     {
-        public Fix64Vec2 linearVelocity;
-        public Fix64 angularVelocity;
+        public FVector2 linearVelocity;
+        public FFloat angularVelocity;
 
-        public Fix64Vec2 position;
-        public Fix64 angle;
+        public FVector2 position;
+        public FFloat angle;
     }
 
     [Serializable]
     public class PBody2D : NativeObject
     {
-        public Fix64Vec2 position;
-        public Fix64 angle;
+        public FVector2 position;
+        public FFloat angle;
 
-        internal Fix64Vec2 linearVelocity;
-        internal Fix64 angularVelocity;
+        internal FVector2 linearVelocity;
+        internal FFloat angularVelocity;
 
-        public Fix64 mass;
+        public FFloat mass;
 
         public UInt16 BodyID { get; private set; }
         public UInt32 ExternalID { get; private set; }
@@ -39,7 +39,7 @@ namespace Parallel
             RigidBody.OnTransformUpdated();
         }
 
-        public void Step(Fix64 time)
+        public void Step(FFloat time)
         {
             RigidBody.Step(time);
         }

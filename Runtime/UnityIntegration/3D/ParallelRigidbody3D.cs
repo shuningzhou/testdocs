@@ -37,12 +37,12 @@ namespace Parallel
         int _bodyId;
 
         [SerializeField]
-        Fix64 _mass;
+        FFloat _mass;
 
         [SerializeField]
         internal int sceneIndex;
         public Transform parentTransform;
-        public uint externalId;
+        public UInt16 externalId;
 
         [SerializeField]
         bool _awake;
@@ -52,13 +52,13 @@ namespace Parallel
         BodyType _bodyType = Parallel.BodyType.Dynamic;
 
         [SerializeField]
-        Fix64Vec3 _linearDamping = Fix64Vec3.zero;
+        FVector3 _linearDamping = FVector3.zero;
 
         [SerializeField]
-        Fix64Vec3 _angularDamping = new Fix64Vec3(Fix64.FromDivision(5, 100), Fix64.FromDivision(5, 100), Fix64.FromDivision(5, 100));
+        FVector3 _angularDamping = new FVector3(FFloat.FromDivision(5, 100), FFloat.FromDivision(5, 100), FFloat.FromDivision(5, 100));
 
         [SerializeField]
-        Fix64Vec3 _gravityScale = Fix64Vec3.one;
+        FVector3 _gravityScale = FVector3.one;
 
         [SerializeField]
         bool _fixedRotationX = false;
@@ -81,7 +81,7 @@ namespace Parallel
         bool _overideCenterOfMass = false;
 
         [SerializeField]
-        Fix64Vec3 _customCenterOfMass = Fix64Vec3.zero;
+        FVector3 _customCenterOfMass = FVector3.zero;
 
         public int bodyId
         {
@@ -99,7 +99,7 @@ namespace Parallel
             }
         }
 
-        public Fix64Vec3 centerOfMass
+        public FVector3 centerOfMass
         {
             get
             {
@@ -108,7 +108,7 @@ namespace Parallel
             }
         }
 
-        public Fix64 mass
+        public FFloat mass
         {
             get
             {
@@ -128,7 +128,7 @@ namespace Parallel
             }
         }
 
-        public Fix64Vec3 linearDamping
+        public FVector3 linearDamping
         {
             get
             {
@@ -140,7 +140,7 @@ namespace Parallel
             }
         }
 
-        public Fix64Vec3 angularDamping
+        public FVector3 angularDamping
         {
             get
             {
@@ -152,7 +152,7 @@ namespace Parallel
             }
         }
 
-        public Fix64Vec3 gravityScale
+        public FVector3 gravityScale
         {
             get
             {
@@ -251,7 +251,7 @@ namespace Parallel
         }
 
         //============================== Velocity ==============================
-        public Fix64Vec3 LinearVelocity
+        public FVector3 LinearVelocity
         {
             get
             {
@@ -264,7 +264,7 @@ namespace Parallel
             }
         }
 
-        public Fix64Vec3 AngularVelocity
+        public FVector3 AngularVelocity
         {
             get
             {
@@ -278,26 +278,26 @@ namespace Parallel
         }
 
         //
-        public Fix64Vec3 GetPointVelocity(Fix64Vec3 point)
+        public FVector3 GetPointVelocity(FVector3 point)
         {
             return Parallel3D.GetPointVelocity(_body3D, point);
         }
 
         //============================== Force and Torque ==============================
         //Apply a force to the center of mass
-        public void ApplyForce(Fix64Vec3 force)
+        public void ApplyForce(FVector3 force)
         {
             Parallel3D.ApplyForceToCenter(_body3D, force);
         }
 
         //Apply a force at a world point
-        public void ApplyForce(Fix64Vec3 force, Fix64Vec3 worldPoint)
+        public void ApplyForce(FVector3 force, FVector3 worldPoint)
         {
             Parallel3D.ApplyForce(_body3D, worldPoint, force);
         }
 
         //Apply an impulse to the center of mass. This immediately modifies the velocity.
-        public void ApplyLinearImpulse(Fix64Vec3 impluse)
+        public void ApplyLinearImpulse(FVector3 impluse)
         {
             Parallel3D.ApplyLinearImpulseToCenter(_body3D, impluse);
         }
@@ -305,7 +305,7 @@ namespace Parallel
         /// Apply an impulse at a point. This immediately modifies the velocity.
         /// It also modifies the angular velocity if the point of application
         /// is not at the center of mass.
-        public void ApplyLinearImpluse(Fix64Vec3 impluse, Fix64Vec3 worldPoint)
+        public void ApplyLinearImpluse(FVector3 impluse, FVector3 worldPoint)
         {
             Parallel3D.ApplyLinearImpulse(_body3D, worldPoint, impluse);
         }
@@ -313,13 +313,13 @@ namespace Parallel
         /// Apply a torque. This affects the angular velocity
         /// without affecting the linear velocity of the center of mass.
         /// z-axis (out of the screen)
-        public void ApplyTorque(Fix64Vec3 torque)
+        public void ApplyTorque(FVector3 torque)
         {
             Parallel3D.ApplyTorque(_body3D, torque);
         }
 
         /// Apply an angular impulse. This immediately modifies the angular velocity
-        public void ApplyAngularImpulse(Fix64Vec3 impulse)
+        public void ApplyAngularImpulse(FVector3 impulse)
         {
             Parallel3D.ApplyAngularImpulse(_body3D, impulse);
         }
@@ -454,7 +454,7 @@ namespace Parallel
             }
         }
 
-        public void Step(Fix64 timeStep)
+        public void Step(FFloat timeStep)
         {
             foreach (IParallelFixedUpdate parallelFixedUpdate in parallelFixedUpdates)
             {
@@ -574,7 +574,7 @@ namespace Parallel
                     continue;
                 }
 
-                Fix64 mass = Fix64.zero;
+                FFloat mass = FFloat.zero;
 
                 if(collider._overideMass)
                 {
@@ -601,7 +601,7 @@ namespace Parallel
             _mass = _body3D.mass;
         }
 
-        internal PBody3D Insert(UInt16 bId, UInt32 exId, IntPtr previousBody)
+        internal PBody3D Insert(UInt16 bId, UInt16 exId, IntPtr previousBody)
         {
             parallelFixedUpdates = GetComponents<IParallelFixedUpdate>();
             parallelCollisions = GetComponents<IParallelCollision3D>();
@@ -660,7 +660,7 @@ namespace Parallel
                     continue;
                 }
 
-                Fix64 mass = Fix64.zero;
+                FFloat mass = FFloat.zero;
 
                 if (collider._overideMass)
                 {
@@ -741,7 +741,7 @@ namespace Parallel
                     continue;
                 }
 
-                Parallel3D.AddFixture(body, shape, (Fix64)1, Fix64.zero);
+                Parallel3D.AddFixture(body, shape, (FFloat)1, FFloat.zero);
             }
         }
 

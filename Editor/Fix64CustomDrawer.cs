@@ -3,7 +3,7 @@ using Parallel;
 using UnityEngine;
 using System.Collections.Generic;
 
-[CustomPropertyDrawer(typeof(Fix64))]
+[CustomPropertyDrawer(typeof(FFloat))]
 public class Fix64CustomDrawer : PropertyDrawer
 {
     private static Dictionary<string, int> _fieldCounts = new Dictionary<string, int>();
@@ -35,11 +35,11 @@ public class Fix64CustomDrawer : PropertyDrawer
 
         EditorGUI.BeginChangeCheck();
         long oldRawValue = raw.longValue;
-        Fix64 oldValue = Fix64.FromRaw(oldRawValue);
+        FFloat oldValue = FFloat.FromRaw(oldRawValue);
         float newVal = EditorGUI.FloatField(fieldRect, new GUIContent(name), (float)oldValue);
         if (EditorGUI.EndChangeCheck())
         {
-            Fix64 newFixedValue = (Fix64)newVal;
+            FFloat newFixedValue = (FFloat)newVal;
             raw.longValue = newFixedValue.Raw;
         }
 

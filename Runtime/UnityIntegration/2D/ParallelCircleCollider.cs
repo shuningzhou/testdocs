@@ -7,9 +7,9 @@ namespace Parallel
     public class ParallelCircleCollider : ParallelCollider2D
     {
         [SerializeField]
-        Fix64 _radius = Fix64.FromDivision(1,2);
+        FFloat _radius = FFloat.FromDivision(1,2);
 
-        public Fix64 radius
+        public FFloat radius
         {
             get
             {
@@ -17,7 +17,7 @@ namespace Parallel
             }
         }
 
-        public void UpdateShape(Fix64 radius)
+        public void UpdateShape(FFloat radius)
         {
             _radius = radius;
             UpdateShape(_root);
@@ -25,8 +25,8 @@ namespace Parallel
 
         void OnDrawGizmosSelected()
         {
-            Fix64 r = CalculateRadius();
-            if(r <= Fix64.zero)
+            FFloat r = CalculateRadius();
+            if(r <= FFloat.zero)
             {
                 Debug.LogError("Invalid Size");
                 return;
@@ -37,28 +37,28 @@ namespace Parallel
             Gizmos.matrix = Matrix4x4.identity;
         }
 
-        Fix64 CalculateRadius()
+        FFloat CalculateRadius()
         {
 
-            Fix64 maxScale = Fix64Math.Max(Fix64Math.Abs(colliderScale.x), Fix64Math.Abs(colliderScale.y));
-            Fix64 result = maxScale * _radius;
+            FFloat maxScale = FMath.Max(FMath.Abs(colliderScale.x), FMath.Abs(colliderScale.y));
+            FFloat result = maxScale * _radius;
             return result;
         }
 
         protected override void UpdateShape(GameObject root)
         {
-            Fix64 r = CalculateRadius();
-            if (r <= Fix64.zero)
+            FFloat r = CalculateRadius();
+            if (r <= FFloat.zero)
             {
                 Debug.LogError("Invalid Size");
             }
             else
             {
-                Fix64Vec2 center = Fix64Vec2.zero;
+                FVector2 center = FVector2.zero;
 
                 if (gameObject != root)
                 {
-                    center = (Fix64Vec2)_pTransform.localPosition;
+                    center = (FVector2)_pTransform.localPosition;
                 }
 
                 Parallel2D.UpdateCircle(_shape, _fixture, r, center);
@@ -67,19 +67,19 @@ namespace Parallel
 
         public override PShape2D CreateShape(GameObject root)
         {
-            Fix64 r = CalculateRadius();
-            if (r <= Fix64.zero)
+            FFloat r = CalculateRadius();
+            if (r <= FFloat.zero)
             {
                 Debug.LogError("Invalid Size");
                 return null;
             }
             else
             {
-                Fix64Vec2 center = Fix64Vec2.zero;
+                FVector2 center = FVector2.zero;
 
                 if (gameObject != root)
                 {
-                    center = (Fix64Vec2)_pTransform.localPosition;
+                    center = (FVector2)_pTransform.localPosition;
                 }
 
                 return Parallel2D.CreateCircle(r, center);

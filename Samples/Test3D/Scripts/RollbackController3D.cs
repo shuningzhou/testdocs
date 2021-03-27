@@ -24,6 +24,7 @@ public class RollbackController3D : MonoBehaviour
     public bool fullTest = false;
     public bool warmStart = false;
     public bool detailLogging = false;
+    public bool exportTest = false;
 
     public uint maxSteps = 100;
     public uint step = 0;
@@ -66,9 +67,9 @@ public class RollbackController3D : MonoBehaviour
     }
 
 
-    void RestoreRigidbody(uint externalId, ushort bodyId, IntPtr pBody3D)
+    void RestoreRigidbody(UInt16 externalId, ushort bodyId, IntPtr pBody3D)
     {
-        int index = (int)externalId;
+        int index = externalId;
         GameObject prefab = prefabs[index];
 
         ParallelPhysicsController3D.RestoreParallelObject(prefab, externalId, bodyId, pBody3D);
@@ -90,7 +91,7 @@ public class RollbackController3D : MonoBehaviour
                 Vector3 start = ray.origin;
                 Vector3 end = ray.origin + ray.direction * 1000.0f;
 
-                hit = Parallel3D.RayCast((Fix64Vec3)start, (Fix64Vec3)end, out result);
+                hit = Parallel3D.RayCast((FVector3)start, (FVector3)end, out result);
 
                 if (hit)
                 {
@@ -157,7 +158,7 @@ public class RollbackController3D : MonoBehaviour
 
         GameObject prefab = prefabs[index];
 
-        ParallelPhysicsController3D.InstantiateParallelObject(prefab, (Fix64Vec3)transform.position, (Fix64Quat)Quaternion.identity);
+        ParallelPhysicsController3D.InstantiateParallelObject(prefab, (FVector3)transform.position, (FQuaternion)Quaternion.identity);
     }
 
     private void OnDestroy()
@@ -208,7 +209,20 @@ public class RollbackController3D : MonoBehaviour
 
             if (!_finishedFirstRun)
             {
-                snapshots[step] = Parallel3D.Snapshot();
+                PSnapshot3D snapshot3D = Parallel3D.Snapshot();
+
+                byte[] buffer = new byte[1024 * 10];
+
+                int size = Parallel3D.ExportSnapshot(snapshot3D, buffer, 1024 * 10);
+
+                Debug.Log($"Snapshot size={size}");
+
+                PSnapshot3D importSnapshot = Parallel3D.ImportSnapshot(buffer, size);
+
+
+                snapshots[step] = importSnapshot;
+
+                Parallel3D.DestroySnapshot(snapshot3D);
             }
 
             hashes[step] = CalculateHash();
@@ -293,13 +307,13 @@ public class RollbackController3D : MonoBehaviour
         {
             foreach (ParallelRigidbody3D rigidbody in physicsEngine.rigidbodies)
             {
-                Fix64Vec3 linearVelocity = rigidbody.LinearVelocity;
-                Fix64Vec3 angularVelocity = rigidbody.AngularVelocity;
+                FVector3 linearVelocity = rigidbody.LinearVelocity;
+                FVector3 angularVelocity = rigidbody.AngularVelocity;
 
                 ParallelTransform pTransform = rigidbody.pTransform;
 
-                Fix64Vec3 pos = pTransform.position;
-                Fix64Quat rot = pTransform.rotation;
+                FVector3 pos = pTransform.position;
+                FQuaternion rot = pTransform.rotation;
 
                 buffer.Push(linearVelocity);
                 buffer.Push(angularVelocity);

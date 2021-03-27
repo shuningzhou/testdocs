@@ -34,8 +34,8 @@ public class Spawner : MonoBehaviour
         GameObject go = Instantiate(prefabs[index], transform.position, Quaternion.identity);
         ParallelTransform pTransform = go.GetComponent<ParallelTransform>();
         int randomSize = Random.Range(5, 30);
-        pTransform.localScale = pTransform.localScale * Fix64.FromDivision(randomSize, 10);
-        pTransform.position = (Fix64Vec3)transform.position;
+        pTransform.localScale = pTransform.localScale * FFloat.FromDivision(randomSize, 10);
+        pTransform.position = (FVector3)transform.position;
 
         ParallelCollider3D collider = go.GetComponent<ParallelCollider3D>();
         collider.UpdateShape(go);

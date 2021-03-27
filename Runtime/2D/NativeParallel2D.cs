@@ -27,7 +27,7 @@ namespace Parallel
         //2D world
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr CreateWorld(
-            Fix64Vec2 gravity, 
+            FVector2 gravity, 
             bool allowSleep, 
             bool warmStart, 
             ContactEnterCallBack enterCallback, 
@@ -36,13 +36,13 @@ namespace Parallel
             RollbackRemoveRigidbodyCallback rollbackRemoveRigidbodyCallback);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr SetGravity(IntPtr worldHandle, Fix64Vec2 gravity);
+        internal static extern IntPtr SetGravity(IntPtr worldHandle, FVector2 gravity);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void DestroyWorld(IntPtr worldHandle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void Step(IntPtr worldHandle, Fix64 time, int velocityIterations, int positionIterations);
+        internal static extern void Step(IntPtr worldHandle, FFloat time, int velocityIterations, int positionIterations);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr Snapshot(IntPtr worldHandle);
@@ -57,75 +57,75 @@ namespace Parallel
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr CreateBody(IntPtr worldHandle, 
             int bodyType, 
-            Fix64Vec2 position, 
-            Fix64 angle,
-            Fix64 linearDamping,
-            Fix64 angularDamping,
+            FVector2 position, 
+            FFloat angle,
+            FFloat linearDamping,
+            FFloat angularDamping,
             bool fixedRotation,
-            Fix64 gravityScale,
+            FFloat gravityScale,
             UInt32 externalID,
             ref UInt16 bodyID);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr InsertBody(IntPtr worldHandle,
             int bodyType,
-            Fix64Vec2 position,
-            Fix64 angle,
-            Fix64 linearDamping,
-            Fix64 angularDamping,
+            FVector2 position,
+            FFloat angle,
+            FFloat linearDamping,
+            FFloat angularDamping,
             bool fixedRotation,
-            Fix64 gravityScale,
+            FFloat gravityScale,
             UInt32 externalID,
             UInt16 bodyID,
             IntPtr previousBody);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateBodyTransform(IntPtr bodyHandle, Fix64Vec2 position, Fix64 angle);
+        internal static extern void UpdateBodyTransform(IntPtr bodyHandle, FVector2 position, FFloat angle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateBodyVelocity(IntPtr bodyHandle, Fix64Vec2 linearVelocity, Fix64 angularVelocity);
+        internal static extern void UpdateBodyVelocity(IntPtr bodyHandle, FVector2 linearVelocity, FFloat angularVelocity);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void UpdateBodyProperties(IntPtr bodyHandle,
             int bodyType,
-            Fix64 linearDamping,
-            Fix64 angularDamping,
+            FFloat linearDamping,
+            FFloat angularDamping,
             bool fixedRotation,
-            Fix64 gravityScale);
+            FFloat gravityScale);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void ApplyForce(IntPtr bodyHandle, Fix64Vec2 point, Fix64Vec2 force);
+        internal static extern void ApplyForce(IntPtr bodyHandle, FVector2 point, FVector2 force);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void ApplyForceToCenter(IntPtr bodyHandle, Fix64Vec2 force);
+        internal static extern void ApplyForceToCenter(IntPtr bodyHandle, FVector2 force);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void ApplyTorque(IntPtr bodyHandle, Fix64 torque);
+        internal static extern void ApplyTorque(IntPtr bodyHandle, FFloat torque);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void ApplyLinearImpulse(IntPtr bodyHandle, Fix64Vec2 point, Fix64Vec2 impulse);
+        internal static extern void ApplyLinearImpulse(IntPtr bodyHandle, FVector2 point, FVector2 impulse);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void ApplyLinearImpulseToCenter(IntPtr bodyHandle, Fix64Vec2 impulse);
+        internal static extern void ApplyLinearImpulseToCenter(IntPtr bodyHandle, FVector2 impulse);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void ApplyAngularImpulse(IntPtr bodyHandle, Fix64 impulse);
+        internal static extern void ApplyAngularImpulse(IntPtr bodyHandle, FFloat impulse);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void DestroyBody(IntPtr worldHandle, IntPtr bodyHandle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void GetTransform(IntPtr bodyHandle, ref Fix64Vec2 pos, ref Fix64 angle);
+        internal static extern void GetTransform(IntPtr bodyHandle, ref FVector2 pos, ref FFloat angle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void GetVelocity(IntPtr bodyHandle, ref Fix64Vec2 linearVelocity, ref Fix64 rz);
+        internal static extern void GetVelocity(IntPtr bodyHandle, ref FVector2 linearVelocity, ref FFloat rz);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void GetBodyMassInfo(IntPtr bodyHandle, ref Fix64 mass);
+        internal static extern void GetBodyMassInfo(IntPtr bodyHandle, ref FFloat mass);
 
         //2D fixture
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr AddFixtureToBody(IntPtr bodyHandle, IntPtr shapeHandle, Fix64 density, Fix64 mass);
+        internal static extern IntPtr AddFixtureToBody(IntPtr bodyHandle, IntPtr shapeHandle, FFloat density, FFloat mass);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr GetShapeOfFixture(IntPtr fixtureHandle);
@@ -134,46 +134,46 @@ namespace Parallel
         internal static extern void SetLayer(IntPtr fixtureHandle, int layer, int layerMask, bool refilter);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void SetFixtureProperties(IntPtr fixtureHandle, bool isTrigger, Fix64 friction, Fix64 bounciness);
+        internal static extern void SetFixtureProperties(IntPtr fixtureHandle, bool isTrigger, FFloat friction, FFloat bounciness);
 
         //2D shapes
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateCircle(Fix64 radius, Fix64Vec2 center);
+        internal static extern IntPtr CreateCircle(FFloat radius, FVector2 center);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateCircle(IntPtr shapeHandle, IntPtr fixtureHandle, Fix64 radius, Fix64Vec2 center);
+        internal static extern void UpdateCircle(IntPtr shapeHandle, IntPtr fixtureHandle, FFloat radius, FVector2 center);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateBox(Fix64 width, Fix64 height, Fix64Vec2 center, Fix64 angle);
+        internal static extern IntPtr CreateBox(FFloat width, FFloat height, FVector2 center, FFloat angle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateBox(IntPtr shapeHandle, IntPtr fixtureHandle, Fix64 width, Fix64 height, Fix64Vec2 center, Fix64 angle);
+        internal static extern void UpdateBox(IntPtr shapeHandle, IntPtr fixtureHandle, FFloat width, FFloat height, FVector2 center, FFloat angle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateCapsule(Fix64Vec2 v1, Fix64Vec2 v2, Fix64 radius, Fix64Vec2 center, Fix64 angle);
+        internal static extern IntPtr CreateCapsule(FVector2 v1, FVector2 v2, FFloat radius, FVector2 center, FFloat angle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdateCapsule(IntPtr shapeHandle, IntPtr fixtureHandle, Fix64Vec2 v1, Fix64Vec2 v2, Fix64 radius, Fix64Vec2 center, Fix64 angle);
+        internal static extern void UpdateCapsule(IntPtr shapeHandle, IntPtr fixtureHandle, FVector2 v1, FVector2 v2, FFloat radius, FVector2 center, FFloat angle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreatePolygon(ref ParallelVec2List parallelVec2List, Fix64Vec2 center, Fix64 angle);
+        internal static extern IntPtr CreatePolygon(ref ParallelVec2List parallelVec2List, FVector2 center, FFloat angle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void UpdatePolygon(IntPtr shapeHandle, IntPtr fixtureHandle, ref ParallelVec2List parallelVec2List, Fix64Vec2 center, Fix64 angle);
+        internal static extern void UpdatePolygon(IntPtr shapeHandle, IntPtr fixtureHandle, ref ParallelVec2List parallelVec2List, FVector2 center, FFloat angle);
 
         //cast
         [DllImport(PLUGIN_NAME)]
-        internal static extern bool RayCast(Fix64Vec2 point1, Fix64Vec2 point2, int mask, ref Fix64Vec2 point, ref Fix64Vec2 normal, out UInt16 bodyID, IntPtr worldHandle);
+        internal static extern bool RayCast(FVector2 point1, FVector2 point2, int mask, ref FVector2 point, ref FVector2 normal, out UInt16 bodyID, IntPtr worldHandle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern bool CircleCast(Fix64Vec2 center, Fix64 radius, int mask, Fix64Vec2 translation, ref Fix64Vec2 point, ref Fix64Vec2 normal, ref Fix64 fraction, out UInt16 bodyID, IntPtr worldHandle);
+        internal static extern bool CircleCast(FVector2 center, FFloat radius, int mask, FVector2 translation, ref FVector2 point, ref FVector2 normal, ref FFloat fraction, out UInt16 bodyID, IntPtr worldHandle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern bool ShapeCast(IntPtr shapeHandle, Fix64Vec3 pos, Fix64 rot, int mask, Fix64Vec2 translation, ref Fix64Vec2 point, ref Fix64Vec2 normal, ref Fix64 fraction, out UInt16 bodyID, IntPtr worldHandle);
+        internal static extern bool ShapeCast(IntPtr shapeHandle, FVector3 pos, FFloat rot, int mask, FVector2 translation, ref FVector2 point, ref FVector2 normal, ref FFloat fraction, out UInt16 bodyID, IntPtr worldHandle);
 
         //overlap
         [DllImport(PLUGIN_NAME)]
-        internal static extern bool CircleOverlap(IntPtr worldHandle, Fix64Vec2 center, Fix64 radius, int mask, UInt16[] bodyIDs, ref int count);
+        internal static extern bool CircleOverlap(IntPtr worldHandle, FVector2 center, FFloat radius, int mask, UInt16[] bodyIDs, ref int count);
 
         //contact
         [DllImport(PLUGIN_NAME)]
@@ -183,7 +183,7 @@ namespace Parallel
         internal static extern IntPtr ExportAndReturnNextContact(IntPtr contactHandle, ref PContactExport2D export);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern int GetContactDetail(IntPtr contactHandle, ref Fix64Vec2 point1, ref Fix64Vec2 point2, ref Fix64 penetration1, ref Fix64 penetration2, ref Fix64Vec2 normal);
+        internal static extern int GetContactDetail(IntPtr contactHandle, ref FVector2 point1, ref FVector2 point2, ref FFloat penetration1, ref FFloat penetration2, ref FVector2 normal);
 
         //convex
         [DllImport(PLUGIN_NAME)]
@@ -191,10 +191,10 @@ namespace Parallel
 
         //vector
         [DllImport(PLUGIN_NAME)]
-        internal static extern void Vec2Normalize64(Fix64Vec2 a, ref Fix64Vec2 result);
+        internal static extern void Vec2Normalize64(FVector2 a, ref FVector2 result);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void Vec2Length64(Fix64Vec2 a, ref Fix64 result);
+        internal static extern void Vec2Length64(FVector2 a, ref FFloat result);
 
         //joint
         [DllImport(PLUGIN_NAME)]
@@ -202,30 +202,30 @@ namespace Parallel
 
         //mouse joint
         [DllImport(PLUGIN_NAME)]
-        internal static extern IntPtr CreateMouseJoint(IntPtr worldHandle, IntPtr bodyHandleA, IntPtr bodyHandleB, Fix64Vec2 position, Fix64 maxForce);
+        internal static extern IntPtr CreateMouseJoint(IntPtr worldHandle, IntPtr bodyHandleA, IntPtr bodyHandleB, FVector2 position, FFloat maxForce);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void MoveMouseJoint(IntPtr MoveMouseJoint, Fix64Vec2 position);
+        internal static extern void MoveMouseJoint(IntPtr MoveMouseJoint, FVector2 position);
 
         //spring joint
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr CreateDistanceJoint(IntPtr worldHandle,
                                                           IntPtr bodyHandleA,
                                                           IntPtr bodyHandleB,
-                                                          Fix64Vec2 anchorA,
-                                                          Fix64Vec2 anchorB,
+                                                          FVector2 anchorA,
+                                                          FVector2 anchorB,
                                                           bool collide,
-                                                          Fix64 frequency,
-                                                          Fix64 damp);
+                                                          FFloat frequency,
+                                                          FFloat damp);
 
         //hinge joint
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr CreateHingeJoint(IntPtr worldHandle,
                                                           IntPtr bodyHandleA,
                                                           IntPtr bodyHandleB,
-                                                          Fix64Vec2 anchor,
+                                                          FVector2 anchor,
                                                           bool collide,
-                                                          bool limit, Fix64 lowerAngle, Fix64 upperAngle,
-                                                          bool motor, Fix64 motorSpeed, Fix64 motorTorque);
+                                                          bool limit, FFloat lowerAngle, FFloat upperAngle,
+                                                          bool motor, FFloat motorSpeed, FFloat motorTorque);
     }
 }

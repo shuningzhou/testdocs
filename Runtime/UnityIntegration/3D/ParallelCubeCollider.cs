@@ -6,9 +6,9 @@ namespace Parallel
     public class ParallelCubeCollider : ParallelCollider3D
     {
         [SerializeField]
-        Fix64Vec3 _size = Fix64Vec3.one;
+        FVector3 _size = FVector3.one;
 
-        public Fix64Vec3 size
+        public FVector3 size
         {
             get
             {
@@ -22,26 +22,26 @@ namespace Parallel
 
         void OnDrawGizmosSelected()
         {
-            Fix64Vec3 s = CalculateSize();
+            FVector3 s = CalculateSize();
             Gizmos.color = ParallelUtil.ColliderOutlineColor;
             Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
             Gizmos.DrawWireCube(Vector3.zero, (Vector3)s);
             Gizmos.matrix = Matrix4x4.identity;
         }
 
-        Fix64Vec3 CalculateSize()
+        FVector3 CalculateSize()
         {
-            Fix64Vec3 s = size * pTransform.localScale;
+            FVector3 s = size * pTransform.localScale;
             return s;
         }
 
         public override void UpdateShape(GameObject root)
         {
-            Fix64Vec3 s = CalculateSize();
-            if (s != Fix64Vec3.zero)
+            FVector3 s = CalculateSize();
+            if (s != FVector3.zero)
             {
-                Fix64Vec3 center = Fix64Vec3.zero;
-                Fix64Quat rotation = Fix64Quat.identity;
+                FVector3 center = FVector3.zero;
+                FQuaternion rotation = FQuaternion.identity;
 
                 if(gameObject != root)
                 {
@@ -55,12 +55,12 @@ namespace Parallel
 
         public override PShape3D CreateShape(GameObject root)
         {
-            Fix64Vec3 s = CalculateSize();
+            FVector3 s = CalculateSize();
 
-            if (s != Fix64Vec3.zero)
+            if (s != FVector3.zero)
             {
-                Fix64Vec3 center = Fix64Vec3.zero;
-                Fix64Quat rotation = Fix64Quat.identity;
+                FVector3 center = FVector3.zero;
+                FQuaternion rotation = FQuaternion.identity;
 
                 if (gameObject != root)
                 {
@@ -68,7 +68,7 @@ namespace Parallel
                     rotation = _pTransform.localRotation;
                 }
 
-                _shape = Parallel3D.CreateCube(Fix64Math.Abs(s.x), Fix64Math.Abs(s.y), Fix64Math.Abs(s.z), center, rotation);
+                _shape = Parallel3D.CreateCube(FMath.Abs(s.x), FMath.Abs(s.y), FMath.Abs(s.z), center, rotation);
 
                 if(createUnityPhysicsCollider)
                 {

@@ -6,9 +6,9 @@ using UnityEngine;
 public class MouseJoint3D : MonoBehaviour
 {
     PJoint3D mouseJoint = null;
-    public Fix64 distance;
-    public Fix64Vec3 jointPosition;
-    public Fix64 force = Fix64.FromDivision(100, 1);
+    public FFloat distance;
+    public FVector3 jointPosition;
+    public FFloat force = FFloat.FromDivision(100, 1);
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -38,13 +38,13 @@ public class MouseJoint3D : MonoBehaviour
                 Vector3 start = ray.origin;
                 Vector3 end = ray.origin + ray.direction * 1000.0f;
 
-                hit = Parallel3D.RayCast((Fix64Vec3)start, (Fix64Vec3)end, out result);
+                hit = Parallel3D.RayCast((FVector3)start, (FVector3)end, out result);
 
                 if (hit)
                 {
                     ParallelRigidbody3D rb = (ParallelRigidbody3D)result.rigidbody;
                     mouseJoint = Parallel3D.CreateMouseJoint(rb, result.point, force);
-                    distance = result.fraction * (Fix64)1000.0f;
+                    distance = result.fraction * (FFloat)1000.0f;
                     jointPosition = result.point;
                 }
             }
@@ -66,7 +66,7 @@ public class MouseJoint3D : MonoBehaviour
 
                 Vector3 end = ray.origin + ray.direction * (float)distance;
 
-                jointPosition = (Fix64Vec3)end;
+                jointPosition = (FVector3)end;
                 Parallel3D.MoveMouseJoint(mouseJoint, jointPosition);
             }
         }

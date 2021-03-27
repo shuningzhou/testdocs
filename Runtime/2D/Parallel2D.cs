@@ -50,22 +50,22 @@ namespace Parallel
         public int count;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1024)]
-        public Fix64Vec2[] points;
+        public FVector2[] points;
     }
 
     public struct PRaycastHit2D
     {
         public IParallelRigidbody2D rigidbody;
-        public Fix64Vec2 point;
-        public Fix64Vec2 normal;
+        public FVector2 point;
+        public FVector2 normal;
     }
 
     public struct PShapecastHit2D
     {
         public IParallelRigidbody2D rigidbody;
-        public Fix64Vec2 point;
-        public Fix64Vec2 normal;
-        public Fix64 fraction;
+        public FVector2 point;
+        public FVector2 normal;
+        public FFloat fraction;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -75,14 +75,14 @@ namespace Parallel
         public int count;
 
         public UInt32 k1;
-        public Fix64 n1;
-        public Fix64 t1;
+        public FFloat n1;
+        public FFloat t1;
 
         public UInt32 k2;
-        public Fix64 n2;
-        public Fix64 t2;
+        public FFloat n2;
+        public FFloat t2;
 
-        public Fix64Vec2 relativeVelocity;
+        public FVector2 relativeVelocity;
         public bool isTrigger;
     }
 
@@ -95,13 +95,13 @@ namespace Parallel
     public struct PContactPoints2D
     {
         public int contactPointCount;
-        public Fix64Vec2 contactNormal;
+        public FVector2 contactNormal;
 
-        public Fix64Vec2 point1;
-        public Fix64 penetration1;
+        public FVector2 point1;
+        public FFloat penetration1;
 
-        public Fix64Vec2 point2;
-        public Fix64 penetration2;
+        public FVector2 point2;
+        public FFloat penetration2;
 
         public override string ToString()
         {
@@ -192,7 +192,7 @@ namespace Parallel
         static bool initialized = false;
         static PWorld2D internalWorld;
         static IntPtr referenceBody;
-        public static Fix64Vec2 gravity = new Fix64Vec2(Fix64.zero, Fix64.FromDivision(-98, 10));
+        public static FVector2 gravity = new FVector2(FFloat.zero, FFloat.FromDivision(-98, 10));
         public static bool allowSleep = true;
         public static bool warmStart = true;
 
@@ -216,12 +216,12 @@ namespace Parallel
             referenceBody = NativeParallel2D.CreateBody(
                                         internalWorld.IntPointer,
                                         (int)Parallel.BodyType.Static,
-                                        Fix64Vec2.zero,
-                                        Fix64.zero,
-                                        Fix64.zero,
-                                        Fix64.zero,
+                                        FVector2.zero,
+                                        FFloat.zero,
+                                        FFloat.zero,
+                                        FFloat.zero,
                                         false,
-                                        Fix64.zero, 0, ref bodyID);
+                                        FFloat.zero, 0, ref bodyID);
             initialized = true;
         }
 
@@ -290,7 +290,7 @@ namespace Parallel
             }
         }
 
-        public static void ExcuteUserCallbacks(Fix64 time)
+        public static void ExcuteUserCallbacks(FFloat time)
         {
             //call contact exit callback
 
@@ -379,7 +379,7 @@ namespace Parallel
             }
         }
 
-        public static void ExcuteUserFixedUpdate(Fix64 time)
+        public static void ExcuteUserFixedUpdate(FFloat time)
         {
             foreach (var pair in bodySortedList)
             {
@@ -389,7 +389,7 @@ namespace Parallel
         }
 
         //2D
-        static PWorld2D CreateWorld(Fix64Vec2 gravity, bool allowSleep, bool warmStart)
+        static PWorld2D CreateWorld(FVector2 gravity, bool allowSleep, bool warmStart)
         {
             IntPtr m_NativeObject = NativeParallel2D.CreateWorld(
                 gravity, 
@@ -442,7 +442,7 @@ namespace Parallel
             NativeParallel2D.DestroySnapshot(snapshot.IntPointer);
         }
 
-        public static void Step(Fix64 time, int velocityIterations, int positionIterations)
+        public static void Step(FFloat time, int velocityIterations, int positionIterations)
         {
             if (!initialized)
             {
@@ -465,7 +465,7 @@ namespace Parallel
         }
 
         //2D fixture
-        public static PFixture2D AddFixture(PBody2D body2D, PShape2D shape2D, Fix64 density, Fix64 mass)
+        public static PFixture2D AddFixture(PBody2D body2D, PShape2D shape2D, FFloat density, FFloat mass)
         {
             if (!initialized)
             {
@@ -501,7 +501,7 @@ namespace Parallel
             NativeParallel2D.SetLayer(fixture.IntPointer, shiftedLayer, mask, refilter);
         }
 
-        public static void SetFixtureProperties(PFixture2D fixture, bool isTrigger, Fix64 friction, Fix64 bounciness)
+        public static void SetFixtureProperties(PFixture2D fixture, bool isTrigger, FFloat friction, FFloat bounciness)
         {
             if (!initialized)
             {
@@ -512,7 +512,7 @@ namespace Parallel
         }
 
         //2D shapes
-        public static PShape2D CreateCircle(Fix64 radius, Fix64Vec2 center)
+        public static PShape2D CreateCircle(FFloat radius, FVector2 center)
         {
             if (!initialized)
             {
@@ -523,7 +523,7 @@ namespace Parallel
             return new PShape2D(m_NativeObject);
         }
 
-        public static void UpdateCircle(PShape2D shape, PFixture2D fixture, Fix64 radius, Fix64Vec2 center)
+        public static void UpdateCircle(PShape2D shape, PFixture2D fixture, FFloat radius, FVector2 center)
         {
             if (!initialized)
             {
@@ -533,7 +533,7 @@ namespace Parallel
             NativeParallel2D.UpdateCircle(shape.IntPointer, fixture.IntPointer, radius, center);
         }
 
-        public static PShape2D CreateBox(Fix64 width, Fix64 height, Fix64Vec2 center, Fix64 angle)
+        public static PShape2D CreateBox(FFloat width, FFloat height, FVector2 center, FFloat angle)
         {
             if (!initialized)
             {
@@ -544,7 +544,7 @@ namespace Parallel
             return new PShape2D(m_NativeObject);
         }
 
-        public static void UpdateBox(PShape2D shape, PFixture2D fixture, Fix64 width, Fix64 height, Fix64Vec2 center, Fix64 angle)
+        public static void UpdateBox(PShape2D shape, PFixture2D fixture, FFloat width, FFloat height, FVector2 center, FFloat angle)
         {
             if (!initialized)
             {
@@ -554,7 +554,7 @@ namespace Parallel
             NativeParallel2D.UpdateBox(shape.IntPointer, fixture.IntPointer, width, height, center, angle);
         }
 
-        public static PShape2D CreateCapsule(Fix64Vec2 v1, Fix64Vec2 v2, Fix64 radius, Fix64Vec2 center, Fix64 angle)
+        public static PShape2D CreateCapsule(FVector2 v1, FVector2 v2, FFloat radius, FVector2 center, FFloat angle)
         {
             if (!initialized)
             {
@@ -565,7 +565,7 @@ namespace Parallel
             return new PShape2D(m_NativeObject);
         }
 
-        public static void UpdateCapsule(PShape2D shape, PFixture2D fixture, Fix64Vec2 v1, Fix64Vec2 v2, Fix64 radius, Fix64Vec2 center, Fix64 angle)
+        public static void UpdateCapsule(PShape2D shape, PFixture2D fixture, FVector2 v1, FVector2 v2, FFloat radius, FVector2 center, FFloat angle)
         {
             if (!initialized)
             {
@@ -576,7 +576,7 @@ namespace Parallel
         }
 
         //polygon
-        public static PShape2D CreatePolygon(Fix64Vec2[] verts, int count, Fix64Vec2 center, Fix64 angle)
+        public static PShape2D CreatePolygon(FVector2[] verts, int count, FVector2 center, FFloat angle)
         {
             if (!initialized)
             {
@@ -591,7 +591,7 @@ namespace Parallel
             return new PShape2D(m_NativeObject);
         }
 
-        public static void UpdatePolygon(PShape2D shape, PFixture2D fixture, Fix64Vec2[] verts, int count, Fix64Vec2 center, Fix64 angle)
+        public static void UpdatePolygon(PShape2D shape, PFixture2D fixture, FVector2[] verts, int count, FVector2 center, FFloat angle)
         {
             if (!initialized)
             {
@@ -607,12 +607,12 @@ namespace Parallel
         //2D body
         public static PBody2D AddBody
             (int bodyType,
-            Fix64Vec2 position,
-            Fix64 angle,
-            Fix64 linearDamping,
-            Fix64 angularDamping,
+            FVector2 position,
+            FFloat angle,
+            FFloat linearDamping,
+            FFloat angularDamping,
             bool fixedRotation,
-            Fix64 gravityScale,
+            FFloat gravityScale,
             IParallelRigidbody2D rigidBody2D,
             UInt32 externalID)
         {
@@ -645,12 +645,12 @@ namespace Parallel
 
         public static PBody2D InsertBody
             (int bodyType,
-            Fix64Vec2 position,
-            Fix64 angle,
-            Fix64 linearDamping,
-            Fix64 angularDamping,
+            FVector2 position,
+            FFloat angle,
+            FFloat linearDamping,
+            FFloat angularDamping,
             bool fixedRotation,
-            Fix64 gravityScale,
+            FFloat gravityScale,
             IParallelRigidbody2D rigidBody2D,
             UInt16 bodyID,
             UInt32 externalID,
@@ -694,7 +694,7 @@ namespace Parallel
             }
         }
 
-        public static void UpdateBodyTransForm(PBody2D body, Fix64Vec2 pos, Fix64 angle)
+        public static void UpdateBodyTransForm(PBody2D body, FVector2 pos, FFloat angle)
         {
             if (!initialized)
             {
@@ -704,7 +704,7 @@ namespace Parallel
             NativeParallel2D.UpdateBodyTransform(body.IntPointer, pos, angle);
         }
 
-        public static void UpdateBodyVelocity(PBody2D body, Fix64Vec2 linearVelocity, Fix64 angularVelocity)
+        public static void UpdateBodyVelocity(PBody2D body, FVector2 linearVelocity, FFloat angularVelocity)
         {
             if (!initialized)
             {
@@ -716,10 +716,10 @@ namespace Parallel
 
         public static void UpdateBodyProperties(PBody2D body,
             int bodyType,
-            Fix64 linearDamping,
-            Fix64 angularDamping,
+            FFloat linearDamping,
+            FFloat angularDamping,
             bool fixedRotation,
-            Fix64 gravityScale)
+            FFloat gravityScale)
         {
             if (!initialized)
             {
@@ -729,7 +729,7 @@ namespace Parallel
             NativeParallel2D.UpdateBodyProperties(body.IntPointer, bodyType, linearDamping, angularDamping, fixedRotation, gravityScale);
         }
 
-        public static void ApplyForce(PBody2D body, Fix64Vec2 point, Fix64Vec2 force)
+        public static void ApplyForce(PBody2D body, FVector2 point, FVector2 force)
         {
             if (!initialized)
             {
@@ -739,7 +739,7 @@ namespace Parallel
             NativeParallel2D.ApplyForce(body.IntPointer, point, force);
         }
 
-        public static void ApplyForceToCenter(PBody2D body, Fix64Vec2 force)
+        public static void ApplyForceToCenter(PBody2D body, FVector2 force)
         {
             if (!initialized)
             {
@@ -749,7 +749,7 @@ namespace Parallel
             NativeParallel2D.ApplyForceToCenter(body.IntPointer, force);
         }
 
-        public static void ApplyTorque(PBody2D body, Fix64 torque)
+        public static void ApplyTorque(PBody2D body, FFloat torque)
         {
             if (!initialized)
             {
@@ -759,7 +759,7 @@ namespace Parallel
             NativeParallel2D.ApplyTorque(body.IntPointer, torque);
         }
 
-        public static void ApplyLinearImpulse(PBody2D body, Fix64Vec2 point, Fix64Vec2 impulse)
+        public static void ApplyLinearImpulse(PBody2D body, FVector2 point, FVector2 impulse)
         {
             if (!initialized)
             {
@@ -769,7 +769,7 @@ namespace Parallel
             NativeParallel2D.ApplyLinearImpulse(body.IntPointer, point, impulse);
         }
 
-        public static void ApplyLinearImpulseToCenter(PBody2D body, Fix64Vec2 impulse)
+        public static void ApplyLinearImpulseToCenter(PBody2D body, FVector2 impulse)
         {
             if (!initialized)
             {
@@ -779,7 +779,7 @@ namespace Parallel
             NativeParallel2D.ApplyLinearImpulseToCenter(body.IntPointer, impulse);
         }
 
-        public static void ApplyAngularImpulse(PBody2D body, Fix64 impulse)
+        public static void ApplyAngularImpulse(PBody2D body, FFloat impulse)
         {
             if (!initialized)
             {
@@ -825,12 +825,12 @@ namespace Parallel
         }
 
         //raycast
-        public static bool RayCast(Fix64Vec2 p1, Fix64Vec2 p2, out PRaycastHit2D raycastHit2D)
+        public static bool RayCast(FVector2 p1, FVector2 p2, out PRaycastHit2D raycastHit2D)
         {
             return RayCast(p1, p2, -1, out raycastHit2D);
         }
 
-        public static bool RayCast(Fix64Vec2 p1, Fix64Vec2 p2, int mask, out PRaycastHit2D raycastHit2D)
+        public static bool RayCast(FVector2 p1, FVector2 p2, int mask, out PRaycastHit2D raycastHit2D)
         {
             if (!initialized)
             {
@@ -839,8 +839,8 @@ namespace Parallel
 
             raycastHit2D = new PRaycastHit2D();
             UInt16 bodyID = 0;
-            Fix64Vec2 point = Fix64Vec2.zero;
-            Fix64Vec2 normal = Fix64Vec2.zero;
+            FVector2 point = FVector2.zero;
+            FVector2 normal = FVector2.zero;
 
             bool hit = NativeParallel2D.RayCast(p1, p2, mask, ref point, ref normal, out bodyID, internalWorld.IntPointer);
 
@@ -866,12 +866,12 @@ namespace Parallel
             }
         }
 
-        public static bool CircleCast(Fix64Vec2 center, Fix64 radius, Fix64Vec2 translation, ref PShapecastHit2D shapecastHit2D)
+        public static bool CircleCast(FVector2 center, FFloat radius, FVector2 translation, ref PShapecastHit2D shapecastHit2D)
         {
             return CircleCast(center, radius, translation, -1, ref shapecastHit2D);
         }
 
-        public static bool CircleCast(Fix64Vec2 center, Fix64 radius, Fix64Vec2 translation, int mask, ref PShapecastHit2D shapecastHit2D)
+        public static bool CircleCast(FVector2 center, FFloat radius, FVector2 translation, int mask, ref PShapecastHit2D shapecastHit2D)
         {
             if (!initialized)
             {
@@ -879,9 +879,9 @@ namespace Parallel
             }
 
             UInt16 bodyID = 0;
-            Fix64Vec2 point = Fix64Vec2.zero;
-            Fix64Vec2 normal = Fix64Vec2.zero;
-            Fix64 fraction = Fix64.zero;
+            FVector2 point = FVector2.zero;
+            FVector2 normal = FVector2.zero;
+            FFloat fraction = FFloat.zero;
             bool hit = NativeParallel2D.CircleCast(center, radius, mask, translation, ref point, ref normal, ref fraction, out bodyID, internalWorld.IntPointer);
 
             if (hit)
@@ -908,12 +908,12 @@ namespace Parallel
         }
 
         //overlap
-        public static bool OverlapCircle(Fix64Vec2 center, Fix64 radius, PShapeOverlapResult2D shapeOverlapResult)
+        public static bool OverlapCircle(FVector2 center, FFloat radius, PShapeOverlapResult2D shapeOverlapResult)
         {
             return OverlapCircle(center, radius, -1, shapeOverlapResult);
         }
 
-        public static bool OverlapCircle(Fix64Vec2 center, Fix64 radius, int mask, PShapeOverlapResult2D shapeOverlapResult)
+        public static bool OverlapCircle(FVector2 center, FFloat radius, int mask, PShapeOverlapResult2D shapeOverlapResult)
         {
             if (!initialized)
             {
@@ -1130,7 +1130,7 @@ namespace Parallel
 
 
         // convex hull
-        public static ParallelVec2List ConvexHull2D(Fix64Vec2[] verts, int count, int limit)
+        public static ParallelVec2List ConvexHull2D(FVector2[] verts, int count, int limit)
         {
             if (!initialized)
             {
@@ -1143,7 +1143,7 @@ namespace Parallel
 
             ParallelVec2List parallelVec2ListOutput = new ParallelVec2List();
             parallelVec2ListOutput.count = count;
-            parallelVec2ListOutput.points = new Fix64Vec2[count];
+            parallelVec2ListOutput.points = new FVector2[count];
 
             NativeParallel2D.ConvexHull2D(ref parallelVec2List, ref parallelVec2ListOutput, limit);
 
@@ -1161,7 +1161,7 @@ namespace Parallel
             NativeParallel2D.DestroyJoint(internalWorld.IntPointer, joint.IntPointer);
         }
 
-        public static PJoint2D CreateMouseJoint(ParallelRigidbody2D rb, Fix64Vec2 p, Fix64 maxForce)
+        public static PJoint2D CreateMouseJoint(ParallelRigidbody2D rb, FVector2 p, FFloat maxForce)
         {
             if (!initialized)
             {
@@ -1175,7 +1175,7 @@ namespace Parallel
             return j;
         }
 
-        public static void MoveMouseJoint(PJoint2D joint, Fix64Vec2 position)
+        public static void MoveMouseJoint(PJoint2D joint, FVector2 position)
         {
             if (!initialized)
             {
@@ -1187,11 +1187,11 @@ namespace Parallel
 
         public static PJoint2D CreateSprintJoint(ParallelRigidbody2D rbA,
                                                  ParallelRigidbody2D rbB,
-                                                 Fix64Vec2 anchorA,
-                                                 Fix64Vec2 anchorB,
+                                                 FVector2 anchorA,
+                                                 FVector2 anchorB,
                                                  bool collide,
-                                                 Fix64 frequency,
-                                                 Fix64 damping)
+                                                 FFloat frequency,
+                                                 FFloat damping)
         {
             if (!initialized)
             {
@@ -1219,10 +1219,10 @@ namespace Parallel
 
         public static PJoint2D CreateHingeJoint(ParallelRigidbody2D rbA,
                                                 ParallelRigidbody2D rbB,
-                                                Fix64Vec2 anchor,
+                                                FVector2 anchor,
                                                 bool collide,
-                                                bool limit, Fix64 lowerAngle, Fix64 upperAngle,
-                                                bool motor, Fix64 motorSpeed, Fix64 motorTorque)
+                                                bool limit, FFloat lowerAngle, FFloat upperAngle,
+                                                bool motor, FFloat motorSpeed, FFloat motorTorque)
         {
             if (!initialized)
             {

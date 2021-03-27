@@ -12,13 +12,13 @@ namespace Parallel
         internal byte Shape1ID { get; private set; }
         internal byte Shape2ID { get; private set; }
 
-        internal Fix64Vec3 RelativeVelocity { get; private set; }
+        internal FVector3 RelativeVelocity { get; private set; }
         internal IntPtr IntPointer { get; private set; }
         internal bool IsTrigger { get; private set; }
 
         public void Update(
             IntPtr nativeHandle,
-            Fix64Vec3 relativeVelocity,
+            FVector3 relativeVelocity,
             bool isTrigger
             )
         {

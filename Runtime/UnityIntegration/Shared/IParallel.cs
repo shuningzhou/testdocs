@@ -3,6 +3,20 @@ using Parallel;
 
 namespace Parallel
 {
+    public enum SimulationMode
+    {
+        StatefulSleep = 0,
+        StatefulPerformance = 1,
+        Stateful = 2,
+        Stateless = 3
+    }
+    
+    public enum ParallelSpace
+    {
+        World = 0,
+        Self = 1
+    }
+
     public enum ParallelForceMode
     {
         Force = 0,
@@ -13,7 +27,7 @@ namespace Parallel
 
     public interface IParallelFixedUpdate
     {
-        void ParallelFixedUpdate(Fix64 deltaTime);
+        void ParallelFixedUpdate(FFloat deltaTime);
     }
 
     public interface IParallelCollision2D

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -294,6 +294,7 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &58345952
@@ -319,13 +320,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 884731636311265817, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
+      propertyPath: _bodyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 884731636311265817, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
       propertyPath: sceneIndex
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 884731636311265817, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
-      propertyPath: _bodyType
-      value: 1
+      propertyPath: _gravityScale.RawX
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 884731636311265817, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
@@ -337,15 +343,45 @@ PrefabInstance:
       propertyPath: _gravityScale.RawZ
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 884731636311265817, guid: e7a8e57687c4fd94694608c37d973ced,
-        type: 3}
-      propertyPath: _gravityScale.RawX
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1565869874750588696, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
       propertyPath: _localPosition.RawY
       value: 4781506
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565869874750588696, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: _localRotation.RawW
+      value: 379080
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565869874750588696, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: _localRotation.RawX
+      value: 288602
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565869874750588696, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: _localRotation.RawY
+      value: 926595
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565869874750588696, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: _localRotation.RawZ
+      value: 118070
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565869874750588696, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: _localEularAngles.RawY
+      value: 142082048
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565869874750588696, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: _localEularAngles.RawZ
+      value: 36280720
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
@@ -364,28 +400,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.36151892
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
+        type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.27523243
       objectReference: {fileID: 0}
     - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.88366985
       objectReference: {fileID: 0}
     - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 5
+      value: 0.112600565
       objectReference: {fileID: 0}
     - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
@@ -395,12 +426,12 @@ PrefabInstance:
     - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 135.5
       objectReference: {fileID: 0}
     - target: {fileID: 2312638363782049634, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 34.6
       objectReference: {fileID: 0}
     - target: {fileID: 2312638363782049662, guid: e7a8e57687c4fd94694608c37d973ced,
         type: 3}
@@ -506,6 +537,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 630185898321787863, guid: d2bc419fa1d064340a6954153041486c,
         type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 630185898321787863, guid: d2bc419fa1d064340a6954153041486c,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -521,6 +557,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 630185898321787863, guid: d2bc419fa1d064340a6954153041486c,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 630185898321787863, guid: d2bc419fa1d064340a6954153041486c,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -533,16 +574,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 630185898321787863, guid: d2bc419fa1d064340a6954153041486c,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 630185898321787863, guid: d2bc419fa1d064340a6954153041486c,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 630185898321787863, guid: d2bc419fa1d064340a6954153041486c,
         type: 3}
@@ -614,6 +645,11 @@ MonoBehaviour:
     Raw: 419430
   _bounciness:
     Raw: 209715
+  _density:
+    Raw: 1048576
+  _overideMass: 0
+  _customMass:
+    Raw: 0
   _radius:
     Raw: 524288
 --- !u!114 &1745254945
@@ -628,8 +664,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be57710c6b16eb0449902363901eebca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childrenRigidbodies: []
+  parent: {fileID: 0}
   _bodyId: 0
+  _mass:
+    Raw: 0
   sceneIndex: 3
+  parentTransform: {fileID: 0}
   externalId: 0
   _awake: 0
   _bodyType: 2
@@ -651,9 +692,7 @@ MonoBehaviour:
   _fixedPositionX: 0
   _fixedPositionY: 0
   _fixedPositionZ: 0
-  _overideMassData: 0
-  _customMass:
-    Raw: 1048576
+  _overideCenterOfMass: 0
   _customCenterOfMass:
     RawX: 0
     RawY: 0
@@ -671,6 +710,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Interpolate: 0
+  debug: 0
   _localPosition:
     RawX: 0
     RawY: 1048576
@@ -808,14 +848,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd8f927d96f592b4a9a26392316e622b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  simulationMode: 2
   LoggingLevel: 0
   autoUpdate: 1
   autoInitialization: 1
   fixedUpdateTime:
     Raw: 20971
   velocityIteration: 4
-  allowSleep: 1
-  warmStart: 1
   gravity:
     RawX: 0
     RawY: -10276044

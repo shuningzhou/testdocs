@@ -17,19 +17,19 @@ namespace Parallel
         public bool createUnityPhysicsCollider = false;
         
         [SerializeField]
-        Fix64 _friction = Fix64.FromDivision(4, 10);
+        FFloat _friction = FFloat.FromDivision(4, 10);
 
         [SerializeField]
-        Fix64 _bounciness = Fix64.FromDivision(2, 10);
+        FFloat _bounciness = FFloat.FromDivision(2, 10);
 
         [SerializeField]
-        internal Fix64 _density = Fix64.FromDivision(1, 1);
+        internal FFloat _density = FFloat.FromDivision(1, 1);
 
         [SerializeField]
         internal bool _overideMass = false;
 
         [SerializeField]
-        internal Fix64 _customMass = Fix64.zero;
+        internal FFloat _customMass = FFloat.zero;
 
         public bool ShapeDirty { get; set; }
 
@@ -42,7 +42,7 @@ namespace Parallel
             
         }
 
-        public Fix64 friction
+        public FFloat friction
         {
             get
             {
@@ -54,7 +54,7 @@ namespace Parallel
             }
         }
 
-        public Fix64 bounciness
+        public FFloat bounciness
         {
             get
             {

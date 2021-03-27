@@ -25,15 +25,15 @@ namespace Parallel
     [Serializable]
     public struct ParallelPlane
     {
-        public Fix64Vec3 normal;
-        public Fix64 offset;
+        public FVector3 normal;
+        public FFloat offset;
     }
 
     [Serializable]
     public struct ParallelQHullData
     {
         public UInt32 vertexCount;
-        public Fix64Vec3[] vertices;
+        public FVector3[] vertices;
         public UInt32 edgeCount;
         public ParallelEdge[] edges;
         public UInt32 faceCount;
@@ -69,25 +69,35 @@ namespace Parallel
     public struct ParallelMeshData
     {
         public UInt32 vertexCount;
-        public Fix64Vec3[] vertices;
+        public FVector3[] vertices;
         public UInt32 triangleCount;
         public ParallelTriangle[] triangles;
+    }
+
+    [Serializable]
+    public struct ParallelTerrianData
+    {
+        public UInt32 vertexCount;
+        public FFloat[] vertices;
+        public UInt32 xCount;
+        public UInt32 zCount;
+        public FFloat resolution;
     }
 
     public struct PRaycastHit3D
     {
         public IParallelRigidbody3D rigidbody;
-        public Fix64Vec3 point;
-        public Fix64Vec3 normal;
-        public Fix64 fraction;
+        public FVector3 point;
+        public FVector3 normal;
+        public FFloat fraction;
     }
 
     public struct PShapecastHit3D
     {
         public IParallelRigidbody3D rigidbody;
-        public Fix64Vec3 point;
-        public Fix64Vec3 normal;
-        public Fix64 fraction;
+        public FVector3 point;
+        public FVector3 normal;
+        public FFloat fraction;
     }
 
     public class PShapeOverlapResult3D
@@ -106,7 +116,7 @@ namespace Parallel
     public struct PContactExport3D
     {
         public UInt64 id;
-        public Fix64Vec3 relativeVelocity;
+        public FVector3 relativeVelocity;
         public bool isTrigger;
     }
 
@@ -115,7 +125,7 @@ namespace Parallel
     {
         public bool initialized;
 
-        public Fix64 metric; // lenght or area or volume
+        public FFloat metric; // lenght or area or volume
         public UInt16 count; // number of support vertices
 
         // support vertices on proxy 1
@@ -140,28 +150,28 @@ namespace Parallel
     public struct PManifoldExport3D
     {
         public UInt32 pointCount;
-        public Fix64Vec2 tangentImpulse;
-        public Fix64 motorImpulse;
+        public FVector2 tangentImpulse;
+        public FFloat motorImpulse;
 
         public UInt32 p1triangleKey;
         public UInt64 p1key1;
         public UInt64 p1key2;
-        public Fix64 p1normalImpulse;
+        public FFloat p1normalImpulse;
 
         public UInt32 p2triangleKey;
         public UInt64 p2key1;
         public UInt64 p2key2;
-        public Fix64 p2normalImpulse;
+        public FFloat p2normalImpulse;
 
         public UInt32 p3triangleKey;
         public UInt64 p3key1;
         public UInt64 p3key2;
-        public Fix64 p3normalImpulse;
+        public FFloat p3normalImpulse;
 
         public UInt32 p4triangleKey;
         public UInt64 p4key1;
         public UInt64 p4key2;
-        public Fix64 p4normalImpulse;
+        public FFloat p4normalImpulse;
     }
 
     public class PContact3DWrapper
@@ -188,8 +198,8 @@ namespace Parallel
 
     internal delegate void ContactEnterCallBack3D(IntPtr contactPtr, UInt64 contactID);
     internal delegate void ContactExitCallBack3D(IntPtr contactPtr, UInt64 contactID);
-    internal delegate void RollbackAddRigidbodyCallback3D(UInt32 externalID, UInt16 bodyID, IntPtr previousBody, IntPtr world);
-    internal delegate void RollbackRemoveRigidbodyCallback3D(UInt32 externalID, UInt16 bodyID, IntPtr body, IntPtr world);
+    internal delegate void RollbackAddRigidbodyCallback3D(UInt16 externalID, UInt16 bodyID, IntPtr previousBody, IntPtr world);
+    internal delegate void RollbackRemoveRigidbodyCallback3D(UInt16 externalID, UInt16 bodyID, IntPtr body, IntPtr world);
 
 
     public class Parallel3D
@@ -227,9 +237,8 @@ namespace Parallel
         static bool initialized = false;
         static PWorld3D internalWorld;
         static IntPtr referenceBody;
-        public static Fix64Vec3 gravity = new Fix64Vec3(Fix64.zero, Fix64.FromDivision(-98, 10), Fix64.zero);
-        public static bool allowSleep = true;
-        public static bool warmStart = true;
+        public static FVector3 gravity = new FVector3(FFloat.zero, FFloat.FromDivision(-98, 10), FFloat.zero);
+        public static SimulationMode simulationMode = SimulationMode.Stateful;
 
         //used for cast and overlap queruies
         static UInt16[] _queryBodyIDs = new UInt16[ParallelConstants.SHAPE_OVERLAP_BODY_COUNT_3D];
@@ -238,15 +247,15 @@ namespace Parallel
         static Dictionary<int, int> masksByLayer = new Dictionary<int, int>();
 
         //rollback
-        internal static Action<UInt32, UInt16, IntPtr> _rollbackAddRigidbodyCallback3D;
-        internal static Action<UInt32, UInt16> _rollbackRemoveRigidbodyCallback3D;
+        internal static Action<UInt16, UInt16, IntPtr> _rollbackAddRigidbodyCallback3D;
+        internal static Action<UInt16, UInt16> _rollbackRemoveRigidbodyCallback3D;
 
         //common
         public static void Initialize()
         {
             ReadCollisionLayerMatrix();
             NativeParallel3D.Initialize();
-            internalWorld = CreateWorld(gravity, allowSleep, warmStart);
+            internalWorld = CreateWorld(gravity, simulationMode);
 
             for (int i = 0; i < ParallelConstants.MAX_CONTACT_COUNT_3D; i++)
             {
@@ -264,11 +273,11 @@ namespace Parallel
             referenceBody = NativeParallel3D.CreateBody3D(
                 internalWorld.IntPointer,
                 (int)BodyType.Static,
-                Fix64Vec3.zero,
-                Fix64Quat.identity,
-                Fix64Vec3.zero,
-                Fix64Vec3.zero,
-                Fix64Vec3.zero,
+                FVector3.zero,
+                FQuaternion.identity,
+                FVector3.zero,
+                FVector3.zero,
+                FVector3.zero,
                 true,
                 true,
                 true,
@@ -335,7 +344,7 @@ namespace Parallel
             }
         }
 
-        public static void ExcuteUserCallbacks(Fix64 timeStep)
+        public static void ExcuteUserCallbacks(FFloat timeStep)
         {
             //call contact exit callback
 
@@ -424,7 +433,7 @@ namespace Parallel
             }
         }
 
-        public static void ExcuteUserFixedUpdate(Fix64 time)
+        public static void ExcuteUserFixedUpdate(FFloat time)
         {
             foreach (var pair in bodySortedList)
             {
@@ -434,12 +443,11 @@ namespace Parallel
         }
 
         //3D
-        static PWorld3D CreateWorld(Fix64Vec3 gravity, bool allowSleep, bool warmStart)
+        static PWorld3D CreateWorld(FVector3 gravity, SimulationMode simulationMode)
         {
             IntPtr m_NativeObject = NativeParallel3D.CreateWorld3D(
                 gravity,
-                allowSleep,
-                warmStart,
+                (int)simulationMode,
                 OnContactEnterCallback,
                 OnContactExitCallBack,
                 OnRollbackAddRigidbodyCallback3D,
@@ -447,7 +455,7 @@ namespace Parallel
             return new PWorld3D(m_NativeObject);
         }
 
-        public static void GetWorldSize(ref Fix64Vec3 lower, ref Fix64Vec3 uppder)
+        public static void GetWorldSize(ref FVector3 lower, ref FVector3 uppder)
         {
             if (!initialized)
             {
@@ -479,14 +487,26 @@ namespace Parallel
             }
         }
 
+        public static int ExportSnapshot(PSnapshot3D snapshot, byte[] bytes, int size)
+        {
+            int snapshotSize = NativeParallel3D.ExportSnapshot3D(internalWorld.IntPointer, snapshot.IntPointer, bytes, size);
+            return snapshotSize;
+        }
+
+        public static PSnapshot3D ImportSnapshot(byte[] bytes, int size)
+        {
+            IntPtr m_NativeObject = NativeParallel3D.ImportSnapshot3D(internalWorld.IntPointer, bytes, size);
+            return new PSnapshot3D(m_NativeObject);
+        }
+
         [MonoPInvokeCallback(typeof(RollbackAddRigidbodyCallback3D))]
-        public static void OnRollbackAddRigidbodyCallback3D(UInt32 externalID, UInt16 bodyID, IntPtr previousBody, IntPtr world)
+        public static void OnRollbackAddRigidbodyCallback3D(UInt16 externalID, UInt16 bodyID, IntPtr previousBody, IntPtr world)
         {
             _rollbackAddRigidbodyCallback3D(externalID, bodyID, previousBody);
         }
 
         [MonoPInvokeCallback(typeof(RollbackRemoveRigidbodyCallback3D))]
-        public static void OnRollbackRemoveRigidbodyCallback3D(UInt32 externalID, UInt16 bodyID, IntPtr body, IntPtr world)
+        public static void OnRollbackRemoveRigidbodyCallback3D(UInt16 externalID, UInt16 bodyID, IntPtr body, IntPtr world)
         {
             _rollbackRemoveRigidbodyCallback3D(externalID, bodyID);
         }
@@ -496,7 +516,7 @@ namespace Parallel
             NativeParallel3D.DestroySnapshot3D(snapshot.IntPointer);
         }
 
-        public static void Step(Fix64 time, int velocityIterations, int positionIterations)
+        public static void Step(FFloat time, int velocityIterations, int positionIterations)
         {
             if (!initialized)
             {
@@ -523,7 +543,7 @@ namespace Parallel
         }
 
         //3D fixture
-        public static PFixture3D AddFixture(PBody3D body, PShape3D shape, Fix64 density, Fix64 mass)
+        public static PFixture3D AddFixture(PBody3D body, PShape3D shape, FFloat density, FFloat mass)
         {
             if (!initialized)
             {
@@ -559,7 +579,7 @@ namespace Parallel
             NativeParallel3D.SetLayer3D(fixture.IntPointer, shiftedLayer, mask, refilter);
         }
 
-        public static void SetFixtureProperties(PFixture3D fixture, bool isTrigger, Fix64 friction, Fix64 bounciness)
+        public static void SetFixtureProperties(PFixture3D fixture, bool isTrigger, FFloat friction, FFloat bounciness)
         {
             if (!initialized)
             {
@@ -580,7 +600,7 @@ namespace Parallel
             NativeParallel3D.DestroyShape3D(shape.IntPointer);
         }
 
-        public static PShape3D CreateCube(Fix64 x, Fix64 y, Fix64 z, Fix64Vec3 center, Fix64Quat rotation)
+        public static PShape3D CreateCube(FFloat x, FFloat y, FFloat z, FVector3 center, FQuaternion rotation)
         {
             if (!initialized)
             {
@@ -591,7 +611,7 @@ namespace Parallel
             return new PShape3D(m_NativeObject);
         }
 
-        public static void UpdateCube(PShape3D shape, PFixture3D fixture, Fix64 x, Fix64 y, Fix64 z, Fix64Vec3 center, Fix64Quat rotation)
+        public static void UpdateCube(PShape3D shape, PFixture3D fixture, FFloat x, FFloat y, FFloat z, FVector3 center, FQuaternion rotation)
         {
             if (!initialized)
             {
@@ -601,7 +621,7 @@ namespace Parallel
             NativeParallel3D.UpdateCube3D(shape.IntPointer, fixture.IntPointer, x, y, z, center, rotation);
         }
 
-        public static PShape3D CreateSphere(Fix64 radius, Fix64Vec3 center)
+        public static PShape3D CreateSphere(FFloat radius, FVector3 center)
         {
             if (!initialized)
             {
@@ -612,7 +632,7 @@ namespace Parallel
             return new PShape3D(m_NativeObject);
         }
 
-        public static void UpdateSphere(PShape3D shape, PFixture3D fixture, Fix64 radius, Fix64Vec3 center)
+        public static void UpdateSphere(PShape3D shape, PFixture3D fixture, FFloat radius, FVector3 center)
         {
             if (!initialized)
             {
@@ -622,7 +642,7 @@ namespace Parallel
             NativeParallel3D.UpdateSphere3D(shape.IntPointer, fixture.IntPointer, radius, center);
         }
 
-        public static PShape3D CreateCapsule(Fix64Vec3 v1, Fix64Vec3 v2, Fix64 radius, Fix64Vec3 center, Fix64Quat rotation)
+        public static PShape3D CreateCapsule(FVector3 v1, FVector3 v2, FFloat radius, FVector3 center, FQuaternion rotation)
         {
             if (!initialized)
             {
@@ -633,7 +653,7 @@ namespace Parallel
             return new PShape3D(m_NativeObject);
         }
 
-        public static void UpdateCapsule(PShape3D shape, PFixture3D fixture, Fix64Vec3 v1, Fix64Vec3 v2, Fix64 radius, Fix64Vec3 center, Fix64Quat rotation)
+        public static void UpdateCapsule(PShape3D shape, PFixture3D fixture, FVector3 v1, FVector3 v2, FFloat radius, FVector3 center, FQuaternion rotation)
         {
             if (!initialized)
             {
@@ -643,7 +663,7 @@ namespace Parallel
             NativeParallel3D.UpdateCapsule3D(shape.IntPointer, fixture.IntPointer, v1, v2, radius, center, rotation);
         }
 
-        public static PShape3D CreatePolyhedron(ParallelQHullData parallelQHullData, Fix64Vec3 scale, Fix64Vec3 center, Fix64Quat rotation)
+        public static PShape3D CreatePolyhedron(ParallelQHullData parallelQHullData, FVector3 scale, FVector3 center, FQuaternion rotation)
         {
             if (!initialized)
             {
@@ -666,7 +686,7 @@ namespace Parallel
             return new PShape3D(m_NativeObject);
         }
 
-        public static void UpdatePolyhedron(PShape3D shape, PFixture3D fixture, Fix64Vec3 scale)
+        public static void UpdatePolyhedron(PShape3D shape, PFixture3D fixture, FVector3 scale)
         {
             if (!initialized)
             {
@@ -676,7 +696,7 @@ namespace Parallel
             NativeParallel3D.UpdateConvex3D(shape.IntPointer, fixture.IntPointer, scale);
         }
 
-        public static PShape3D CreateMesh(ParallelMeshData parallelMeshData, Fix64Vec3 scale)
+        public static PShape3D CreateMesh(ParallelMeshData parallelMeshData, FVector3 scale)
         {
             if (!initialized)
             {
@@ -688,7 +708,7 @@ namespace Parallel
             return new PShape3D(m_NativeObject);
         }
 
-        public static void UpdateMesh(PShape3D shape, PFixture3D fixture, Fix64Vec3 scale)
+        public static void UpdateMesh(PShape3D shape, PFixture3D fixture, FVector3 scale)
         {
             if (!initialized)
             {
@@ -698,14 +718,26 @@ namespace Parallel
             NativeParallel3D.UpdateMesh3D(shape.IntPointer, fixture.IntPointer, scale);
         }
 
+        public static PShape3D CreateTerrian(ParallelTerrianData parallelTerrainData)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            IntPtr m_NativeObject = NativeParallel3D.CreateTerrian3D(parallelTerrainData.vertices, parallelTerrainData.vertexCount, parallelTerrainData.xCount, parallelTerrainData.zCount, parallelTerrainData.resolution);
+
+            return new PShape3D(m_NativeObject);
+        }
+
         //3D body
         public static PBody3D AddBody(
             int bodyType,
-            Fix64Vec3 position,
-            Fix64Quat orientation,
-            Fix64Vec3 linearDamping,
-            Fix64Vec3 angularDamping,
-            Fix64Vec3 gravityScale,
+            FVector3 position,
+            FQuaternion orientation,
+            FVector3 linearDamping,
+            FVector3 angularDamping,
+            FVector3 gravityScale,
             bool fixedRotationX,
             bool fixedRotationY,
             bool fixedRotationZ,
@@ -749,11 +781,11 @@ namespace Parallel
 
         public static PBody3D InsertBody(
             int bodyType,
-            Fix64Vec3 position,
-            Fix64Quat orientation,
-            Fix64Vec3 linearDamping,
-            Fix64Vec3 angularDamping,
-            Fix64Vec3 gravityScale,
+            FVector3 position,
+            FQuaternion orientation,
+            FVector3 linearDamping,
+            FVector3 angularDamping,
+            FVector3 gravityScale,
             bool fixedRotationX,
             bool fixedRotationY,
             bool fixedRotationZ,
@@ -808,7 +840,7 @@ namespace Parallel
             }
         }
 
-        public static void UpdateBodyTransForm(PBody3D body, Fix64Vec3 pos, Fix64Quat rot)
+        public static void UpdateBodyTransForm(PBody3D body, FVector3 pos, FQuaternion rot)
         {
             if (!initialized)
             {
@@ -818,7 +850,7 @@ namespace Parallel
             NativeParallel3D.UpdateBodyTransform3D(body.IntPointer, pos, rot);
         }
 
-        public static void UpdateBodyTransformForRollback(PBody3D body, Fix64Vec3 pos, Fix64Quat rot, Fix64Quat rot0)
+        public static void UpdateBodyTransformForRollback(PBody3D body, FVector3 pos, FQuaternion rot, FQuaternion rot0)
         {
             if (!initialized)
             {
@@ -828,7 +860,7 @@ namespace Parallel
             NativeParallel3D.UpdateBodyTransformForRollback3D(body.IntPointer, pos, rot, rot0);
         }
 
-        public static void UpdateBodyVelocity(PBody3D body, Fix64Vec3 linearVelocity, Fix64Vec3 angularVelocity)
+        public static void UpdateBodyVelocity(PBody3D body, FVector3 linearVelocity, FVector3 angularVelocity)
         {
             if (!initialized)
             {
@@ -840,9 +872,9 @@ namespace Parallel
 
         public static void UpdateBodyProperties(PBody3D body,
             int bodyType,
-            Fix64Vec3 linearDamping,
-            Fix64Vec3 angularDamping,
-            Fix64Vec3 gravityScale,
+            FVector3 linearDamping,
+            FVector3 angularDamping,
+            FVector3 gravityScale,
             bool fixedRotationX,
             bool fixedRotationY,
             bool fixedRotationZ)
@@ -863,14 +895,14 @@ namespace Parallel
                 fixedRotationZ);
         }
 
-        public static Fix64Vec3 GetPointVelocity(PBody3D body, Fix64Vec3 point)
+        public static FVector3 GetPointVelocity(PBody3D body, FVector3 point)
         {
             if (!initialized)
             {
                 Initialize();
             }
 
-            Fix64Vec3 result = Fix64Vec3.zero;
+            FVector3 result = FVector3.zero;
 
             NativeParallel3D.GetPointVelocity3D(body.IntPointer, point, ref result);
 
@@ -878,7 +910,7 @@ namespace Parallel
         }
 
 
-        public static void UpdateCOM(PBody3D body, Fix64Vec3 centerOfMass)
+        public static void UpdateCOM(PBody3D body, FVector3 centerOfMass)
         {
             if (!initialized)
             {
@@ -888,7 +920,7 @@ namespace Parallel
             NativeParallel3D.UpdateCOM3D(body.IntPointer, centerOfMass);
         }
 
-        public static void UpdateMass(PBody3D body, Fix64 mass)
+        public static void UpdateMass(PBody3D body, FFloat mass)
         {
             if (!initialized)
             {
@@ -898,7 +930,7 @@ namespace Parallel
             NativeParallel3D.UpdateMass3D(body.IntPointer, mass);
         }
 
-        public static void ApplyForce(PBody3D body, Fix64Vec3 point, Fix64Vec3 force)
+        public static void ApplyForce(PBody3D body, FVector3 point, FVector3 force)
         {
             if (!initialized)
             {
@@ -908,7 +940,7 @@ namespace Parallel
             NativeParallel3D.ApplyForce3D(body.IntPointer, point, force);
         }
 
-        public static void ApplyForceToCenter(PBody3D body, Fix64Vec3 force)
+        public static void ApplyForceToCenter(PBody3D body, FVector3 force)
         {
             if (!initialized)
             {
@@ -918,7 +950,7 @@ namespace Parallel
             NativeParallel3D.ApplyForceToCenter3D(body.IntPointer, force);
         }
 
-        public static void ApplyTorque(PBody3D body, Fix64Vec3 torque)
+        public static void ApplyTorque(PBody3D body, FVector3 torque)
         {
             if (!initialized)
             {
@@ -928,7 +960,7 @@ namespace Parallel
             NativeParallel3D.ApplyTorque3D(body.IntPointer, torque);
         }
 
-        public static void ApplyLinearImpulse(PBody3D body, Fix64Vec3 point, Fix64Vec3 impulse)
+        public static void ApplyLinearImpulse(PBody3D body, FVector3 point, FVector3 impulse)
         {
             if (!initialized)
             {
@@ -938,7 +970,7 @@ namespace Parallel
             NativeParallel3D.ApplyLinearImpulse3D(body.IntPointer, point, impulse);
         }
 
-        public static void ApplyLinearImpulseToCenter(PBody3D body, Fix64Vec3 impulse)
+        public static void ApplyLinearImpulseToCenter(PBody3D body, FVector3 impulse)
         {
             if (!initialized)
             {
@@ -948,7 +980,7 @@ namespace Parallel
             NativeParallel3D.ApplyLinearImpulseToCenter3D(body.IntPointer, impulse);
         }
 
-        public static void ApplyAngularImpulse(PBody3D body, Fix64Vec3 impulse)
+        public static void ApplyAngularImpulse(PBody3D body, FVector3 impulse)
         {
             if (!initialized)
             {
@@ -983,11 +1015,9 @@ namespace Parallel
             NativeParallel3D.GetTransform3D(body.IntPointer, ref body.position, ref body.orientation, ref body.orientation0);
             NativeParallel3D.GetVelocity3D(body.IntPointer, ref body.linearVelocity, ref body.angularVelocity);
 
-            if (allowSleep)
-            {
-                body.awake = NativeParallel3D.IsAwake3D(body.IntPointer);
-                NativeParallel3D.GetSleepTime3D(body.IntPointer, ref body.sleepTime);
-            }
+
+            body.awake = NativeParallel3D.IsAwake3D(body.IntPointer);
+            NativeParallel3D.GetSleepTime3D(body.IntPointer, ref body.sleepTime);
         }
 
         public static void ReadBodyMassInfo(PBody3D body)
@@ -1000,7 +1030,7 @@ namespace Parallel
             NativeParallel3D.GetBodyMassInfo3D(body.IntPointer, ref body.mass);
         }
 
-        public static void SetAwakeForRollback(PBody3D body, bool awake, Fix64 sleepTime)
+        public static void SetAwakeForRollback(PBody3D body, bool awake, FFloat sleepTime)
         {
             if (!initialized)
             {
@@ -1050,10 +1080,10 @@ namespace Parallel
             return NativeParallel3D.IsEnabled3D(body.IntPointer);
         }
 
-        public static ParallelQHullData ConvextHull3D(Fix64Vec3[] verts, UInt32 count, bool simplify, Fix64 rad)
+        public static ParallelQHullData ConvextHull3D(FVector3[] verts, UInt32 count, bool simplify, FFloat rad)
         {
             UInt32 outCount = 1024 * 10;
-            Fix64Vec3[] vertsOut = new Fix64Vec3[outCount];
+            FVector3[] vertsOut = new FVector3[outCount];
             ParallelEdge[] edgesOut = new ParallelEdge[outCount];
             ParallelFace[] facesOut = new ParallelFace[outCount];
             ParallelPlane[] planesOut = new ParallelPlane[outCount];
@@ -1100,22 +1130,22 @@ namespace Parallel
         }
 
         //raycast
-        public static bool RayCast(Fix64Vec3 start, Fix64Vec3 direction, Fix64 range, out PRaycastHit3D raycastHit3D)
+        public static bool RayCast(FVector3 start, FVector3 direction, FFloat range, out PRaycastHit3D raycastHit3D)
         {
             return RayCast(start, start + range * direction, out raycastHit3D);
         }
 
-        public static bool RayCast(Fix64Vec3 start, Fix64Vec3 end, out PRaycastHit3D raycastHit3D)
+        public static bool RayCast(FVector3 start, FVector3 end, out PRaycastHit3D raycastHit3D)
         {
             return RayCast(start, end, -1, out raycastHit3D);
         }
 
-        public static bool RayCast(Fix64Vec3 start, Fix64Vec3 direction, Fix64 range, int mask, out PRaycastHit3D raycastHit3D)
+        public static bool RayCast(FVector3 start, FVector3 direction, FFloat range, int mask, out PRaycastHit3D raycastHit3D)
         {
             return RayCast(start, start + range * direction, mask, out raycastHit3D);
         }
 
-        public static bool RayCast(Fix64Vec3 start, Fix64Vec3 end, int mask, out PRaycastHit3D raycastHit3D)
+        public static bool RayCast(FVector3 start, FVector3 end, int mask, out PRaycastHit3D raycastHit3D)
         {
             if (!initialized)
             {
@@ -1124,15 +1154,15 @@ namespace Parallel
 
             raycastHit3D = new PRaycastHit3D();
 
-            if (Fix64Vec3.Distance(start, end) < ParallelConstants.SMALLEST_RAYCAST_RANGE)
+            if (FVector3.Distance(start, end) < ParallelConstants.SMALLEST_RAYCAST_RANGE)
             {
                 Debug.Log("RayCast range too short");
                 return false;
             }
 
-            Fix64Vec3 point = Fix64Vec3.zero;
-            Fix64Vec3 normal = Fix64Vec3.zero;
-            Fix64 fraction = Fix64.one;
+            FVector3 point = FVector3.zero;
+            FVector3 normal = FVector3.zero;
+            FFloat fraction = FFloat.one;
 
             raycastHit3D = new PRaycastHit3D();
             UInt16 bodyID = 0;
@@ -1161,22 +1191,22 @@ namespace Parallel
             }
         }
 
-        public static bool ShapeCast(PShape3D shape, Fix64Vec3 pos, Fix64Quat rot, Fix64Vec3 movement, int mask, ref PShapecastHit3D shapeCastHit3D, ParallelRigidbody3D ignoreBody)
+        public static bool ShapeCast(PShape3D shape, FVector3 pos, FQuaternion rot, FVector3 movement, int mask, ref PShapecastHit3D shapeCastHit3D, ParallelRigidbody3D ignoreBody)
         {
             if (!initialized)
             {
                 Initialize();
             }
 
-            if (movement.Length() < ParallelConstants.SMALLEST_RAYCAST_RANGE)
+            if (movement.magnitude < ParallelConstants.SMALLEST_RAYCAST_RANGE)
             {
                 //Debug.Log("ShapeCast range too short");
                 return false;
             }
 
-            Fix64Vec3 point = Fix64Vec3.zero;
-            Fix64Vec3 normal = Fix64Vec3.zero;
-            Fix64 fraction = Fix64.one;
+            FVector3 point = FVector3.zero;
+            FVector3 normal = FVector3.zero;
+            FFloat fraction = FFloat.one;
             UInt16 bodyID = 0;
 
             UInt16 ignoreBodyID = 0;
@@ -1211,27 +1241,27 @@ namespace Parallel
             }
         }
 
-        public static bool SphereCast(Fix64Vec3 start, Fix64 radius, Fix64Vec3 movement, ref PShapecastHit3D shapeCastHit3D, ParallelRigidbody3D ignoreBody)
+        public static bool SphereCast(FVector3 start, FFloat radius, FVector3 movement, ref PShapecastHit3D shapeCastHit3D, ParallelRigidbody3D ignoreBody)
         {
             return SphereCast(start, radius, movement, -1, ref shapeCastHit3D, ignoreBody);
         }
 
-        public static bool SphereCast(Fix64Vec3 start, Fix64 radius, Fix64Vec3 movement, int mask, ref PShapecastHit3D shapeCastHit3D, ParallelRigidbody3D ignoreBody)
+        public static bool SphereCast(FVector3 start, FFloat radius, FVector3 movement, int mask, ref PShapecastHit3D shapeCastHit3D, ParallelRigidbody3D ignoreBody)
         {
             if (!initialized)
             {
                 Initialize();
             }
 
-            if (movement.Length() < ParallelConstants.SMALLEST_RAYCAST_RANGE)
+            if (movement.magnitude < ParallelConstants.SMALLEST_RAYCAST_RANGE)
             {
                 //Debug.Log("ShapeCast range too short");
                 return false;
             }
 
-            Fix64Vec3 point = Fix64Vec3.zero;
-            Fix64Vec3 normal = Fix64Vec3.zero;
-            Fix64 fraction = Fix64.one;
+            FVector3 point = FVector3.zero;
+            FVector3 normal = FVector3.zero;
+            FFloat fraction = FFloat.one;
             UInt16 bodyID = 0;
 
             UInt16 ignoreBodyID = 0;
@@ -1267,12 +1297,12 @@ namespace Parallel
         }
 
         //overlap
-        public static bool OverlapSphere(Fix64Vec3 center, Fix64 radius, PShapeOverlapResult3D shapeOverlapResult)
+        public static bool OverlapSphere(FVector3 center, FFloat radius, PShapeOverlapResult3D shapeOverlapResult)
         {
             return OverlapSphere(center, radius, -1, shapeOverlapResult);
         }
 
-        public static bool OverlapSphere(Fix64Vec3 center, Fix64 radius, int mask, PShapeOverlapResult3D shapeOverlapResult)
+        public static bool OverlapSphere(FVector3 center, FFloat radius, int mask, PShapeOverlapResult3D shapeOverlapResult)
         {
             if (!initialized)
             {
@@ -1301,7 +1331,7 @@ namespace Parallel
         }
 
 
-        public static bool OverlapCube(Fix64Vec3 center, Fix64Quat rotation, Fix64 x, Fix64 y, Fix64 z, int mask, PShapeOverlapResult3D shapeOverlapResult)
+        public static bool OverlapCube(FVector3 center, FQuaternion rotation, FFloat x, FFloat y, FFloat z, int mask, PShapeOverlapResult3D shapeOverlapResult)
         {
             if (!initialized)
             {
@@ -1503,7 +1533,7 @@ namespace Parallel
         //}
 
         //triangulation
-        public static PolyIsland CreatePolyIsland(Fix64Vec2[] verts, int[] indexes, int count)
+        public static PolyIsland CreatePolyIsland(FVector2[] verts, int[] indexes, int count)
         {
             IntPtr m_NativeObject = NativeParallel3D.CreatePolyIsland(verts, indexes, count);
             return new PolyIsland(m_NativeObject);
@@ -1514,7 +1544,7 @@ namespace Parallel
             NativeParallel3D.DestroyPolyIsland(polyIsland.IntPointer);
         }
 
-        public static void AddHolePolyIsland(Fix64Vec2[] verts, int[] indexes, int count, PolyIsland polyIsland)
+        public static void AddHolePolyIsland(FVector2[] verts, int[] indexes, int count, PolyIsland polyIsland)
         {
             NativeParallel3D.AddHolePolyIsland(verts, indexes, count, polyIsland.IntPointer);
         }
@@ -1535,7 +1565,7 @@ namespace Parallel
             NativeParallel3D.DestroyJoint3D(internalWorld.IntPointer, joint.IntPointer);
         }
 
-        public static PJoint3D CreateMouseJoint(ParallelRigidbody3D rb, Fix64Vec3 p, Fix64 maxForce)
+        public static PJoint3D CreateMouseJoint(ParallelRigidbody3D rb, FVector3 p, FFloat maxForce)
         {
             if (!initialized)
             {
@@ -1549,7 +1579,7 @@ namespace Parallel
             return j;
         }
 
-        public static void MoveMouseJoint(PJoint3D joint, Fix64Vec3 position)
+        public static void MoveMouseJoint(PJoint3D joint, FVector3 position)
         {
             if (!initialized)
             {
@@ -1561,11 +1591,11 @@ namespace Parallel
 
         public static PJoint3D CreateSprintJoint(ParallelRigidbody3D rbA,
                                                  ParallelRigidbody3D rbB,
-                                                 Fix64Vec3 anchorA,
-                                                 Fix64Vec3 anchorB,
+                                                 FVector3 anchorA,
+                                                 FVector3 anchorB,
                                                  bool collide,
-                                                 Fix64 frequency,
-                                                 Fix64 damping)
+                                                 FFloat frequency,
+                                                 FFloat damping)
         {
             if (!initialized)
             {
@@ -1593,11 +1623,11 @@ namespace Parallel
 
         public static PJoint3D CreateHingeJoint(ParallelRigidbody3D rbA,
                                                 ParallelRigidbody3D rbB,
-                                                Fix64Vec3 anchor,
-                                                Fix64Vec3 axis,
+                                                FVector3 anchor,
+                                                FVector3 axis,
                                                 bool collide,
-                                                bool limit, Fix64 lowerAngle, Fix64 upperAngle,
-                                                bool motor, Fix64 motorSpeed, Fix64 motorTorque)
+                                                bool limit, FFloat lowerAngle, FFloat upperAngle,
+                                                bool motor, FFloat motorSpeed, FFloat motorTorque)
         {
             if (!initialized)
             {
@@ -1626,11 +1656,11 @@ namespace Parallel
 
         public static PJoint3D CreateConeJoint(ParallelRigidbody3D rbA,
                                                 ParallelRigidbody3D rbB,
-                                                Fix64Vec3 anchor,
-                                                Fix64Vec3 axis,
+                                                FVector3 anchor,
+                                                FVector3 axis,
                                                 bool collide,
-                                                bool limit, Fix64 angle,
-                                                bool twist, Fix64 lowerAngle, Fix64 upperAngle)
+                                                bool limit, FFloat angle,
+                                                bool twist, FFloat lowerAngle, FFloat upperAngle)
         {
             if (!initialized)
             {

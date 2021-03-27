@@ -7,8 +7,8 @@ namespace Parallel.Sample
 {
     public class Raycast : MonoBehaviour
     {
-        Fix64Vec2 raycastPoint;
-        Fix64Vec2 raycastNormal;
+        FVector2 raycastPoint;
+        FVector2 raycastNormal;
 
         public float rotateSpeed = 1;
         public float raycastLength = 10.0f;
@@ -49,8 +49,8 @@ namespace Parallel.Sample
             bool hit = false;
 
 
-            Fix64Vec2 start = (Fix64Vec2)transform.position;
-            Fix64Vec2 end = start + (Fix64)raycastLength * (Fix64Vec2)transform.right;
+            FVector2 start = (FVector2)transform.position;
+            FVector2 end = start + (FFloat)raycastLength * (FVector2)transform.right;
 
             hit = Parallel2D.RayCast(start, end, layerMask, out raycastHit2D);
 

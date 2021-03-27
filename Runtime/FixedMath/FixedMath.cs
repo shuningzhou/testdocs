@@ -64,5 +64,34 @@ namespace Parallel
 
         [DllImport(PLUGIN_NAME)]
         internal static extern long Acos64(long a);
+
+        //vec3
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void Vec3_Dot(FVector3 a, FVector3 b, out FFloat result);
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void Vec3_Cross(FVector3 a, FVector3 b, out FVector3 result);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void Vec3_ProjectOnPlane(FVector3 a, FVector3 planeNormal, out FVector3 result);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void Vec3_Project(FVector3 a, FVector3 b, out FVector3 result);
+
+        //quaternion
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void Quat_Mul_Vec3(FQuaternion rotation, FVector3 point, ref FVector3 result);
+
+        //matrix4x4
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void Mat4x4_Mul_Point_3x4(FMatrix4x4 mat, FVector3 v, ref FVector3 result);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void Mat4x4_Mul(FMatrix4x4 lhs, FMatrix4x4 rhs, out FMatrix4x4 result);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern bool Mat4x4_Invert(FMatrix4x4 m, out FMatrix4x4 result);
+
+        [DllImport(PLUGIN_NAME)]
+        internal static extern void Mat4x4_TRS(FVector3 pos, FQuaternion q, FVector3 s, out FMatrix4x4 result);
     }
 }

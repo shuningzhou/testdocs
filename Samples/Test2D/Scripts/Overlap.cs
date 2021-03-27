@@ -41,8 +41,8 @@ namespace Parallel.Sample
 
         void Update()
         {
-            Fix64Vec2 center = (Fix64Vec2)transform.position;
-            Fix64 radius = (Fix64)circleRadius;
+            FVector2 center = (FVector2)transform.position;
+            FFloat radius = (FFloat)circleRadius;
 
             Parallel2D.OverlapCircle(center, radius, layerMask, result);
         }

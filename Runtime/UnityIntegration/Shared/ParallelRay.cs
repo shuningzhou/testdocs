@@ -5,15 +5,15 @@ namespace Parallel
     [Serializable]
     public struct ParallelRay
     {
-        public Fix64Vec3 direction;
-        public Fix64Vec3 origin;
+        public FVector3 direction;
+        public FVector3 origin;
 
         /// <summary>
         ///   <para>Creates a ray starting at origin along direction.</para>
         /// </summary>
         /// <param name="origin"></param>
         /// <param name="direction"></param>
-        public ParallelRay(Fix64Vec3 origin, Fix64Vec3 direction)
+        public ParallelRay(FVector3 origin, FVector3 direction)
         {
             this.origin = origin;
             this.direction = direction.normalized;
@@ -23,7 +23,7 @@ namespace Parallel
         ///   <para>Returns a point at distance units along the ray.</para>
         /// </summary>
         /// <param name="distance"></param>
-        public Fix64Vec3 GetPoint(Fix64 distance)
+        public FVector3 GetPoint(FFloat distance)
         {
             return origin + direction * distance;
         }

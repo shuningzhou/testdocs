@@ -8,19 +8,19 @@ namespace Parallel.Sample
     public class Force3D : MonoBehaviour, IParallelFixedUpdate
     {
         public float strength = 5;
-        Fix64 _strength;
-        public Fix64 hortizontal = Fix64.zero;
-        public Fix64 vertical = Fix64.zero;
+        FFloat _strength;
+        public FFloat hortizontal = FFloat.zero;
+        public FFloat vertical = FFloat.zero;
 
         bool _fire;
         ParallelRigidbody3D _rigidbody;
         ParallelTransform _pTransform;
 
-        public void ParallelFixedUpdate(Fix64 deltaTime)
+        public void ParallelFixedUpdate(FFloat deltaTime)
         {
-            Fix64Vec3 force = new Fix64Vec3(
+            FVector3 force = new FVector3(
                                     _strength * hortizontal,
-                                    Fix64.zero,
+                                    FFloat.zero,
                                     _strength * vertical);
 
             _rigidbody.ApplyForce(force);
@@ -32,15 +32,15 @@ namespace Parallel.Sample
         {
             _pTransform = GetComponent<ParallelTransform>();
             _rigidbody = GetComponent<ParallelRigidbody3D>();
-            _strength = (Fix64)strength;
+            _strength = (FFloat)strength;
         }
 
         // Update is called once per frame
         void Update()
         {
-            _strength = (Fix64)strength;
-            hortizontal = (Fix64)Input.GetAxis("Horizontal");
-            vertical = (Fix64)Input.GetAxis("Vertical");
+            _strength = (FFloat)strength;
+            hortizontal = (FFloat)Input.GetAxis("Horizontal");
+            vertical = (FFloat)Input.GetAxis("Vertical");
         }
     }
 }

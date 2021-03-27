@@ -9,14 +9,14 @@ namespace Parallel
         internal UInt16 Body1ID { get; private set; }
         internal UInt16 Body2ID { get; private set; }
         internal int ContactCount { get; private set; }
-        internal Fix64Vec2 RelativeVelocity { get; private set; }
+        internal FVector2 RelativeVelocity { get; private set; }
         internal IntPtr IntPointer { get; private set; }
         internal bool IsTrigger { get; private set; }
 
         public void Update(
             IntPtr nativeHandle,
             int contactCount,
-            Fix64Vec2 relativeVelocity,
+            FVector2 relativeVelocity,
             bool isTrigger
             )
         {

@@ -8,21 +8,21 @@ namespace Parallel.Sample
     public class Force : MonoBehaviour, IParallelFixedUpdate
     {
         public float strength;
-        Fix64 _strength;
-        Fix64Vec2 _mousePos;
+        FFloat _strength;
+        FVector2 _mousePos;
         bool _fire;
         ParallelRigidbody2D _rigidbody;
         ParallelTransform _transform;
         public GameObject cursor;
         Transform _cursorTransform;
 
-        public void ParallelFixedUpdate(Fix64 deltaTime)
+        public void ParallelFixedUpdate(FFloat deltaTime)
         {
             if (_fire)
             {
-                Fix64Vec2 direction = _mousePos - (Fix64Vec2)_transform.position;
+                FVector2 direction = _mousePos - (FVector2)_transform.position;
                 direction = direction.normalized;
-                Fix64Vec2 impulse = direction * _strength;
+                FVector2 impulse = direction * _strength;
                 _rigidbody.ApplyForce(impulse);
             }
         }
@@ -38,7 +38,7 @@ namespace Parallel.Sample
         // Update is called once per frame
         void Update()
         {
-            _strength = (Fix64)strength;
+            _strength = (FFloat)strength;
 
             if (Input.GetMouseButton(0))
             {
@@ -47,7 +47,7 @@ namespace Parallel.Sample
                                                                     -Camera.main.transform.position.z));
                 Vector3 newPos = new Vector3(mouse.x, mouse.y, 0);
                 _cursorTransform.position = newPos;
-                _mousePos = (Fix64Vec2)newPos;
+                _mousePos = (FVector2)newPos;
                 _fire = true;
             }
             else

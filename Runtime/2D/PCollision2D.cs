@@ -13,7 +13,7 @@ namespace Parallel
 
         public IParallelRigidbody2D otherRigidbody { get; private set; }
 
-        public Fix64Vec2 relativeVelocity
+        public FVector2 relativeVelocity
         {
             get
             {

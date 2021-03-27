@@ -21,7 +21,7 @@ namespace Parallel
         void OnParallelTriggerExit(IParallelRigidbody2D other);
 
         void OnTransformUpdated();
-        void Step(Fix64 timeStep);
+        void Step(FFloat timeStep);
     }
 
     public interface IParallelRigidbody3D
@@ -34,7 +34,7 @@ namespace Parallel
         void OnParallelTriggerStay(IParallelRigidbody3D other, byte selfShapeID, byte otherShapeID);
         void OnParallelTriggerExit(IParallelRigidbody3D other, byte selfShapeID, byte otherShapeID);
         void OnTransformUpdated();
-        void Step(Fix64 timeStep);
+        void Step(FFloat timeStep);
 
         ParallelCollider3D FindCollider(byte ShapeID);
     }

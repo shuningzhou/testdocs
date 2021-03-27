@@ -14,7 +14,7 @@ public class CameraTest : MonoBehaviour
     ParallelRay parallelRay;
     Ray unityRay;
 
-    public Fix64 range;
+    public FFloat range;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,7 +39,7 @@ public class CameraTest : MonoBehaviour
         a.rectTransform.position = Input.mousePosition;
 
         Vector3 viewportPoint = unityCamera.ScreenToViewportPoint(Input.mousePosition);
-        Fix64Vec3 parallelViewPoint = parallelCamera.GetParallelViewPortPointFromUnityViewPortPoint(viewportPoint);
+        FVector3 parallelViewPoint = parallelCamera.GetParallelViewPortPointFromUnityViewPortPoint(viewportPoint);
 
         Debug.Log("viewportPoint: " + viewportPoint.ToString("F3"));
         Debug.Log("parallelViewPoint: " + parallelViewPoint);
