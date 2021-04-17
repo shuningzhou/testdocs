@@ -116,7 +116,7 @@ namespace Parallel
 
         public static explicit operator int(FFloat value)
         {
-            return (int)((value.Raw + FixedConstants64.HALF) >> FixedConstants64.SHIFT);
+            return (int)((value.Raw) >> FixedConstants64.SHIFT);
         }
 
         public static explicit operator FFloat(float value)

@@ -64,32 +64,32 @@ namespace Parallel
         //rounding
         public static int CeilToInt(FFloat value)
         {
-            return (int)Ceil(value);
+            return (int)((value.Raw + (FixedConstants64.ONE - 1)) >> FixedConstants64.SHIFT);
         }
 
         public static int FloorToInt(FFloat value)
         {
-            return (int)Floor(value);
-        }
-
-        public static FFloat Ceil(FFloat value)
-        {
-            return FFloat.FromRaw((value.Raw + (FixedConstants64.ONE - 1)) >> FixedConstants64.SHIFT);
-        }
-
-        public static FFloat Floor(FFloat value)
-        {
-            return FFloat.FromRaw(value.Raw >> FixedConstants64.SHIFT);
-        }
-
-        public static FFloat Round(FFloat value)
-        {
-            return FFloat.FromRaw(value.Raw + FixedConstants64.HALF >> FixedConstants64.SHIFT);
+            return (int)((value.Raw) >> FixedConstants64.SHIFT);
         }
 
         public static int RoundToInt(FFloat value)
         {
-            return (int)Round(value);
+            return (int)((value.Raw + FixedConstants64.HALF) >> FixedConstants64.SHIFT);
+        }
+
+        public static FFloat Ceil(FFloat value)
+        {
+            return (FFloat)CeilToInt(value);
+        }
+
+        public static FFloat Floor(FFloat value)
+        {
+            return (FFloat)FloorToInt(value);
+        }
+        
+        public static FFloat Round(FFloat value)
+        {
+            return (FFloat)RoundToInt(value);
         }
 
         //clamp

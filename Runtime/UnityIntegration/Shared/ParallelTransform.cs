@@ -43,6 +43,15 @@ namespace Parallel
             }
         }
 
+        public static void Sync()
+        {
+            foreach (ParallelTransform parallelTransform in _sParallelTransforms)
+            {
+                parallelTransform.transform.localPosition = (Vector3)parallelTransform.localPosition;
+                parallelTransform.transform.localRotation = (Quaternion)parallelTransform.localRotation;
+            }
+        }
+
         [SerializeField]
         bool Interpolate = false;
         public bool debug = false;
@@ -364,11 +373,6 @@ namespace Parallel
             }
             set
             {
-                if (_localPosition == value)
-                {
-                    return;
-                }
-
                 _localPosition = value;
 
                 UpdateRigidbodyTransform();

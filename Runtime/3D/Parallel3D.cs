@@ -250,6 +250,10 @@ namespace Parallel
         internal static Action<UInt16, UInt16, IntPtr> _rollbackAddRigidbodyCallback3D;
         internal static Action<UInt16, UInt16> _rollbackRemoveRigidbodyCallback3D;
 
+        public static void DebugInit()
+        {
+            NativeParallel3D.Initialize();
+        }
         //common
         public static void Initialize()
         {
