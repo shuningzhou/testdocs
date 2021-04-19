@@ -165,7 +165,7 @@ namespace Parallel
                 {
                     if (_xzPlane)
                     {
-                        angle = FFloat.DegToRad(_pTransform.localEulerAngles.y);
+                        angle = -FFloat.DegToRad(_pTransform.localEulerAngles.y);
                         center = _pTransform.localPosition.xz;
                     }
                     else
@@ -199,7 +199,7 @@ namespace Parallel
                 {
                     if (_xzPlane)
                     {
-                        angle = FFloat.DegToRad(_pTransform.localEulerAngles.y);
+                        angle = -FFloat.DegToRad(_pTransform.localEulerAngles.y);
                         center = _pTransform.localPosition.xz;
                     }
                     else
