@@ -39,10 +39,16 @@ namespace Parallel
 
         FFloat CalculateRadius()
         {
-
-            FFloat maxScale = FMath.Max(FMath.Abs(colliderScale.x), FMath.Abs(colliderScale.y));
-            FFloat result = maxScale * _radius;
-            return result;
+            if(_xzPlane)
+            {
+                FFloat maxScale = FMath.Max(FMath.Abs(colliderScale.x), FMath.Abs(colliderScale.z));
+                return maxScale * _radius;
+            }
+            else
+            {
+                FFloat maxScale = FMath.Max(FMath.Abs(colliderScale.x), FMath.Abs(colliderScale.y));
+                return maxScale * _radius;
+            }
         }
 
         protected override void UpdateShape(GameObject root)
@@ -58,7 +64,14 @@ namespace Parallel
 
                 if (gameObject != root)
                 {
-                    center = (FVector2)_pTransform.localPosition;
+                    if (_xzPlane)
+                    {
+                        center = _pTransform.localPosition.xz;
+                    }
+                    else
+                    {
+                        center = (FVector2)_pTransform.localPosition;
+                    }
                 }
 
                 Parallel2D.UpdateCircle(_shape, _fixture, r, center);
@@ -79,7 +92,14 @@ namespace Parallel
 
                 if (gameObject != root)
                 {
-                    center = (FVector2)_pTransform.localPosition;
+                    if (_xzPlane)
+                    {
+                        center = _pTransform.localPosition.xz;
+                    }
+                    else
+                    {
+                        center = (FVector2)_pTransform.localPosition;
+                    }
                 }
 
                 return Parallel2D.CreateCircle(r, center);

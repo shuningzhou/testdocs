@@ -13,7 +13,19 @@ namespace Parallel
 
         protected GameObject _root;
 
-         [SerializeField]
+        protected bool _xzPlane;
+
+        internal void XZPlane(bool xzPlane)
+        {
+            if (_shape != null)
+            {
+                //should never be here
+                return;
+            }
+            _xzPlane = xzPlane;
+        }
+
+        [SerializeField]
         bool isTrigger = false;
         
         [SerializeField]
@@ -50,7 +62,7 @@ namespace Parallel
         {
             get
             {
-                if (_useSpriteRendererSize)
+                if (_useSpriteRendererSize && !_xzPlane)
                 {
                     FFloat x = pTransform.localScale.x * _spriteRendererSize.x;
                     FFloat y = pTransform.localScale.y * _spriteRendererSize.y;

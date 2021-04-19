@@ -106,13 +106,19 @@ namespace Parallel
 
             if (Direction == PCapsuleDirection2D.Horizontal)
             {
-                maxScale = colliderScale.y;
+                if (_xzPlane)
+                {
+                    maxScale = colliderScale.z;
+                }
+                else
+                {
+                    maxScale = colliderScale.y;
+                }
             }
             else
             {
                 maxScale = colliderScale.x;
             }
-
 
             FFloat result = maxScale * _radius;
             return FMath.Abs(result);
@@ -128,7 +134,14 @@ namespace Parallel
             }
             else
             {
-                maxScale = colliderScale.y;
+                if (_xzPlane)
+                {
+                    maxScale = colliderScale.z;
+                }
+                else
+                {
+                    maxScale = colliderScale.y;
+                }
             }
 
             FFloat result = maxScale * _height;
@@ -150,8 +163,16 @@ namespace Parallel
 
                 if (gameObject != root)
                 {
-                    angle = FFloat.DegToRad(_pTransform.localEulerAngles.z);
-                    center = (FVector2)_pTransform.localPosition;
+                    if (_xzPlane)
+                    {
+                        angle = FFloat.DegToRad(_pTransform.localEulerAngles.y);
+                        center = _pTransform.localPosition.xz;
+                    }
+                    else
+                    {
+                        angle = FFloat.DegToRad(_pTransform.localEulerAngles.z);
+                        center = (FVector2)_pTransform.localPosition;
+                    }
                 }
 
                 Parallel2D.UpdateCapsule(_shape, _fixture, v1, v2, radius, center, angle);
@@ -176,8 +197,16 @@ namespace Parallel
 
                 if (gameObject != root)
                 {
-                    angle = FFloat.DegToRad(_pTransform.localEulerAngles.z);
-                    center = (FVector2)_pTransform.localPosition;
+                    if (_xzPlane)
+                    {
+                        angle = FFloat.DegToRad(_pTransform.localEulerAngles.y);
+                        center = _pTransform.localPosition.xz;
+                    }
+                    else
+                    {
+                        angle = FFloat.DegToRad(_pTransform.localEulerAngles.z);
+                        center = (FVector2)_pTransform.localPosition;
+                    }
                 }
 
                 return Parallel2D.CreateCapsule(v1, v2, radius, center, angle);

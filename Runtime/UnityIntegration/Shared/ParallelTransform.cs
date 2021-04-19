@@ -746,9 +746,17 @@ namespace Parallel
 
         //should only be used by the attached rigidbody to update the transform
         //IMPORTATNT: all the internal transform data are in world space and should only be called on the root GameObject
-        internal void _internal_WriteTranform(FVector3 position, FVector3 eulerAngles)
+        internal void _internal_WriteTranform2D(FVector2 position, FVector3 eulerAngles, bool xzPlane)
         {
-            _localPosition = position;
+            if(xzPlane)
+            {
+                _localPosition = new FVector3(position.x, _localPosition.y, position.y);
+            }
+            else
+            {
+                _localPosition = new FVector3(position.x, position.y, _localPosition.z);
+            }
+
             _internalLocalEularAngles = eulerAngles;
 
             if (!Interpolate)

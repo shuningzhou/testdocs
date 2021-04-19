@@ -195,6 +195,14 @@ namespace Parallel
             }
         }
 
+        public FVector2 xz
+        {
+            get
+            {
+                return new FVector2(x, z);
+            }
+        }
+
         public FFloat magnitude
         {
             get

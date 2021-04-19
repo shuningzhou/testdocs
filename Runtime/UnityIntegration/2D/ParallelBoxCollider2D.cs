@@ -34,18 +34,13 @@ namespace Parallel
 
         FVector2 CalculateSize()
         {
-
-            FVector2 s = _size * (FVector2)colliderScale;
-            return s;
-
-            if (s.x > FFloat.zero && s.y > FFloat.zero)
+            if(_xzPlane)
             {
-                return s;
+                return _size * colliderScale.xz;
             }
             else
             {
-                Debug.LogError("Invalid size");
-                return FVector2.zero;
+                return _size * (FVector2)colliderScale;
             }
         }
 
@@ -60,8 +55,16 @@ namespace Parallel
 
                 if (gameObject != root)
                 {
-                    angle = FFloat.DegToRad(_pTransform.localEulerAngles.z);
-                    center = (FVector2)_pTransform.localPosition;
+                    if(_xzPlane)
+                    {
+                        angle = -FFloat.DegToRad(_pTransform.localEulerAngles.y);
+                        center = _pTransform.localPosition.xz;
+                    }
+                    else
+                    {
+                        angle = FFloat.DegToRad(_pTransform.localEulerAngles.z);
+                        center = (FVector2)_pTransform.localPosition;
+                    }
                 }
 
                 Parallel2D.UpdateBox(_shape, _fixture, s.x, s.y, center, angle);
@@ -79,8 +82,16 @@ namespace Parallel
 
                 if (gameObject != root)
                 {
-                    angle = FFloat.DegToRad(_pTransform.localEulerAngles.z);
-                    center = (FVector2)_pTransform.localPosition;
+                    if (_xzPlane)
+                    {
+                        angle = -FFloat.DegToRad(_pTransform.localEulerAngles.y);
+                        center = _pTransform.localPosition.xz;
+                    }
+                    else
+                    {
+                        angle = FFloat.DegToRad(_pTransform.localEulerAngles.z);
+                        center = (FVector2)_pTransform.localPosition;
+                    }
                 }
                 
                 return Parallel2D.CreateBox(FMath.Abs(s.x), FMath.Abs(s.y), center, angle);

@@ -11,6 +11,8 @@ namespace Parallel
         public Parallel.LogLevel LoggingLevel;
         public bool autoUpdate = true;
         public bool autoInitialization = true;
+        public bool XZPlane = false;
+        static bool sXZPlane = false;
 
         public FFloat fixedUpdateTime = FFloat.FromDivision(2, 100);
         public int velocityIteration = 4;
@@ -26,6 +28,7 @@ namespace Parallel
             if(!_initialized)
             {
                 _initialized = true;
+                sXZPlane = XZPlane;
                 Parallel2D.gravity = gravity;
                 Parallel2D.allowSleep = allowSleep;
                 Parallel2D.warmStart = warmStart;
@@ -47,6 +50,7 @@ namespace Parallel
                         continue;
                     }
 
+                    parallelRigidbody2D.XZPlane(XZPlane);
                     parallelRigidbody2D.Initialize();
 
                     ParallelJoint2D[] joints = parallelRigidbody2D.GetComponents<ParallelJoint2D>();
@@ -122,6 +126,7 @@ namespace Parallel
 
             foreach (ParallelRigidbody2D parallelRigidbody2D in parallelRigidbody2Ds)
             {
+                parallelRigidbody2D.XZPlane(sXZPlane);
                 parallelRigidbody2D.Initialize();
 
                 ParallelJoint2D[] joints = parallelRigidbody2D.GetComponents<ParallelJoint2D>();

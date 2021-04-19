@@ -9,6 +9,8 @@ namespace Parallel
     public class ParallelRigidbody2D : MonoBehaviour, IParallelRigidbody2D
     {
         ParallelTransform _pTransform;
+        bool _xzPlane;
+
         public ParallelTransform pTransform
         {
             get
@@ -261,7 +263,16 @@ namespace Parallel
                 return;
             }
 
-            pTransform._internal_WriteTranform((FVector3)_body2D.position, new FVector3(FFloat.zero, FFloat.zero, FFloat.RadToDeg(_body2D.angle)));
+            if(_xzPlane)
+            {
+                pTransform._internal_WriteTranform2D(_body2D.position, new FVector3(FFloat.zero, -FFloat.RadToDeg(_body2D.angle), FFloat.zero), _xzPlane);
+            }
+            else
+            {
+                pTransform._internal_WriteTranform2D(_body2D.position, new FVector3(FFloat.zero, FFloat.zero, FFloat.RadToDeg(_body2D.angle)), _xzPlane);
+            }
+
+            
 
             UpdateChildren();
         }
@@ -271,6 +282,7 @@ namespace Parallel
             //update children rigidbodies
             foreach (ParallelRigidbody2D child in childrenRigidbodies)
             {
+                //todo: support xzplane
                 Parallel2D.UpdateBodyTransForm(child._body2D, (FVector2)child.pTransform.position, FFloat.DegToRad(child.pTransform.eulerAngles.z));
 
                 child.UpdateChildren();
@@ -345,6 +357,16 @@ namespace Parallel
 #endif
         }
 
+        internal void XZPlane(bool xzPlane)
+        {
+            if (_body2D != null)
+            {
+                //should never be here
+                return;
+            }
+            _xzPlane = xzPlane;
+        }
+
         internal void Initialize()
         {
             parallelFixedUpdates = GetComponents<IParallelFixedUpdate>();
@@ -355,10 +377,19 @@ namespace Parallel
 
             colliders = GetComponentsInChildren<ParallelCollider2D>();
 
+            FVector2 pos = (FVector2)pTransform.position;
+            FFloat angle = pTransform.rotation.GetZAngle();
+
+            if (_xzPlane)
+            {
+                pos = pTransform.position.xz;
+                angle = -pTransform.rotation.GetYAngle();
+            }
+
             _body2D = Parallel2D.AddBody(
                                                 (int)bodyType,
-                                                (FVector2)pTransform.position,
-                                                pTransform.rotation.GetZAngle(),
+                                                pos,
+                                                angle,
                                                 linearDampling,
                                                 angularDamping,
                                                 fixedRotation,
@@ -384,6 +415,7 @@ namespace Parallel
                 }
 
                 collider.SetRootGameObject(gameObject);
+                collider.XZPlane(_xzPlane);
                 PShape2D shape = collider.CreateShape(gameObject);
 
                 if (shape == null)
@@ -422,10 +454,19 @@ namespace Parallel
 
             colliders = GetComponentsInChildren<ParallelCollider2D>();
 
+            FVector2 pos = (FVector2)pTransform.position;
+            FFloat angle = pTransform.rotation.GetZAngle();
+
+            if (_xzPlane)
+            {
+                pos = pTransform.position.xz;
+                angle = -pTransform.rotation.GetYAngle();
+            }
+
             _body2D = Parallel2D.InsertBody(
                                                 (int)bodyType,
-                                                (FVector2)pTransform.position,
-                                                pTransform.rotation.GetZAngle(),
+                                                pos,
+                                                angle,
                                                 linearDampling,
                                                 angularDamping,
                                                 fixedRotation,
