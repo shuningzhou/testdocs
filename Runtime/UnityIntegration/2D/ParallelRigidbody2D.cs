@@ -9,7 +9,7 @@ namespace Parallel
     public class ParallelRigidbody2D : MonoBehaviour, IParallelRigidbody2D
     {
         ParallelTransform _pTransform;
-        bool _xzPlane;
+        internal bool _xzPlane;
 
         public ParallelTransform pTransform
         {
