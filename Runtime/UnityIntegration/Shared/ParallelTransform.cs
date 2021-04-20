@@ -388,7 +388,14 @@ namespace Parallel
         {
             if(_rigidbody2D != null)
             {
-                Parallel2D.UpdateBodyTransForm(_rigidbody2D._body2D, (FVector2)_localPosition, FFloat.DegToRad(_internalLocalEularAngles.z));
+                if(_rigidbody2D._xzPlane)
+                {
+                    Parallel2D.UpdateBodyTransForm(_rigidbody2D._body2D, _localPosition.xz, -FFloat.DegToRad(_internalLocalEularAngles.y));
+                }
+                else
+                {
+                    Parallel2D.UpdateBodyTransForm(_rigidbody2D._body2D, (FVector2)_localPosition, FFloat.DegToRad(_internalLocalEularAngles.z));
+                }
             }
 
             if(_rigidbody3D != null && _rigidbody3D.enabled)
