@@ -941,6 +941,39 @@ namespace Parallel
             return hit;
         }
 
+        public static bool OverlapBox(FVector2 center, FFloat width, FFloat height, FFloat angle, PShapeOverlapResult2D shapeOverlapResult)
+        {
+            return OverlapBox(center, width, height, angle, -1, shapeOverlapResult);
+        }
+
+        public static bool OverlapBox(FVector2 center, FFloat width, FFloat height, FFloat angle, int mask, PShapeOverlapResult2D shapeOverlapResult)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            int count = 0;
+            bool hit = NativeParallel2D.BoxOverlap(internalWorld.IntPointer, center, width, height, angle, mask, _queryBodyIDs, ref count);
+
+            shapeOverlapResult.count = count;
+
+            for (int i = 0; i < count; i++)
+            {
+                UInt16 bodyID = _queryBodyIDs[i];
+                if (bodySortedList.ContainsKey(bodyID))
+                {
+                    shapeOverlapResult.rigidbodies[i] = bodySortedList[bodyID].RigidBody;
+                }
+                else
+                {
+                    Debug.LogError($"Rigibody not found: {bodyID}");
+                }
+            }
+
+            return hit;
+        }
+
         //contact
         [MonoPInvokeCallback(typeof(ContactEnterCallBack))]
         public static void OnContactEnterCallback(IntPtr contactPtr, UInt32 contactID)
