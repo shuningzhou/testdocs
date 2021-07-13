@@ -166,6 +166,12 @@ namespace Parallel
             }
         }
 
+        //============================== Flags ==============================
+        public void IgnorePositionConstraintForNextUpdate()
+        {
+            Parallel2D.SkipPositionContraintSolverForNextUpdate(_body2D);
+        }
+
         //============================== Force and Torque ==============================
         //Apply a force to the center of mass
         public void ApplyForce(FVector2 force)
