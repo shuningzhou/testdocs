@@ -375,6 +375,18 @@ namespace Parallel
             return Intersection(a1, a2, b1, b2, out found);
         }
 
+        //public static Vector3 NearestPointOnFiniteLine(Vector3 start, Vector3 end, Vector3 pnt)
+        //{
+        //    var line = (end - start);
+        //    var len = line.magnitude;
+        //    line.Normalize();
+
+        //    var v = pnt - start;
+        //    var d = Vector3.Dot(v, line);
+        //    d = Mathf.Clamp(d, 0f, len);
+        //    return start + line * d;
+        //}
+
         // Calculate the distance between
         // point pt and the segment p1 --> p2.
         //http://csharphelper.com/blog/2016/09/find-the-shortest-distance-between-a-point-and-a-line-segment-in-c/

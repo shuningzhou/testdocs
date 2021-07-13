@@ -442,7 +442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 706333747}
-  smoothSpeed: 0.05
+  smoothTime: 0.3
   offset: {x: 0, y: 4, z: -7}
   updateMethod: 0
 --- !u!114 &1246704080
@@ -458,7 +458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1088946178}
-  smoothSpeed: 0.125
+  smoothTime: 0.3
   offset: {x: 0, y: 4, z: -7}
   updateMethod: 2
 --- !u!1 &1288683841
@@ -490,14 +490,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd8f927d96f592b4a9a26392316e622b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  simulationMode: 0
   LoggingLevel: 0
   autoUpdate: 1
   autoInitialization: 1
   fixedUpdateTime:
-    Raw: 20971
+    Raw: 104857
   velocityIteration: 4
-  allowSleep: 1
-  warmStart: 1
   gravity:
     RawX: 0
     RawY: -10276044

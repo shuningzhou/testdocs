@@ -63460,7 +63460,7 @@ MonoBehaviour:
     resolution:
       Raw: 2097152
   resolution:
-    Raw: 2097152
+    Raw: 1048576
 --- !u!114 &1112871544
 MonoBehaviour:
   m_ObjectHideFlags: 0

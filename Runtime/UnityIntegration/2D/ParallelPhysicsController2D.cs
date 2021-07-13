@@ -197,7 +197,10 @@ namespace Parallel
 
         public void Step(FFloat deltaTime)
         {
-            Parallel2D.Step(deltaTime, velocityIteration, 1); 
+            //using (new SProfiler($"==========ExcuteUserCallbacks========"))
+            {
+                Parallel2D.Step(deltaTime, velocityIteration, 1);
+            }            
         }
 
         public void ExcuteUserCallbacks(FFloat deltaTime)

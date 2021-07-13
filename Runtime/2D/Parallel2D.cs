@@ -270,17 +270,17 @@ namespace Parallel
 
         static void ExportFromEngine()
         {
-            //using (new SProfiler($"ExportContacts"))
+            using (new SProfiler($"ExportContacts"))
             {
                 ExportContacts();
             }
 
-            //using (new SProfiler($"PrepareContacts"))
+            using (new SProfiler($"PrepareContacts"))
             {
                 PrepareContacts();
             }
 
-            //using (new SProfiler($"body.ReadNative"))
+            using (new SProfiler($"body.ReadNative"))
             {
                 foreach (var pair in bodySortedList)
                 {
@@ -456,7 +456,7 @@ namespace Parallel
                 ResetAllContacts();
             }
 
-            //using (new SProfiler($"Engine Step"))
+            using (new SProfiler($"Engine Step"))
             {
                 NativeParallel2D.Step(internalWorld.IntPointer, time, velocityIterations, positionIterations);
             }
@@ -712,6 +712,16 @@ namespace Parallel
             }
 
             NativeParallel2D.UpdateBodyVelocity(body.IntPointer, linearVelocity, angularVelocity);
+        }
+
+        public static void SkipPositionContraintSolverForNextUpdate(PBody2D body)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            NativeParallel2D.SkipPositionContraintSolverForNextUpdate(body.IntPointer);
         }
 
         public static void UpdateBodyProperties(PBody2D body,
