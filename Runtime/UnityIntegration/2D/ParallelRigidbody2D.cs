@@ -167,9 +167,9 @@ namespace Parallel
         }
 
         //============================== Flags ==============================
-        public void IgnorePositionConstraintForNextUpdate()
+        public void IgnorePositionConstraintForNextUpdate(FVector2 direction)
         {
-            Parallel2D.SkipPositionContraintSolverForNextUpdate(_body2D);
+            Parallel2D.SkipPositionContraintSolverForNextUpdate(_body2D, direction);
         }
 
         //============================== Force and Torque ==============================

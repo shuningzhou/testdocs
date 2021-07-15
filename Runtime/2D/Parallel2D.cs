@@ -714,14 +714,14 @@ namespace Parallel
             NativeParallel2D.UpdateBodyVelocity(body.IntPointer, linearVelocity, angularVelocity);
         }
 
-        public static void SkipPositionContraintSolverForNextUpdate(PBody2D body)
+        public static void SkipPositionContraintSolverForNextUpdate(PBody2D body, FVector2 direction)
         {
             if (!initialized)
             {
                 Initialize();
             }
 
-            NativeParallel2D.SkipPositionContraintSolverForNextUpdate(body.IntPointer);
+            NativeParallel2D.SkipPositionContraintSolverForNextUpdate(body.IntPointer, direction);
         }
 
         public static void UpdateBodyProperties(PBody2D body,

@@ -83,7 +83,7 @@ namespace Parallel
         internal static extern void UpdateBodyTransform(IntPtr bodyHandle, FVector2 position, FFloat angle);
 
         [DllImport(PLUGIN_NAME)]
-        internal static extern void SkipPositionContraintSolverForNextUpdate(IntPtr bodyHandle);
+        internal static extern void SkipPositionContraintSolverForNextUpdate(IntPtr bodyHandle, FVector2 direction);
 
         [DllImport(PLUGIN_NAME)]
         internal static extern void UpdateBodyVelocity(IntPtr bodyHandle, FVector2 linearVelocity, FFloat angularVelocity);
