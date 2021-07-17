@@ -270,17 +270,17 @@ namespace Parallel
 
         static void ExportFromEngine()
         {
-            using (new SProfiler($"ExportContacts"))
+            //using (new SProfiler($"ExportContacts"))
             {
                 ExportContacts();
             }
 
-            using (new SProfiler($"PrepareContacts"))
+            //using (new SProfiler($"PrepareContacts"))
             {
                 PrepareContacts();
             }
 
-            using (new SProfiler($"body.ReadNative"))
+            //using (new SProfiler($"body.ReadNative"))
             {
                 foreach (var pair in bodySortedList)
                 {
@@ -456,7 +456,7 @@ namespace Parallel
                 ResetAllContacts();
             }
 
-            using (new SProfiler($"Engine Step"))
+            //using (new SProfiler($"Engine Step"))
             {
                 NativeParallel2D.Step(internalWorld.IntPointer, time, velocityIterations, positionIterations);
             }
@@ -965,6 +965,44 @@ namespace Parallel
 
             int count = 0;
             bool hit = NativeParallel2D.BoxOverlap(internalWorld.IntPointer, center, width, height, angle, mask, _queryBodyIDs, ref count);
+
+            shapeOverlapResult.count = count;
+
+            for (int i = 0; i < count; i++)
+            {
+                UInt16 bodyID = _queryBodyIDs[i];
+                if (bodySortedList.ContainsKey(bodyID))
+                {
+                    shapeOverlapResult.rigidbodies[i] = bodySortedList[bodyID].RigidBody;
+                }
+                else
+                {
+                    Debug.LogError($"Rigibody not found: {bodyID}");
+                }
+            }
+
+            return hit;
+        }
+
+        public static bool OverlapPolygon(FVector2[] verts, int vertsCount, PShapeOverlapResult2D shapeOverlapResult)
+        {
+            return OverlapPolygon(verts, vertsCount, -1, shapeOverlapResult);
+        }
+
+        public static bool OverlapPolygon(FVector2[] verts, int vertsCount, int mask, PShapeOverlapResult2D shapeOverlapResult)
+        {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
+            int count = 0;
+
+            ParallelVec2List parallelVec2List = new ParallelVec2List();
+            parallelVec2List.count = vertsCount;
+            parallelVec2List.points = verts;
+
+            bool hit = NativeParallel2D.PolygonOverlap(internalWorld.IntPointer, ref parallelVec2List, mask, _queryBodyIDs, ref count);
 
             shapeOverlapResult.count = count;
 

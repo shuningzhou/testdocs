@@ -181,6 +181,9 @@ namespace Parallel
         [DllImport(PLUGIN_NAME)]
         internal static extern bool BoxOverlap(IntPtr worldHandle, FVector2 center, FFloat width, FFloat height, FFloat angle, int mask, UInt16[] bodyIDs, ref int count);
 
+        [DllImport(PLUGIN_NAME)]
+        internal static extern bool PolygonOverlap(IntPtr worldHandle, ref ParallelVec2List parallelVec2List, int mask, UInt16[] bodyIDs, ref int count);
+
         //contact
         [DllImport(PLUGIN_NAME)]
         internal static extern IntPtr GetContactList(IntPtr worldHandle);
