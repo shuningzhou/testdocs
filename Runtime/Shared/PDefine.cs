@@ -7,7 +7,7 @@ namespace Parallel
 {
     public static class ParallelConstants
     {
-        public const int SHAPE_OVERLAP_BODY_COUNT_2D = 16;
+        public const int SHAPE_OVERLAP_BODY_COUNT_2D = 64;
         public const int SHAPE_OVERLAP_BODY_COUNT_3D = 32;
 
         public const int MAX_CONTACT_COUNT_2D = 1024 * 5 * 2;
