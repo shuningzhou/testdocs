@@ -1531,7 +1531,7 @@
 
 <span class="k">namespace</span> <span class="nn">SWExample.Pong</span>
 <span class="p">{</span>
-    <span class="k">public</span> <span class="k">class</span> <span class="nc">PaddleMovement</span> <span class="p">:</span> <span class="n">FrameSyncEngineController</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">PaddleMovement</span> <span class="p">:</span> <span class="n">MonoBehaviour</span><span class="p">,</span> <span class="n">IFrameSyncPlayerUpdate</span>
     <span class="p">{</span>
         <span class="k">public</span> <span class="n">FFloat</span> <span class="n">speed</span> <span class="p">=</span> <span class="n">FFloat</span><span class="p">.</span><span class="n">FromDivision</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span>
 
