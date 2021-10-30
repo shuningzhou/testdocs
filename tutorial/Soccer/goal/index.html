@@ -864,6 +864,76 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../physicsEngineSnapshot/" class="md-nav__link">
+        Phyiscs Engine Snapshot
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gameFlowSnapshot/" class="md-nav__link">
+        Game Flow Snapshot
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../desync/" class="md-nav__link">
+        Desync Detection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../goalExplosion/" class="md-nav__link">
+        Goal Explosion
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playOnline2/" class="md-nav__link">
+        Play in Online Rollback Mode
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -1890,6 +1960,10 @@
 
         <span class="k">public</span> <span class="k">void</span> <span class="nf">OnFTriggerEnter</span><span class="p">(</span><span class="n">FCollider3D</span> <span class="n">fCollider</span><span class="p">)</span>
         <span class="p">{</span>
+            <span class="n">FrameSyncUpdateType</span> <span class="n">updateType</span> <span class="p">=</span> <span class="n">_frameSyncBehaviour</span><span class="p">.</span><span class="n">game</span><span class="p">.</span><span class="n">updateType</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">frameNumber</span> <span class="p">=</span> <span class="n">_frameSyncBehaviour</span><span class="p">.</span><span class="n">game</span><span class="p">.</span><span class="n">frameNumber</span><span class="p">;</span>
+            <span class="n">Debug</span><span class="p">.</span><span class="n">Log</span><span class="p">(</span><span class="err">$</span><span class="s">&quot;{fCollider.name} trigger enter, updateType={updateType} frameNumber={frameNumber}&quot;</span><span class="p">);</span>
+
             <span class="c1">//score</span>
             <span class="n">FrameSyncPlayer</span> <span class="n">player</span> <span class="p">=</span> <span class="n">_frameSyncBehaviour</span><span class="p">.</span><span class="n">owner</span><span class="p">;</span>
 
@@ -1910,7 +1984,7 @@
 </ul>
 <p><img alt="img" src="../../../assets/soccer/triggerEvent.png" width="512" /></p>
 <h2 id="physics-layer-collision-matrix"><strong>Physics Layer Collision Matrix</strong><a class="headerlink" href="#physics-layer-collision-matrix" title="Permanent link">&para;</a></h2>
-<p>FPhysics supports the Unity physics layer collision matrix. You will create layers and change the their collision matrix so the <code>Goal</code> collider only collides with the <code>Ball</code>.</p>
+<p>FPhysics supports the Unity physics layer collision matrix. You will create layers and change their collision matrix so the <code>Goal</code> collider only collides with the <code>Ball</code>.</p>
 <ul>
 <li>Create the following layers and assign the <code>Car</code>, the <code>Ball</code> and the <code>Goal</code> to their layers</li>
 </ul>

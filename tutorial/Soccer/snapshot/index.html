@@ -842,55 +842,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#identify-game-states-that-should-be-in-the-snapshot" class="md-nav__link">
-    Identify Game States That Should Be in The Snapshot
-  </a>
-  
-    <nav class="md-nav" aria-label="Identify Game States That Should Be in The Snapshot">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#external-states" class="md-nav__link">
-    External States
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#framesyncbehaviour-states" class="md-nav__link">
-    FrameSyncBehaviour States
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#physics-engine-snapshot" class="md-nav__link">
-    Physics Engine Snapshot
-  </a>
-  
-    <nav class="md-nav" aria-label="Physics Engine Snapshot">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#soccerphysics3dsnapshot" class="md-nav__link">
-    SoccerPhysics3DSnapshot
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#soccergameflow-snapshot" class="md-nav__link">
-    SoccerGameFlow Snapshot
+  <a href="#what-should-be-included-in-the-snapshot" class="md-nav__link">
+    What Should Be Included in The Snapshot?
   </a>
   
 </li>
@@ -899,6 +852,76 @@
   
 </nav>
       
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../physicsEngineSnapshot/" class="md-nav__link">
+        Phyiscs Engine Snapshot
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gameFlowSnapshot/" class="md-nav__link">
+        Game Flow Snapshot
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../desync/" class="md-nav__link">
+        Desync Detection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../goalExplosion/" class="md-nav__link">
+        Goal Explosion
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playOnline2/" class="md-nav__link">
+        Play in Online Rollback Mode
+      </a>
     </li>
   
 
@@ -1878,55 +1901,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#identify-game-states-that-should-be-in-the-snapshot" class="md-nav__link">
-    Identify Game States That Should Be in The Snapshot
-  </a>
-  
-    <nav class="md-nav" aria-label="Identify Game States That Should Be in The Snapshot">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#external-states" class="md-nav__link">
-    External States
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#framesyncbehaviour-states" class="md-nav__link">
-    FrameSyncBehaviour States
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#physics-engine-snapshot" class="md-nav__link">
-    Physics Engine Snapshot
-  </a>
-  
-    <nav class="md-nav" aria-label="Physics Engine Snapshot">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#soccerphysics3dsnapshot" class="md-nav__link">
-    SoccerPhysics3DSnapshot
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#soccergameflow-snapshot" class="md-nav__link">
-    SoccerGameFlow Snapshot
+  <a href="#what-should-be-included-in-the-snapshot" class="md-nav__link">
+    What Should Be Included in The Snapshot?
   </a>
   
 </li>
@@ -1945,197 +1921,22 @@
                 
                 
                 <h1 id="game-states-snapshot"><strong>Game States Snapshot</strong><a class="headerlink" href="#game-states-snapshot" title="Permanent link">&para;</a></h1>
-<p>In this seciton, you will take snapshots the game states to support running the game in the Prediction/Rollback mode.</p>
-<h2 id="identify-game-states-that-should-be-in-the-snapshot"><strong>Identify Game States That Should Be in The Snapshot</strong><a class="headerlink" href="#identify-game-states-that-should-be-in-the-snapshot" title="Permanent link">&para;</a></h2>
-<h3 id="external-states"><strong>External States</strong><a class="headerlink" href="#external-states" title="Permanent link">&para;</a></h3>
-<p>The rigidbodies physics states like position, rotation, linear velocity, angular velocity are stored in the physics engine. They should be exported for rollback.</p>
-<h3 id="framesyncbehaviour-states"><strong>FrameSyncBehaviour States</strong><a class="headerlink" href="#framesyncbehaviour-states" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Export</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>SoccerVehicleController</td>
-<td>No</td>
-<td>The vehicle physics states is stored in the physics engine. The component itself is stateless.</td>
-</tr>
-<tr>
-<td>SoccerGoal</td>
-<td>No</td>
-<td>The trigger states: enter, stay, exit is stored in the physics engine. The component itself is stateless.</td>
-</tr>
-<tr>
-<td>SoccerGameFlow</td>
-<td>Yes</td>
-<td>The component is stateful. We should snapshot the player scores and timer Id.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="physics-engine-snapshot"><strong>Physics Engine Snapshot</strong><a class="headerlink" href="#physics-engine-snapshot" title="Permanent link">&para;</a></h2>
-<h3 id="soccerphysics3dsnapshot"><strong>SoccerPhysics3DSnapshot</strong><a class="headerlink" href="#soccerphysics3dsnapshot" title="Permanent link">&para;</a></h3>
-<p>You will use the following methods to create snapshot of the physics engine.</p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>FPhysics3D.Snapshot</td>
-<td>Create a snapshot of the physics engine's current states</td>
-</tr>
-<tr>
-<td>FPhysics3D.ImportSnapshot</td>
-<td>Create a snapshot using the given byte data</td>
-</tr>
-</tbody>
-</table>
-<p>You will use the following method to restore the physics engine to a snapshot.</p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>FPhysics3D.Restore</td>
-<td>Restore the physics engine to a snapshot</td>
-</tr>
-</tbody>
-</table>
-<p>You will use the following method to export the data of a snapshot in the byte array format.</p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>FPhysics3D.ExportSnapshot</td>
-<td>Export the data of a snapshot in byte array format.</td>
-</tr>
-</tbody>
-</table>
-<p>Create a new c# script and call it <code>SoccerPhysics3DSnapshot</code>.</p>
-<p>Replace the content of the file with the following.</p>
-<div class="tabbed-set" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">C#</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="k">using</span> <span class="nn">SocketWeaver.FrameSync</span><span class="p">;</span>
-<span class="k">using</span> <span class="nn">SocketWeaver.FPhysics3D</span><span class="p">;</span>
-<span class="k">using</span> <span class="nn">SocketWeaver.Core</span><span class="p">;</span>
-
-<span class="k">public</span> <span class="k">class</span> <span class="nc">SoccerPhysics3DSnapshot</span> <span class="p">:</span> <span class="n">IFrameSyncSnapshot</span>
-<span class="p">{</span>
-    <span class="n">FSnapshot3D</span> <span class="n">snapshot</span><span class="p">;</span>
-
-    <span class="k">public</span> <span class="kt">int</span> <span class="n">frameNumber</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
-
-    <span class="k">public</span> <span class="nf">SoccerPhysics3DSnapshot</span><span class="p">(</span><span class="kt">int</span> <span class="n">frameNumber</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="n">snapshot</span> <span class="p">=</span> <span class="n">FPhysics3D</span><span class="p">.</span><span class="n">Snapshot</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="n">frameNumber</span> <span class="p">=</span> <span class="n">frameNumber</span><span class="p">;</span>
-    <span class="p">}</span>
-
-    <span class="k">public</span> <span class="nf">SoccerPhysics3DSnapshot</span><span class="p">(</span><span class="kt">int</span> <span class="n">frameNumber</span><span class="p">,</span> <span class="kt">byte</span><span class="p">[]</span> <span class="n">bytes</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="n">snapshot</span> <span class="p">=</span> <span class="n">FPhysics3D</span><span class="p">.</span><span class="n">ImportSnapshot</span><span class="p">(</span><span class="n">bytes</span><span class="p">,</span> <span class="n">bytes</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="n">frameNumber</span> <span class="p">=</span> <span class="n">frameNumber</span><span class="p">;</span>
-    <span class="p">}</span>
-
-    <span class="k">public</span> <span class="k">void</span> <span class="nf">Clear</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">snapshot</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="n">FPhysics3D</span><span class="p">.</span><span class="n">DestroySnapshot</span><span class="p">(</span><span class="n">snapshot</span><span class="p">);</span>
-            <span class="n">snapshot</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="k">public</span> <span class="n">SWBytes</span> <span class="nf">Export</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="kt">byte</span><span class="p">[]</span> <span class="n">bytes</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="m">1014</span><span class="p">];</span>
-
-        <span class="kt">int</span> <span class="n">size</span> <span class="p">=</span> <span class="n">FPhysics3D</span><span class="p">.</span><span class="n">ExportSnapshot</span><span class="p">(</span><span class="n">snapshot</span><span class="p">,</span> <span class="n">bytes</span><span class="p">,</span> <span class="m">1024</span><span class="p">);</span>
-
-        <span class="n">SWBytes</span> <span class="n">b</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SWBytes</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
-
-        <span class="n">b</span><span class="p">.</span><span class="n">Push</span><span class="p">(</span><span class="n">bytes</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
-
-        <span class="k">return</span> <span class="n">b</span><span class="p">;</span>
-    <span class="p">}</span>
-
-    <span class="k">public</span> <span class="k">void</span> <span class="nf">Restore</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="n">FPhysics3D</span><span class="p">.</span><span class="n">Restore</span><span class="p">(</span><span class="n">snapshot</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-</div>
-</div>
-<p>Add the highlighted code to the SoccerFrameSyncEngineController.</p>
-<div class="tabbed-set" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">C#</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="k">using</span> <span class="nn">SocketWeaver.FrameSync</span><span class="p">;</span>
-<span class="k">using</span> <span class="nn">SocketWeaver.FPhysics3D</span><span class="p">;</span>
-<span class="k">using</span> <span class="nn">SocketWeaver.FixedMath</span><span class="p">;</span>
-<span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
-
-<span class="k">namespace</span> <span class="nn">SWExample.Soccer</span>
-<span class="p">{</span>
-    <span class="k">public</span> <span class="k">class</span> <span class="nc">SoccerFrameSyncEngineController</span> <span class="p">:</span> <span class="n">FrameSyncEngineController</span>
-    <span class="p">{</span>
-        <span class="k">public</span> <span class="n">FPhysics3DManager</span> <span class="n">physicsEngine</span><span class="p">;</span>
-
-        <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">OnFrameSyncCollectPlayerInput</span><span class="p">(</span><span class="n">FrameSyncEngine</span> <span class="n">frameSyncEngine</span><span class="p">,</span> <span class="n">FrameSyncGame</span> <span class="n">game</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">engineMode</span> <span class="p">==</span> <span class="n">EngineMode</span><span class="p">.</span><span class="n">Offline</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="n">FrameSyncPlayer</span> <span class="n">player1</span> <span class="p">=</span> <span class="n">game</span><span class="p">.</span><span class="n">GetPlayer</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
-
-                <span class="n">player1</span><span class="p">.</span><span class="n">SetInputX</span><span class="p">((</span><span class="n">FFloat</span><span class="p">)</span><span class="n">Input</span><span class="p">.</span><span class="n">GetAxis</span><span class="p">(</span><span class="s">&quot;Horizontal&quot;</span><span class="p">));</span>
-                <span class="n">player1</span><span class="p">.</span><span class="n">SetInputY</span><span class="p">((</span><span class="n">FFloat</span><span class="p">)</span><span class="n">Input</span><span class="p">.</span><span class="n">GetAxis</span><span class="p">(</span><span class="s">&quot;Vertical&quot;</span><span class="p">));</span>
-            <span class="p">}</span>
-            <span class="k">else</span>
-            <span class="p">{</span>
-                <span class="n">frameSyncEngine</span><span class="p">.</span><span class="n">game</span><span class="p">.</span><span class="n">localPlayer</span><span class="p">.</span><span class="n">SetInputX</span><span class="p">((</span><span class="n">FFloat</span><span class="p">)</span><span class="n">Input</span><span class="p">.</span><span class="n">GetAxis</span><span class="p">(</span><span class="s">&quot;Horizontal&quot;</span><span class="p">));</span>
-                <span class="n">frameSyncEngine</span><span class="p">.</span><span class="n">game</span><span class="p">.</span><span class="n">localPlayer</span><span class="p">.</span><span class="n">SetInputY</span><span class="p">((</span><span class="n">FFloat</span><span class="p">)</span><span class="n">Input</span><span class="p">.</span><span class="n">GetAxis</span><span class="p">(</span><span class="s">&quot;Vertical&quot;</span><span class="p">));</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-
-        <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">OnStart</span><span class="p">()</span>
-        <span class="p">{</span>
-            <span class="n">physicsEngine</span><span class="p">.</span><span class="n">Initialize</span><span class="p">();</span>
-        <span class="p">}</span>
-
-        <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">OnFrameSyncFinishedSimulationForCurrentFrame</span><span class="p">(</span><span class="kt">int</span> <span class="n">frameNumber</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="n">physicsEngine</span><span class="p">.</span><span class="n">OnUpdate</span><span class="p">(</span><span class="n">FrameSyncTime</span><span class="p">.</span><span class="n">fixedDeltaTime</span><span class="p">);</span>
-        <span class="p">}</span>
-
-<span class="hll">        <span class="k">protected</span> <span class="k">override</span> <span class="n">IFrameSyncSnapshot</span> <span class="nf">OnFrameSyncCreateCustomRestorable</span><span class="p">(</span><span class="kt">int</span> <span class="n">frameNumber</span><span class="p">)</span>
-</span><span class="hll">        <span class="p">{</span>
-</span><span class="hll">            <span class="k">return</span> <span class="k">new</span> <span class="nf">PhysicsSnapshot</span><span class="p">(</span><span class="n">frameNumber</span><span class="p">);</span>
-</span><span class="hll">        <span class="p">}</span>
-</span><span class="hll">
-</span><span class="hll">        <span class="k">protected</span> <span class="k">override</span> <span class="n">IFrameSyncSnapshot</span> <span class="nf">OnFrameSyncImportCustomRestorable</span><span class="p">(</span><span class="kt">int</span> <span class="n">frameNumber</span><span class="p">,</span> <span class="kt">byte</span><span class="p">[]</span> <span class="n">bytes</span><span class="p">)</span>
-</span><span class="hll">        <span class="p">{</span>
-</span><span class="hll">            <span class="k">return</span> <span class="k">new</span> <span class="nf">PhysicsSnapshot</span><span class="p">(</span><span class="n">frameNumber</span><span class="p">,</span> <span class="n">bytes</span><span class="p">);</span>
-</span><span class="hll">        <span class="p">}</span>
-</span>    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-</div>
-</div>
-<h2 id="soccergameflow-snapshot"><strong>SoccerGameFlow Snapshot</strong><a class="headerlink" href="#soccergameflow-snapshot" title="Permanent link">&para;</a></h2>
+<p>In this seciton, you will take snapshots of the game states in your game to support running the game in the <code>Prediction&amp;Rollback</code> mode.</p>
+<h2 id="what-should-be-included-in-the-snapshot"><strong>What Should Be Included in The Snapshot?</strong><a class="headerlink" href="#what-should-be-included-in-the-snapshot" title="Permanent link">&para;</a></h2>
+<p>All the game states that affect the game logic simulation result should be included in the snapshot. Let's look at the components in your game logic one by one to identify the states that should be add to the snapshot.</p>
+<ul>
+<li>
+<p><strong>External Game States</strong>: The rigidbodies physics states like position, rotation, linear velocity, angular velocity affects the simulation result. They should be included in the snapshot. You will use the FPhysics API to export the physics states.</p>
+</li>
+<li>
+<p><strong>FrameSyncBehaviour States</strong>:</p>
+<ul>
+<li><code>SoccerVehicleController</code>: The vehicle physics states are stored in the physics engine. The component itself is stateless.</li>
+<li><code>SoccerGoal</code>: The trigger states: enter, stay, exit is stored in the physics engine. The component itself is stateless.</li>
+<li><code>SoccerGameFlow</code>: The component is stateful. We should include the player scores, and the timer Id in the snapshot.</li>
+</ul>
+</li>
+</ul>
                 
               
               
@@ -2171,13 +1972,13 @@
       
       
         
-        <a href="../../pong/overview/" class="md-footer__link md-footer__link--next" aria-label="Next: Overview" rel="next">
+        <a href="../physicsEngineSnapshot/" class="md-footer__link md-footer__link--next" aria-label="Next: Phyiscs Engine Snapshot" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Overview
+              Phyiscs Engine Snapshot
             </div>
           </div>
           <div class="md-footer__button md-icon">

@@ -857,6 +857,76 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../physicsEngineSnapshot/" class="md-nav__link">
+        Phyiscs Engine Snapshot
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gameFlowSnapshot/" class="md-nav__link">
+        Game Flow Snapshot
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../desync/" class="md-nav__link">
+        Desync Detection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../goalExplosion/" class="md-nav__link">
+        Goal Explosion
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playOnline2/" class="md-nav__link">
+        Play in Online Rollback Mode
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -1851,7 +1921,7 @@
                 
                 
                 <h1 id="framesynctimer"><strong>FrameSyncTimer</strong><a class="headerlink" href="#framesynctimer" title="Permanent link">&para;</a></h1>
-<p>In this section, you will use FrameSyncTimer to add a delay before resetting the <code>Ball</code> and the <code>Car</code>s to their starting positions.</p>
+<p>In this section, you will use FrameSyncTimer to add a delay before resetting the <code>Ball</code> and the <code>Car</code>s positions.</p>
 <p>Update/Add the highlighted lines to the <code>SoccerGameFlow</code> script.</p>
 <div class="tabbed-set" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">C#</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="k">using</span> <span class="nn">SocketWeaver.FrameSync</span><span class="p">;</span>
@@ -1863,7 +1933,7 @@
 
 <span class="k">namespace</span> <span class="nn">SWExample.Soccer</span>
 <span class="p">{</span>
-<span class="hll">    <span class="k">public</span> <span class="k">class</span> <span class="nc">SoccerGameFlow</span> <span class="p">:</span> <span class="n">MonoBehaviour</span><span class="p">,</span> <span class="n">IFrameSyncTimerEventHandler</span><span class="p">,</span> <span class="n">IFrameSyncOnStart</span><span class="p">,</span> <span class="n">IFrameSyncComputerUpdate</span><span class="p">,</span> 
+<span class="hll">    <span class="k">public</span> <span class="k">class</span> <span class="nc">SoccerGameFlow</span> <span class="p">:</span> <span class="n">MonoBehaviour</span><span class="p">,</span> <span class="n">IFrameSyncTimerEventHandler</span><span class="p">,</span> <span class="n">IFrameSyncOnStart</span><span class="p">,</span> <span class="n">IFrameSyncComputerUpdate</span>
 </span>    <span class="p">{</span>
 <span class="na">        [Header(&quot;UI&quot;)]</span>
         <span class="k">public</span> <span class="n">Text</span> <span class="n">timeText</span><span class="p">;</span>
@@ -1945,8 +2015,6 @@
 
         <span class="k">void</span> <span class="nf">ResetGame</span><span class="p">()</span>
         <span class="p">{</span>
-            <span class="n">ball</span><span class="p">.</span><span class="n">gameObject</span><span class="p">.</span><span class="n">SetActive</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
-
             <span class="n">ResetRigidbody</span><span class="p">(</span><span class="n">ball</span><span class="p">,</span> <span class="n">ballStartPosition</span><span class="p">);</span>
             <span class="n">ResetRigidbody</span><span class="p">(</span><span class="n">player1</span><span class="p">,</span> <span class="n">player1StartPosition</span><span class="p">);</span>
             <span class="n">ResetRigidbody</span><span class="p">(</span><span class="n">player2</span><span class="p">,</span> <span class="n">player2StartPosition</span><span class="p">);</span>
