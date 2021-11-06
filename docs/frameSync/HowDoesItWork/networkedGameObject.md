@@ -1,6 +1,10 @@
 # **Networked GameObject**
 
+
 ![img](./../../assets/framesync/NetworkedGameObject.png){: width=800 }
+
+## **GameObjects vs Networked GameObjects**
+
 
 ## **Seperation of Game Logic And Presentation**
 Your game logic should only be implemented in the IFrameSync interfaces. All the Unity MonoBehaviour [events/messages][1] are considered indeterministic, you should use them for presentation purpose only.
