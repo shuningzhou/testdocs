@@ -59,6 +59,10 @@ nav:
   - FrameSync:
     - Overview: frameSync/framesync.md
     - Deterministic: frameSync/deterministic.md
+    - How Does It Work:
+      - Networked GameObject: frameSync/HowDoesItWork/networkedGameObject.md
+      - Networked Input: frameSync/networkedInput.md
+      - Frame Simulation: frameSync/frameSimulation.md
     - Input Settings: frameSync/InputSettings.md
     - Prefab Registry: frameSync/PrefabRegistry.md
     - FrameSyncEngine: 

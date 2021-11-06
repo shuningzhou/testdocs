@@ -46,8 +46,8 @@ The `FrameSyncEngineController` provides a collection of useful events which all
 
 | **Simulation Events**       |                     |
 | ----------- | ------------------------------------ |
-| [OnFrameSyncFinishedSimulationForCurrentFrame][6]       | Called after the StaticFrameSyncBehaviours and the DynamicFrameSyncBehaviours finished simulation for the current FrameSync step. |
-| [OnFrameSyncWillFinishCurrentFrame][7]       |  Called before the current Frame finishes. |
+| [OnFrameSyncLateUpdate][6]       | Called after the StaticFrameSyncBehaviours and the DynamicFrameSyncBehaviours finished simulation for the current FrameSync step. |
+| [OnFrameSyncPostUpdate][7]       |  Called before the current Frame finishes. |
 
 | **Custom Restorable Events**       |                     |
 | ----------- | ------------------------------------ |

@@ -9,8 +9,10 @@ After that, create a new scene in the `Pong2D` folder and name it `PongGame`.
 
 Open the `PongGame` scene, select the `Main Camera` in the **Hierarchy**.
 
-- Set `Clear Flags` to `Solid Color`
+- Set `Clear Flags` to `Solid Color`.
 - Set `Background` to a color you like.
+- Set `Projection` to `Orthographic`.
+- Set `Size` to 6.
 
 ![img](./../../assets/pong2d/pong2d_camera.png){: width=512 }
 

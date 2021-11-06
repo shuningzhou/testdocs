@@ -9,6 +9,7 @@ For your first step, you will create a `FPhysics2DManager`. Right-Click in the `
 
 The `FPhysics2DManager` controls the FPhysics engine and manages rigidbodies in the scene. 
 Disable `Auto Initialize` and `Auto Update` because you will manually initialize the FPhysics engine and manually update it.
+Set `Gravity` to (0, 0).
 
 ![img](./../../assets/pong2d/pong2d_fphysicsmanager.png){: width=768 }
 
